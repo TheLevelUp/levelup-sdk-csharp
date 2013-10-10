@@ -1,0 +1,100 @@
+﻿<TabItem x:Class="ConfigurationTool.LevelUpTabItem"
+         Header="LevelUp"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         Loaded="OnControlLoaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Label x:Name="StatusLabel" Grid.Row="0" FontSize="14" FontWeight="Bold" />
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label x:Name="UserNameLabel" Content="User name:" Grid.Row="0" Grid.Column="0" />
+                <TextBox x:Name="UserNameTextBox" Text="" Grid.Row="0" Grid.Column="1" Margin="0,1,2,1" KeyDown="UserNameTextBoxKeyDown"/>
+                <Label x:Name="PasswordLabel" Content="Password:" Grid.Row="1" Grid.Column="0" />
+                <PasswordBox x:Name="PasswordTextBox" Grid.Row="1" Grid.Column="1" Margin="0,1,2,1" GotFocus="PasswordBoxGotFocus" KeyDown="PasswordBoxKeyDown" />
+            </Grid>
+            <Button x:Name="AuthenticateButton" Content="Authenticate" Grid.Column="1" MinWidth="80" Margin="2,1,4,1" Click="AuthenticateButton_Click" />
+        </Grid>
+        <GroupBox Header="Merchant Information" Grid.Row="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label x:Name="MerchantIdLabel" Content="ID:" Grid.Row="0" Grid.Column="0" />
+                <Label x:Name="MerchantIdValueLabel" Grid.Row="0" Grid.Column="1" />
+                <Label x:Name="MerchantNameLabel" Content="Name:" Grid.Row="1" Grid.Column="0" />
+                <Label x:Name="MerchantNameValueLabel" Grid.Row="1" Grid.Column="1" />
+            </Grid>
+        </GroupBox>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label x:Name="LocationsComboBoxLabel" Content="Location:" Grid.Column="0" />
+            <ComboBox x:Name="LocationsComboBox" IsEnabled="False" Grid.Column="1" MinHeight="24" Margin="2,2,2,2" SelectionChanged="OnLocationSelectionChanged" />
+            <Button x:Name="ReloadLocationDataButton" IsEnabled="False" Content="Reload" Grid.Column="2" MinWidth="80" Margin="2,2,4,2" Click="ReloadLocationDataButton_Click"/>
+        </Grid>
+        <GroupBox Header="Location Information" Grid.Row="4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label x:Name="LocationIdLabel" Content="ID:" Grid.Row="0" Grid.Column="0" />
+                <Label x:Name="LocationIdValueLabel" Grid.Row="0" Grid.Column="1" />
+                <Label x:Name="LocationAddressLabel" Content="Address:" Grid.Row="1" Grid.Column="0" />
+                <Label x:Name="LocationAddressValueLabel" Grid.Row="1" Grid.Column="1" MinHeight="80" />
+            </Grid>
+        </GroupBox>
+        <Grid Grid.Row="5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="SaveFormatLabel" Content="Save as:" Grid.Column="0" VerticalAlignment="Center" />
+                    <RadioButton x:Name="JsonFormatRadioButton" GroupName="SaveFormatGroup" Content="JSON" IsChecked="True" Grid.Column="1" VerticalAlignment="Center" />
+                    <RadioButton x:Name="XmlFormatRadioButton" GroupName="SaveFormatGroup" Content="XML" Grid.Column="2" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                </Grid>
+                <Button x:Name="SaveButton" Content="Save" IsEnabled="False" Grid.Column="2" MinWidth="80" Margin="0,2,4,2" Click="SaveButton_Click" />
+            </Grid>   
+        </Grid>
+    </Grid>
+</TabItem>
