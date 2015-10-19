@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LevelUpTestConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <App_ApiKey>Your Application API Key</App_ApiKey>
+  <Merchant_Username>your_merchant_email@yourdomain.com</Merchant_Username>
+  <Merchant_Password>merchant_password</Merchant_Password>
+  <Merchant_Id>merchant_id</Merchant_Id>
+  <Merchant_LocationId_Visible>visible_location_id_for_merchant</Merchant_LocationId_Visible>
+  <Merchant_LocationId_Invisible>invisible_location_id_for_merchant</Merchant_LocationId_Invisible>
+  <User_EmailAddress>sdktester@thelevelup.com</User_EmailAddress>
+  <User_FirstName>CSharp SDK User</User_FirstName>
+  <User_LastInitial>D</User_LastInitial>
+  <User_Id>2041</User_Id>
+  <User_PaymentToken>LU0200001Z1YQIYA5JEY3R43030000LU</User_PaymentToken>
+  <User_PaymentTokenWith10PercentTip>LU0200001Z1YQIYA5JEY3R430300A0LU</User_PaymentTokenWith10PercentTip>
+  <User_GiftCardPaymentToken>LU02000020I2YVTX16JO87P0030000LU</User_GiftCardPaymentToken>
+  <User_InvalidPaymentToken>LUThisIsNotAValidLevelUpQrPaymentCodeLU</User_InvalidPaymentToken>
+</LevelUpTestConfiguration>

@@ -1,8 +1,7 @@
-﻿<TabItem x:Class="ConfigurationTool.TestTabItem"
+﻿<TabItem x:Class="LevelUpExampleApp.TestTabItem"
          Header="Test"
          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-         Loaded="OnControlLoaded">
+         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -17,10 +16,10 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Label x:Name="QrDataLabel" Content="QR Code Data:" Grid.Column="0" />
-            <TextBox x:Name="QrDataTextBox" Text="Enter QR code data here" Margin="2,0,0,0" Grid.Column="1" LostFocus="OnQrTextBoxLostFocus" GotFocus="OnQrTextBoxGotFocus" />
+            <TextBox x:Name="QrDataTextBox" Text="Enter QR code data here" Margin="2,0,0,0" Grid.Column="1" VerticalContentAlignment="Center" LostFocus="OnQrTextBoxLostFocus" GotFocus="OnQrTextBoxGotFocus" TextChanged="OnQrTextBoxTextChanged" />
             <Button x:Name="CreateOrderButton" Content="Create Order" IsEnabled="false" Grid.Column="2" MinWidth="80" Margin="2,0,0,0" Click="CreateOrderButton_Click"/>
         </Grid>
-        <TextBox x:Name="OrderContentTextBox" Grid.Row="1" IsReadOnly="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" Height="120" />
+        <TextBox x:Name="OrderContentTextBox" Grid.Row="1" IsReadOnly="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" Height="120" TextChanged="OnOrderContentTextChanged" />
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

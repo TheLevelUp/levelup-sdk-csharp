@@ -4,7 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Windows;
 
-namespace ConfigurationTool
+namespace LevelUpExampleApp
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>LevelUp.Api.Http</id>
+    <version>1.0.0</version>
+    <owners>SCVNGR Inc .: LevelUp</owners>
+	  <authors>SCVNGR Inc .: LevelUp</authors>
+    <licenseUrl>https://www.thelevelup.com/developers</licenseUrl>
+    <projectUrl>https://www.thelevelup.com/developers</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A .NET library for making HTTP calls to the LevelUp API</description>
+    <copyright>Copyright 2015</copyright>
+    
+    <dependencies>
+	  <group targetFramework="net30">
+        <dependency id="Newtonsoft.Json" version="[5.0.8]" />
+        <dependency id="RestSharp.Net2" version="1.1.11" />
+      </group>
+      <group targetFramework="net35">
+        <dependency id="Newtonsoft.Json" version="5.0.8" />
+        <dependency id="RestSharp" version="104.4.0" />
+      </group>
+      <group targetFramework="net40">
+        <dependency id="Newtonsoft.Json" version="5.0.8" />
+        <dependency id="RestSharp" version="104.4.0" />
+      </group>
+    </dependencies>
+  </metadata>
+
+  <files>
+    <file src="bin\Release 3.0\LevelUp.Api.Http.dll" target="lib\net30" />
+    <file src="bin\Release 3.0\LevelUp.Api.Http.pdb" target="lib\net30" />
+
+    <file src="bin\Release 3.5\LevelUp.Api.Http.dll" target="lib\net35" />
+    <file src="bin\Release 3.5\LevelUp.Api.Http.pdb" target="lib\net35" />
+    
+    <file src="bin\Release 4.0\LevelUp.Api.Http.dll" target="lib\net40" />
+    <file src="bin\Release 4.0\LevelUp.Api.Http.pdb" target="lib\net40" />
+  </files>
+
+</package>
