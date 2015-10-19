@@ -1,42 +1,69 @@
-﻿using LevelUp.Api.Client;
+﻿using System.Globalization;
+using ConfigurationTool;
+using LevelUp.Api.Http;
+using LevelUp.Integrations.Configuration;
+using LevelUp.Integrations.ConfigurationTool;
+using LevelUp.Api.Client;
+using LevelUp.Api.Client.Models.Responses;
+using LevelUpConfigTool.MVVM;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using System.Collections.ObjectModel;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using LevelUp.Api.Client.Models.Responses;
-using LevelUp.Api.Http;
 
-namespace ConfigurationTool
+namespace LevelUpConfigTool
 {
-    /// <summary>
-    /// ViewModel for MVVM
-    /// </summary>
     public partial class LevelUpTabItem : TabItem
     {
-        private const string CLIENT_ID = "LevelUp API key goes here";  //TODO: Set your API key here
-        private ILevelUpClient _api = null;
-        private MainWindow _parentWin = null;
-        private readonly Color SUCCESS_COLOR = Colors.LimeGreen;
-        private readonly Color ERROR_COLOR = Colors.IndianRed;
+        private MainWindow _parentWin;
         private const string PLEASE_AUTHENTICATE = "Please Authenticate";
 
-        private ILevelUpClient Api
+        private MainWindow ParentWindow
         {
-            get { return _api ?? LevelUpClientFactory.Create("LevelUp", "ConfigurationApp", "1.0.0.0", ".NET 3.0"); }
+            get { return _parentWin ?? (_parentWin = Window.GetWindow(this) as MainWindow); }
+        }
+
+        public LevelUpTabItem()
+        {
+            InitializeComponent();
+
+            this.DataContext = this;
+            this.Locations = new ObservableCollection<LocationViewModel>();
+
+            LevelUpConfigGlobals.ConfigLoaded += LevelUpConfigGlobals_ConfigLoaded;
+        }
+
+        private LevelUpData LevelUpData
+        {
+            get { return LevelUpConfigGlobals.LevelUpData; }
+        }
+
+        public ObservableCollection<LocationViewModel> Locations { get; private set; }
+
+        public IConfigSection GetData()
+        {
+            // because the person may have checked/unchecked the Encrypt Access Token button
+            // we need to reset the access token
+            LevelUpData.SetAccessToken(LevelUpData.AccessToken, 
+                                       ParentWindow.EncryptSensitiveDataCheckbox.IsChecked.GetValueOrDefault(false));
+
+            LevelUpData.PartialAuthEnabled = PartialAuthAllowedCheckBox.IsChecked.GetValueOrDefault(true);
+
+            return LevelUpData;
         }
 
         #region Delegates
 
         private delegate AccessToken AuthenticateAsyncDelegate(string username, string password);
 
-        private delegate void FillLocationsComboBoxDelegate(IList<Location> locations);
+        private delegate void UpdateLocationsPropertyDelegate(IList<Location> locations);
 
-        private delegate IList<Location> GetLocationsAsyncDelgate(string levelUpAccessToken, int merchantId);
+        private delegate IList<Location> GetLocationsAsyncDelegate(string levelUpAccessToken, int merchantId);
 
         private delegate void ShowMessageBoxDelegate(string message, MessageBoxButton button, MessageBoxImage image);
 
@@ -44,9 +71,78 @@ namespace ConfigurationTool
 
         #endregion Delegates
 
-        public LevelUpTabItem()
+        private void LevelUpConfigGlobals_ConfigLoaded(object sender, EventArgs e)
         {
-            InitializeComponent();
+            string[] errorMessages;
+
+            // always default to having the access token checkbox checked
+            ParentWindow.EncryptSensitiveDataCheckbox.IsChecked
+                = LevelUpData.AccessTokenEncrypted.GetValueOrDefault(true);
+
+            if (!LevelUpData.IsValid(out errorMessages))
+            {
+                SetStatusLabelText(PLEASE_AUTHENTICATE, MainWindow.ERROR_COLOR);
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(LevelUpData.AccessToken))
+            {
+                SetStatusLabelText("Access Token Loaded", MainWindow.SUCCESS_COLOR);
+            }
+
+            FillMerchantData(LevelUpData.MerchantId);
+
+            IList<Location> locations = GetLocations(LevelUpData.AccessToken,
+                                                     LevelUpData.MerchantId.GetValueOrDefault(0));
+
+            UpdateLocationsProperty(locations);
+
+            LocationDetails details = GetLocationDetails(LevelUpData.AccessToken,
+                                                         LevelUpData.LocationId.GetValueOrDefault(0));
+
+            if (null == details)
+            {
+                FillLocationData(LevelUpData.LocationId);
+            }
+            else
+            {
+                FillLocationData(details.LocationId,
+                                 locationAddress: details.Address.ToString(),
+                                 merchantName: details.MerchantName);
+            }
+
+            PartialAuthAllowedCheckBox.IsChecked = LevelUpData.PartialAuthEnabled;
+
+            //Enable controls
+            LocationsComboBox.IsEnabled = true;
+            ReloadLocationDataButton.IsEnabled = true;
+            SetSaveButtonState(true);
+        }
+
+        public bool IsValid(out string[] errorMessages)
+        {
+            StringBuilder messages = new StringBuilder();
+
+            if (string.IsNullOrEmpty(LevelUpData.AccessToken))
+            {
+                messages.AppendLine("LevelUp Access Token Needed! Please Authenticate.");
+            }
+
+            string merchantIdText = MerchantIdValueLabel.Content.ToString().Trim();
+            if (Helpers.VerifyIsInt(ref messages, merchantIdText, "LevelUp Merchant ID"))
+            {
+                LevelUpData.MerchantId = int.Parse(merchantIdText);
+            }
+
+            string locationIdText = LocationIdValueLabel.Content.ToString().Trim();
+            if (Helpers.VerifyIsInt(ref messages, locationIdText, "LevelUp Location ID"))
+            {
+                LevelUpData.LocationId = int.Parse(locationIdText);
+            }
+
+            errorMessages = messages.Length > 0 ? new[] {messages.ToString()} : new string[0];
+
+            return messages.Length == 0;
         }
 
         #region UI Event Handlers
@@ -56,84 +152,31 @@ namespace ConfigurationTool
             DoAuthenticateButtonClick();
         }
 
-        private void OnControlLoaded(object sender, RoutedEventArgs e)
-        {
-            _parentWin = Window.GetWindow(this) as MainWindow;
-
-            ConfiguredSettings settings = ConfiguredSettings.LoadConfigData();
-
-            if (settings != null)
-            {
-                LevelUpData.Instance.AccessToken = settings.LevelUpAccessToken;
-                LevelUpData.Instance.MerchantId = settings.LevelUpMerchantId;
-                LevelUpData.Instance.LocationId = settings.LevelUpLocationId;
-                LevelUpData.Instance.MerchantName = settings.LevelUpMerchantName;
-
-                if (!string.IsNullOrEmpty(LevelUpData.Instance.AccessToken))
-                {
-                    StatusLabel.Foreground = new SolidColorBrush(SUCCESS_COLOR);
-                    StatusLabel.Content = "Access Token Retrieved";
-                }
-
-                FillMerchantData(LevelUpData.Instance.MerchantId);
-
-                var locations = GetLocations(LevelUpData.Instance.AccessToken,
-                                             LevelUpData.Instance.MerchantId.GetValueOrDefault(0));
-
-                FillLocationsComboBox(locations, LevelUpData.Instance.LocationId.GetValueOrDefault(0));
-
-                LocationDetails details = GetLocationDetails(LevelUpData.Instance.AccessToken,
-                                                             LevelUpData.Instance.LocationId.GetValueOrDefault(0));
-
-                if (null == details)
-                {
-                    FillLocationData(LevelUpData.Instance.LocationId);
-                }
-                else
-                {
-                    FillLocationData(details.LocationId, details.Address.ToString(), details.MerchantName);
-                }
-
-                //Enable controls
-                LocationsComboBox.IsEnabled = true;
-                ReloadLocationDataButton.IsEnabled = true;
-                SaveButton.IsEnabled = true;
-            }
-            else
-            {
-                StatusLabel.Foreground = new SolidColorBrush(ERROR_COLOR);
-                StatusLabel.Content = PLEASE_AUTHENTICATE;
-            }
-        }
-
         private void OnLocationSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //Fill merchant name label & location info
-            string selectedLocationId = LocationsComboBox.SelectedValue as string;
-            int locationId;
-
-            if (string.IsNullOrEmpty(selectedLocationId))
+            if (LocationsComboBox.SelectedItem == null || !(LocationsComboBox.SelectedItem is LocationViewModel))
             {
                 return;
             }
 
-            if (!int.TryParse(selectedLocationId, out locationId))
-            {
-                throw new Exception(string.Format("\"{0}\" is not a valid LevelUp location id.", selectedLocationId));
-            }
+            int locationId = (LocationsComboBox.SelectedItem as LocationViewModel).LocationId;
 
-            LocationDetails details = GetLocationDetails(LevelUpData.Instance.AccessToken, locationId);
+            LocationDetails details = GetLocationDetails(LevelUpData.AccessToken, locationId);
 
+            //Fill merchant name label & location info
             if (null != details)
             {
                 FillLocationData(details.LocationId, details.Address.ToString(), details.MerchantName);
+                LevelUpData.LocationId = details.LocationId;
+                LevelUpData.MerchantName = details.MerchantName;
             }
             else
             {
                 FillLocationData(locationId);
+                LevelUpData.LocationId = locationId;
             }
 
-            SaveButton.IsEnabled = true;
+            SetSaveButtonState(true);
         }
 
         private void PasswordBoxGotFocus(object sender, RoutedEventArgs e)
@@ -151,7 +194,7 @@ namespace ConfigurationTool
 
         private void ReloadLocationDataButton_Click(object sender, RoutedEventArgs e)
         {
-            if (null == LevelUpData.Instance || string.IsNullOrEmpty(LevelUpData.Instance.AccessToken))
+            if (null == LevelUpData || string.IsNullOrEmpty(LevelUpData.AccessToken))
             {
                 ShowMessageBox("Please authenticate!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
@@ -160,62 +203,18 @@ namespace ConfigurationTool
             //Clear the content
             LocationIdValueLabel.Content = string.Empty;
             LocationAddressValueLabel.Content = string.Empty;
+            LocationsGroupBox.Visibility = Visibility.Collapsed;
 
             //Disable the save button
-            SaveButton.IsEnabled = false;
+            SetSaveButtonState(false);
 
             //Get locations async then fill the combo box on callback
-            GetLocationsAsyncDelgate getLocationsAsync = new GetLocationsAsyncDelgate(this.GetLocations);
+            GetLocationsAsyncDelegate getLocationsAsync = new GetLocationsAsyncDelegate(this.GetLocations);
 
-            IAsyncResult result = getLocationsAsync.BeginInvoke(LevelUpData.Instance.AccessToken,
-                                                                LevelUpData.Instance.MerchantId.GetValueOrDefault(0),
+            IAsyncResult result = getLocationsAsync.BeginInvoke(LevelUpData.AccessToken,
+                                                                LevelUpData.MerchantId.GetValueOrDefault(0),
                                                                 new AsyncCallback(FillLocationsComboBoxCallback),
                                                                 getLocationsAsync);
-        }
-
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
-        {
-            ConfiguredSettings settingsToSave = new ConfiguredSettings(LevelUpData.Instance.AccessToken,
-                                                                       LevelUpData.Instance.MerchantId);
-
-            if (null == LocationsComboBox.SelectedValue)
-            {
-                ShowMessageBox("Please select a location.");
-                return;
-            }
-
-            int locationIdInt;
-            if (!int.TryParse(LocationsComboBox.SelectedValue.ToString(), out locationIdInt))
-            {
-                ShowMessageBox(string.Format("\"{0}\" is not a valid location id.", LocationsComboBox.SelectedValue),
-                               MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            settingsToSave.LevelUpLocationId = locationIdInt;
-
-            //Verify all fields have values
-            string messages = settingsToSave.Verify();
-
-            if (messages.Length > 0)
-            {
-                ShowMessageBox(messages, MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else
-            {
-                //Save to specified format
-                if (XmlFormatRadioButton.IsChecked.HasValue && XmlFormatRadioButton.IsChecked.Value)
-                {
-                    settingsToSave.SerializeToXml();
-                }
-                else
-                {
-                    settingsToSave.SerializeToJson();
-                }
-
-                StatusLabel.Foreground = new SolidColorBrush(SUCCESS_COLOR);
-                StatusLabel.Content = "Configuration Data Saved";
-            }
         }
 
         private void UserNameTextBoxKeyDown(object sender, KeyEventArgs e)
@@ -236,13 +235,15 @@ namespace ConfigurationTool
 
             try
             {
-                token = Api.Authenticate(CLIENT_ID, username, password);
+                token = LevelUpConfigGlobals.Api.Authenticate(Helpers.GetApiKey(), username, password);
             }
             catch (LevelUpApiException luEx)
             {
-                ShowMessageBoxOnMainUiThread(
-                    string.Format("LevelUp Authentication failed!{0}{0}{1}", Environment.NewLine, luEx.Message),
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowMessageBoxOnMainUiThread(string.Format("LevelUp Authentication failed!{0}{0}{1}",
+                                                           Environment.NewLine,
+                                                           luEx.Message),
+                                             MessageBoxButton.OK,
+                                             MessageBoxImage.Error);
             }
 
             return token;
@@ -254,11 +255,11 @@ namespace ConfigurationTool
 
             try
             {
-                details = Api.GetLocationDetails(levelUpAccessToken, locationId);
+                details = LevelUpConfigGlobals.Api.GetLocationDetails(levelUpAccessToken, locationId);
             }
-            catch (LevelUpApiException luEx)
+            catch (LevelUpApiException)
             {
-                ShowMessageBox(luEx.Message, MessageBoxButton.OK, MessageBoxImage.Warning);
+                //Swallow exceptions
             }
 
             return details;
@@ -270,7 +271,7 @@ namespace ConfigurationTool
 
             try
             {
-                locations = Api.ListLocations(levelUpAccessToken, merchantId);
+                locations = LevelUpConfigGlobals.Api.ListLocations(levelUpAccessToken, merchantId);
             }
             catch (LevelUpApiException luEx)
             {
@@ -297,65 +298,39 @@ namespace ConfigurationTool
                 return;
             }
 
-            AuthenticateAsyncDelegate authenticateCallback = new AuthenticateAsyncDelegate(this.Authenticate);
-
-            IAsyncResult result = authenticateCallback.BeginInvoke(UserNameTextBox.Text,
-                                                                   PasswordTextBox.Password,
-                                                                   new AsyncCallback(UpdateFieldsCallback),
-                                                                   authenticateCallback);
-
             // Clear fields and controls
             MerchantIdValueLabel.Content = string.Empty;
             MerchantNameValueLabel.Content = string.Empty;
+            MerchantGroupBox.Visibility = Visibility.Collapsed;
             LocationIdValueLabel.Content = string.Empty;
             LocationAddressValueLabel.Content = string.Empty;
+            LocationsGroupBox.Visibility = Visibility.Collapsed;
 
             //Clear and disable the locations combo box
-            LocationsComboBox.ItemsSource = null;
-            LocationsComboBox.Items.Clear();
+            Locations.Clear();
             LocationsComboBox.IsEnabled = false;
 
             //Disable the reload button
             ReloadLocationDataButton.IsEnabled = false;
 
             //Disable the save button
-            SaveButton.IsEnabled = false;
+            SetSaveButtonState(false);
+
+            AuthenticateAsyncDelegate authenticateCallback = new AuthenticateAsyncDelegate(this.Authenticate);
+
+            authenticateCallback.BeginInvoke(UserNameTextBox.Text,
+                                             PasswordTextBox.Password,
+                                             UpdateFieldsCallback,
+                                             authenticateCallback);
         }
 
-        private void FillLocationsComboBox(IList<Location> locations)
+        private void UpdateLocationsProperty(IList<Location> locations)
         {
-            FillLocationsComboBox(locations, null);
-        }
+            Locations.Clear();
 
-        private void FillLocationsComboBox(IList<Location> locations, int? locationToSelect)
-        {
-            if (null == locations || locations.Count == 0)
+            foreach (Location location in locations)
             {
-                return;
-            }
-
-            DataTable dt = new DataTable("LocationsTable");
-            dt.Columns.Add("Id");
-            dt.Columns.Add("DisplayName");
-            DataRow dr = null;
-            foreach (Location loc in locations)
-            {
-                dr = dt.NewRow();
-                dr["Id"] = loc.LocationId;
-                string displayName = string.IsNullOrEmpty(loc.Name) ? string.Empty : " : " + loc.Name;
-                dr["DisplayName"] = string.Format("{0}{1}", loc.LocationId, displayName);
-                dt.Rows.Add(dr);
-            }
-
-            LocationsComboBox.ItemsSource = null;
-            LocationsComboBox.Items.Clear();
-            LocationsComboBox.ItemsSource = ((IListSource)dt).GetList();
-            LocationsComboBox.DisplayMemberPath = "DisplayName";
-            LocationsComboBox.SelectedValuePath = "Id";
-
-            if (locationToSelect.HasValue && locationToSelect.Value > 0)
-            {
-                LocationsComboBox.SelectedValue = locationToSelect.Value;
+                Locations.Add(new LocationViewModel(location));
             }
         }
 
@@ -363,33 +338,85 @@ namespace ConfigurationTool
         {
             if (locationId.HasValue)
             {
+                LocationsGroupBox.Visibility = Visibility.Visible;
                 LocationIdValueLabel.Content = locationId;
-                LevelUpData.Instance.LocationId = locationId;
+                LevelUpData.LocationId = locationId;
+            }
+            else
+            {
+                LocationsGroupBox.Visibility = Visibility.Collapsed;
+                LocationIdValueLabel.Content = string.Empty;
             }
 
             if (!string.IsNullOrEmpty(locationAddress))
             {
+                LocationAddressValueLabel.Visibility = Visibility.Visible;
+                LocationAddressLabel.Visibility = Visibility.Visible;
                 LocationAddressValueLabel.Content = locationAddress;
+            }
+            else
+            {
+                LocationAddressValueLabel.Visibility = Visibility.Collapsed;
+                LocationAddressLabel.Visibility = Visibility.Collapsed;
             }
 
             if (!string.IsNullOrEmpty(merchantName))
             {
+                MerchantGroupBox.Visibility = Visibility.Visible;
+                MerchantNameLabel.Visibility = Visibility.Visible;
+                MerchantNameValueLabel.Visibility = Visibility.Visible;
                 MerchantNameValueLabel.Content = merchantName;
-                LevelUpData.Instance.MerchantName = merchantName;
+                LevelUpData.MerchantName = merchantName;
+            }
+            else
+            {
+                MerchantNameValueLabel.Content = string.Empty;
+                MerchantNameLabel.Visibility = Visibility.Collapsed;
+                MerchantNameValueLabel.Visibility = Visibility.Collapsed;
             }
         }
 
         private void FillMerchantData(int? merchantId = null, string merchantName = "")
         {
-            MerchantIdValueLabel.Content = merchantId.HasValue ? merchantId.Value.ToString() : string.Empty;
-            MerchantNameValueLabel.Content = merchantName ?? string.Empty;
+            if (merchantId.HasValue)
+            {
+                MerchantGroupBox.Visibility = Visibility.Visible;
+                MerchantIdValueLabel.Content = merchantId.Value.ToString(CultureInfo.InvariantCulture);
+
+                if (!string.IsNullOrEmpty(merchantName))
+                {
+                    MerchantNameValueLabel.Content = merchantName;
+                }
+            }
+            else
+            {
+                MerchantGroupBox.Visibility = Visibility.Collapsed;
+                MerchantIdValueLabel.Content = string.Empty;
+                MerchantNameValueLabel.Content = string.Empty;
+            }
+        }
+
+        private void SetSaveButtonState(bool isEnabled)
+        {
+            if (null != ParentWindow)
+            {
+                ParentWindow.SaveButton.IsEnabled = isEnabled;
+            }
+        }
+
+        private void SetStatusLabelText(string text, Brush color)
+        {
+            if (null != ParentWindow)
+            {
+                ParentWindow.SetStatusLabelText(text, color);
+            }
         }
 
         private void ShowMessageBox(string message,
                                     MessageBoxButton buttons = MessageBoxButton.OK,
                                     MessageBoxImage icon = MessageBoxImage.Information)
         {
-            MessageBox.Show(_parentWin, message, ". : LevelUp Configuration Tool", buttons, icon);
+            Helpers.ShowMessageBox(ParentWindow, message, buttons, icon);
         }
 
         private void ShowMessageBoxOnMainUiThread(string message, MessageBoxButton button, MessageBoxImage image)
@@ -401,8 +428,7 @@ namespace ConfigurationTool
 
         private void UpdateFields(string levelUpAccessToken, int? merchantId, bool isMerchant)
         {
-            StatusLabel.Foreground = new SolidColorBrush(SUCCESS_COLOR);
-            StatusLabel.Content = "New Access Token Retrieved";
+            SetStatusLabelText("New Access Token Retrieved", MainWindow.SUCCESS_COLOR);
 
             if (!isMerchant)
             {
@@ -422,12 +448,12 @@ namespace ConfigurationTool
             FillMerchantData(merchantId);
 
             //Get locations async then fill the combo box on callback
-            GetLocationsAsyncDelgate getLocationsAsync = new GetLocationsAsyncDelgate(this.GetLocations);
+            GetLocationsAsyncDelegate getLocationsAsync = new GetLocationsAsyncDelegate(this.GetLocations);
 
-            IAsyncResult result = getLocationsAsync.BeginInvoke(levelUpAccessToken,
-                                                                   merchantId.GetValueOrDefault(0),
-                                                                   new AsyncCallback(FillLocationsComboBoxCallback),
-                                                                   getLocationsAsync);
+            getLocationsAsync.BeginInvoke(levelUpAccessToken,
+                                          merchantId.GetValueOrDefault(0),
+                                          FillLocationsComboBoxCallback,
+                                          getLocationsAsync);
         }
 
         #endregion Helpers
@@ -436,31 +462,32 @@ namespace ConfigurationTool
 
         private void FillLocationsComboBoxCallback(IAsyncResult asyncResult)
         {
-            GetLocationsAsyncDelgate caller = (GetLocationsAsyncDelgate)asyncResult.AsyncState;
+            GetLocationsAsyncDelegate caller = (GetLocationsAsyncDelegate) asyncResult.AsyncState;
 
-            IList<Location> locations = caller.EndInvoke(asyncResult);
-
-            this.Dispatcher.Invoke(DispatcherPriority.Normal,
-                                   new FillLocationsComboBoxDelegate(FillLocationsComboBox),
-                                   locations);
+            Dispatcher.Invoke(DispatcherPriority.Normal,
+                              new UpdateLocationsPropertyDelegate(UpdateLocationsProperty),
+                              caller.EndInvoke(asyncResult));
         }
 
         private void UpdateFieldsCallback(IAsyncResult asyncResult)
         {
-            AuthenticateAsyncDelegate caller = (AuthenticateAsyncDelegate)asyncResult.AsyncState;
+            AuthenticateAsyncDelegate caller = (AuthenticateAsyncDelegate) asyncResult.AsyncState;
 
             AccessToken levelUpToken = caller.EndInvoke(asyncResult);
 
             if (levelUpToken != null)
             {
-                LevelUpData.Instance.AccessToken = levelUpToken.Token;
-                LevelUpData.Instance.MerchantId = levelUpToken.MerchantId;
+                // always set to false, just before we do save we will check to see whether
+                // we should encrypt it
+                LevelUpData.SetAccessToken(levelUpToken.Token, false);
 
-                this.Dispatcher.Invoke(DispatcherPriority.Normal,
-                                       new UpdateFieldsDelegate(UpdateFields),
-                                       levelUpToken.Token,
-                                       levelUpToken.MerchantId,
-                                       levelUpToken.IsMerchant);
+                LevelUpData.MerchantId = levelUpToken.MerchantId;
+
+                Dispatcher.Invoke(DispatcherPriority.Normal,
+                                  new UpdateFieldsDelegate(UpdateFields),
+                                  levelUpToken.Token,
+                                  levelUpToken.MerchantId,
+                                  levelUpToken.IsMerchant);
             }
         }
 
