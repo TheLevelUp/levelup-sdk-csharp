@@ -1,6 +1,6 @@
-ï»¿//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // <copyright file="Item.cs" company="SCVNGR, Inc. d/b/a LevelUp">
-//   Copyright(c) 2014 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
+//   Copyright(c) 2015 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
 //   Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
@@ -41,9 +41,9 @@ namespace LevelUp.Api.Client.Models.Requests
         /// <param name="upc">Universal product code of the item</param>
         /// <param name="category">Item category</param>
         /// <param name="chargedPriceCents">Amount charged for the ordered item in cents. e.g. 1 order of shrimp may
-        /// have 10 shrimp each with a unit price of 100Â¢ ($1) each making the charged price for this item 1000Â¢ ($10)</param>
+        /// have 10 shrimp each with a unit price of 100¢ ($1) each making the charged price for this item 1000¢ ($10)</param>
         /// <param name="standardPriceCents">Price of individiual units within the item in cents. e.g. 1 order of shrimp
-        /// may have 10 shrimp each with a unit price of 100Â¢ ($1) each making the charged price 1000Â¢ ($10). 
+        /// may have 10 shrimp each with a unit price of 100¢ ($1) each making the charged price 1000¢ ($10). 
         /// This differs from charged price in that charged price should include any discounts or additions</param>
         /// <param name="quantity">Number of identical items represented by this object. Default is 1. 
         /// e.g. If 7 people order a hamburger each with each order being identical, this could be represented as 7 
@@ -99,17 +99,17 @@ namespace LevelUp.Api.Client.Models.Requests
         public string Category { get { return ItemContainer.Category; } }
 
         /// <summary>
-        /// Price in cents (Â¢) charged for the item
-        /// e.g. 1 order of shrimp may  have 10 shrimp each with a unit price of 100Â¢ ($1) each 
-        /// making the charged price for this item 1000Â¢ ($10)
+        /// Price in cents (¢) charged for the item
+        /// e.g. 1 order of shrimp may  have 10 shrimp each with a unit price of 100¢ ($1) each 
+        /// making the charged price for this item 1000¢ ($10)
         /// </summary>
         public int ChargedPrice { get { return ItemContainer.ChargedPriceInCents; } }
 
         /// <summary>
-        /// Price in cents (Â¢) charged for each unit that comprises the item. 
+        /// Price in cents (¢) charged for each unit that comprises the item. 
         /// This should usually be the same as ChargedPrice
-        /// e.g. 1 order of shrimp may have 10 shrimp each with a unit price of 100Â¢ ($1) each
-        /// making the charged price 1000Â¢ ($10)
+        /// e.g. 1 order of shrimp may have 10 shrimp each with a unit price of 100¢ ($1) each
+        /// making the charged price 1000¢ ($10)
         /// </summary>
         public int? StandardPrice { get { return ItemContainer.StandardPriceInCents; } }
 
@@ -124,10 +124,10 @@ namespace LevelUp.Api.Client.Models.Requests
         #region Obsolete Properties
 
         /// <summary>
-        /// Price in cents (Â¢) charged for each unit that comprises the item. 
+        /// Price in cents (¢) charged for each unit that comprises the item. 
         /// This should usually be the same as ChargedPrice
-        /// e.g. 1 order of shrimp may have 10 shrimp each with a unit price of 100Â¢ ($1) each
-        /// making the charged price 1000Â¢ ($10)
+        /// e.g. 1 order of shrimp may have 10 shrimp each with a unit price of 100¢ ($1) each
+        /// making the charged price 1000¢ ($10)
         /// </summary>
         [Obsolete("Use StandardPrice property instead of UnitPrice")]
         public int? UnitPrice { get { return ItemContainer.StandardPriceInCents; } }

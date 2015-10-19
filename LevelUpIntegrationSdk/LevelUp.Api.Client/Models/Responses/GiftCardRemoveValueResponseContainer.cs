@@ -1,6 +1,6 @@
-﻿//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // <copyright file="GiftCardRemoveValueResponseContainer.cs" company="SCVNGR, Inc. d/b/a LevelUp">
-//   Copyright(c) 2014 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
+//   Copyright(c) 2015 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
 //   Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,7 @@ namespace LevelUp.Api.Client.Models.Responses
 
         public override string ToString()
         {
-            return string.Format("{0} Value removed: {1}¢.", base.ToString(), ValueRemoved);
+            return string.Format("{0} Value removed: {1}�.", base.ToString(), ValueRemoved);
         }
     }
 }
