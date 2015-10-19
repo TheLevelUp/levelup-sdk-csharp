@@ -1,5 +1,4 @@
-﻿using LevelUpApi;
-using LevelUpApi.Models.Responses;
+﻿using LevelUp.Api.Client;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +8,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using LevelUp.Api.Client.Models.Responses;
+using LevelUp.Api.Http;
 
 namespace ConfigurationTool
 {

@@ -1,6 +1,6 @@
-﻿using LevelUpApi;
-using LevelUpApi.Models.Requests;
-using LevelUpApi.Models.Responses;
+﻿using LevelUp.Api.Client;
+using LevelUp.Api.Client.Models.Requests;
+using LevelUp.Api.Client.Models.Responses;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
