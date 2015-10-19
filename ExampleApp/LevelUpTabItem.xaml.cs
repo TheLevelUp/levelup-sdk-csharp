@@ -27,7 +27,7 @@ namespace ConfigurationTool
 
         private ILevelUpClient Api
         {
-            get { return _api ?? LevelUpClientFactory.Create("LevelUp", "ConfigurationApp", "0.1.0.0", ".NET 3.0"); }
+            get { return _api ?? LevelUpClientFactory.Create("LevelUp", "ConfigurationApp", "1.0.0.0", ".NET 3.0"); }
         }
 
         #region Delegates
@@ -389,7 +389,7 @@ namespace ConfigurationTool
                                     MessageBoxButton buttons = MessageBoxButton.OK,
                                     MessageBoxImage icon = MessageBoxImage.Information)
         {
-            MessageBox.Show(_parentWin, message, ".: LevelUp Configuration Tool", buttons, icon);
+            MessageBox.Show(_parentWin, message, ". : LevelUp Configuration Tool", buttons, icon);
         }
 
         private void ShowMessageBoxOnMainUiThread(string message, MessageBoxButton button, MessageBoxImage image)

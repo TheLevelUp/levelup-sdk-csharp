@@ -27,7 +27,7 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Label x:Name="UserNameLabel" Content="User name:" Grid.Row="0" Grid.Column="0" />
+                <Label x:Name="UserNameLabel" Content="Username:" Grid.Row="0" Grid.Column="0" />
                 <TextBox x:Name="UserNameTextBox" Text="" Grid.Row="0" Grid.Column="1" Margin="0,1,2,1" KeyDown="UserNameTextBoxKeyDown"/>
                 <Label x:Name="PasswordLabel" Content="Password:" Grid.Row="1" Grid.Column="0" />
                 <PasswordBox x:Name="PasswordTextBox" Grid.Row="1" Grid.Column="1" Margin="0,1,2,1" GotFocus="PasswordBoxGotFocus" KeyDown="PasswordBoxKeyDown" />
