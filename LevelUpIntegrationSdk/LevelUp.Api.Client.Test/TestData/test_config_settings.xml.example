@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LevelUpTestConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ClientId>sample id</ClientId>
+  <Username>youremail@yourdomain.com</Username>
+  <Password>password</Password>
+  <EmailAddress>youremail@yourdomain.com</EmailAddress>
+  <QrData>qrdata</QrData>
+  <QrDataWith10PercentTip>qrdata</QrDataWith10PercentTip>
+  <GiftCardData>qrdata</GiftCardData>
+  <InvalidQrData>qrdata</InvalidQrData>
+</LevelUpTestConfiguration>
