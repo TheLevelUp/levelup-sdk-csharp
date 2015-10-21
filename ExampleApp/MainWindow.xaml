@@ -1,8 +1,9 @@
-<Window x:Class="LevelUpConfigTool.MainWindow"
+<Window x:Class="LevelUpExampleApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:tabData="clr-namespace:LevelUpConfigTool"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:levelUpExampleApp="clr-namespace:LevelUpExampleApp"
         Icon="Images\levelup-logo.ico"
-        Title="LevelUp Configuration Tool" 
+        Title="LevelUp Example App" 
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize"
         SizeToContent="Height"
@@ -23,8 +24,8 @@
             <Button Grid.Column="1" x:Name="AboutButton" Margin="2" Height="18" Width="18" Content="?" FontSize="9" FontWeight="Bold" Click="AboutButton_Click" />
         </Grid>
         <TabControl x:Name="ConfigTabControl" Margin="0,0,0,0" Grid.Row="1" Loaded="ConfigTabControl_Loaded">
-            <tabData:LevelUpTabItem TabIndex="0" />
-            <tabData:PosTabItem TabIndex="1" />
+            <levelUpExampleApp:LevelUpTabItem TabIndex="0" />
+            <levelUpExampleApp:TestTabItem TabIndex="1" />
         </TabControl>
         <Grid Grid.Row="2" Background="LightGray">
             <Grid.RowDefinitions>
@@ -53,7 +54,6 @@
                 <Label Grid.Column="0" x:Name="SaveFormatLabel" Content="Save as:" VerticalAlignment="Center" />
                 <RadioButton Grid.Column="1" x:Name="JsonFormatRadioButton" GroupName="SaveFormatGroup" Content="JSON" IsChecked="True" VerticalAlignment="Center" Margin="2,0" />
                 <RadioButton Grid.Column="2" x:Name="XmlFormatRadioButton" GroupName="SaveFormatGroup" Content="XML" VerticalAlignment="Center" Margin="2,0"/>
-                <CheckBox Grid.Column="3" x:Name="EncryptSensitiveDataCheckbox" Content="Encrypt Sensitive Data" IsChecked="True" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2,0" />
             </Grid>
             <Button Grid.Row="0" Grid.Column="1" x:Name="LoadButton" Content="Load" IsEnabled="False" MinWidth="80" Margin="2" Click="LoadButton_Click" />
             <Button Grid.Row="1" Grid.Column="1" x:Name="SaveButton" Content="Save" IsEnabled="False" MinWidth="80" Margin="2" Click="SaveButton_Click" />

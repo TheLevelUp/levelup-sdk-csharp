@@ -1,4 +1,4 @@
-﻿namespace LevelUpConfigTool.MVVM
+﻿namespace LevelUpExampleApp
 {
     public class LocationViewModel
     {

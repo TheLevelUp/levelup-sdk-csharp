@@ -1,7 +1,8 @@
-<TabItem x:Class="LevelUpConfigTool.LevelUpTabItem"
+﻿<TabItem x:Class="LevelUpExampleApp.LevelUpTabItem"
          Header="LevelUp"
          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         Loaded="LevelUpTabItem_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -76,16 +77,5 @@
                 <Label Grid.Row="1" Grid.Column="1" x:Name="LocationAddressValueLabel" MinHeight="80" />                
             </Grid>
         </GroupBox>
-        <Expander Grid.Row="4" Header="Advanced Settings" IsExpanded="False">
-            <Grid Margin="5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <CheckBox Grid.Row="0" Grid.Column="0" x:Name="PartialAuthAllowedCheckBox" Content="Partial Authorization Enabled" IsChecked="True" HorizontalAlignment="Left" HorizontalContentAlignment="Left" />
-            </Grid>
-        </Expander>
     </Grid>
 </TabItem>

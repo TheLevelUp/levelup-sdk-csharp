@@ -1,14 +1,9 @@
-﻿using System.Globalization;
-using ConfigurationTool;
+﻿using LevelUp.Api.Client.Models.Responses;
 using LevelUp.Api.Http;
-using LevelUp.Integrations.Configuration;
-using LevelUp.Integrations.ConfigurationTool;
-using LevelUp.Api.Client;
-using LevelUp.Api.Client.Models.Responses;
-using LevelUpConfigTool.MVVM;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-namespace LevelUpConfigTool
+namespace LevelUpExampleApp
 {
     public partial class LevelUpTabItem : TabItem
     {
@@ -35,74 +30,49 @@ namespace LevelUpConfigTool
             this.DataContext = this;
             this.Locations = new ObservableCollection<LocationViewModel>();
 
-            LevelUpConfigGlobals.ConfigLoaded += LevelUpConfigGlobals_ConfigLoaded;
-        }
-
-        private LevelUpData LevelUpData
-        {
-            get { return LevelUpConfigGlobals.LevelUpData; }
+            LevelUpExampleAppGlobals.ConfigLoaded += LevelUpConfigGlobals_ConfigLoaded;
         }
 
         public ObservableCollection<LocationViewModel> Locations { get; private set; }
 
-        public IConfigSection GetData()
-        {
-            // because the person may have checked/unchecked the Encrypt Access Token button
-            // we need to reset the access token
-            LevelUpData.SetAccessToken(LevelUpData.AccessToken, 
-                                       ParentWindow.EncryptSensitiveDataCheckbox.IsChecked.GetValueOrDefault(false));
-
-            LevelUpData.PartialAuthEnabled = PartialAuthAllowedCheckBox.IsChecked.GetValueOrDefault(true);
-
-            return LevelUpData;
-        }
-
         #region Delegates
 
         private delegate AccessToken AuthenticateAsyncDelegate(string username, string password);
-
         private delegate void UpdateLocationsPropertyDelegate(IList<Location> locations);
-
         private delegate IList<Location> GetLocationsAsyncDelegate(string levelUpAccessToken, int merchantId);
-
         private delegate void ShowMessageBoxDelegate(string message, MessageBoxButton button, MessageBoxImage image);
-
         private delegate void UpdateFieldsDelegate(string levelUpAccessToken, int? merchantId, bool isMerchant);
 
         #endregion Delegates
 
         private void LevelUpConfigGlobals_ConfigLoaded(object sender, EventArgs e)
         {
-            string[] errorMessages;
+            string errorMessages;
 
-            // always default to having the access token checkbox checked
-            ParentWindow.EncryptSensitiveDataCheckbox.IsChecked
-                = LevelUpData.AccessTokenEncrypted.GetValueOrDefault(true);
-
-            if (!LevelUpData.IsValid(out errorMessages))
+            if (!LevelUpData.Instance.IsValid(out errorMessages))
             {
-                SetStatusLabelText(PLEASE_AUTHENTICATE, MainWindow.ERROR_COLOR);
+                SetStatusLabelText(PLEASE_AUTHENTICATE, LevelUpExampleAppGlobals.ERROR_COLOR);
                 return;
             }
 
-            if (!string.IsNullOrEmpty(LevelUpData.AccessToken))
+            if (!string.IsNullOrEmpty(LevelUpData.Instance.AccessToken))
             {
-                SetStatusLabelText("Access Token Loaded", MainWindow.SUCCESS_COLOR);
+                SetStatusLabelText("Access Token Loaded", LevelUpExampleAppGlobals.SUCCESS_COLOR);
             }
 
-            FillMerchantData(LevelUpData.MerchantId);
+            FillMerchantData(LevelUpData.Instance.MerchantId);
 
-            IList<Location> locations = GetLocations(LevelUpData.AccessToken,
-                                                     LevelUpData.MerchantId.GetValueOrDefault(0));
+            IList<Location> locations = GetLocations(LevelUpData.Instance.AccessToken,
+                                                     LevelUpData.Instance.MerchantId.GetValueOrDefault(0));
 
             UpdateLocationsProperty(locations);
 
-            LocationDetails details = GetLocationDetails(LevelUpData.AccessToken,
-                                                         LevelUpData.LocationId.GetValueOrDefault(0));
+            LocationDetails details = GetLocationDetails(LevelUpData.Instance.AccessToken,
+                                                         LevelUpData.Instance.LocationId.GetValueOrDefault(0));
 
             if (null == details)
             {
-                FillLocationData(LevelUpData.LocationId);
+                FillLocationData(LevelUpData.Instance.LocationId);
             }
             else
             {
@@ -111,19 +81,25 @@ namespace LevelUpConfigTool
                                  merchantName: details.MerchantName);
             }
 
-            PartialAuthAllowedCheckBox.IsChecked = LevelUpData.PartialAuthEnabled;
-
             //Enable controls
             LocationsComboBox.IsEnabled = true;
             ReloadLocationDataButton.IsEnabled = true;
             SetSaveButtonState(true);
         }
 
+        private void LevelUpTabItem_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(LevelUpExampleAppGlobals.ApiKey))
+            {
+                SetStatusLabelText("Please set LevelUp API Key", LevelUpExampleAppGlobals.ERROR_COLOR);
+            }
+        }
+
         public bool IsValid(out string[] errorMessages)
         {
             StringBuilder messages = new StringBuilder();
 
-            if (string.IsNullOrEmpty(LevelUpData.AccessToken))
+            if (string.IsNullOrEmpty(LevelUpData.Instance.AccessToken))
             {
                 messages.AppendLine("LevelUp Access Token Needed! Please Authenticate.");
             }
@@ -131,13 +107,13 @@ namespace LevelUpConfigTool
             string merchantIdText = MerchantIdValueLabel.Content.ToString().Trim();
             if (Helpers.VerifyIsInt(ref messages, merchantIdText, "LevelUp Merchant ID"))
             {
-                LevelUpData.MerchantId = int.Parse(merchantIdText);
+                LevelUpData.Instance.MerchantId = int.Parse(merchantIdText);
             }
 
             string locationIdText = LocationIdValueLabel.Content.ToString().Trim();
             if (Helpers.VerifyIsInt(ref messages, locationIdText, "LevelUp Location ID"))
             {
-                LevelUpData.LocationId = int.Parse(locationIdText);
+                LevelUpData.Instance.LocationId = int.Parse(locationIdText);
             }
 
             errorMessages = messages.Length > 0 ? new[] {messages.ToString()} : new string[0];
@@ -161,19 +137,19 @@ namespace LevelUpConfigTool
 
             int locationId = (LocationsComboBox.SelectedItem as LocationViewModel).LocationId;
 
-            LocationDetails details = GetLocationDetails(LevelUpData.AccessToken, locationId);
+            LocationDetails details = GetLocationDetails(LevelUpData.Instance.AccessToken, locationId);
 
             //Fill merchant name label & location info
             if (null != details)
             {
                 FillLocationData(details.LocationId, details.Address.ToString(), details.MerchantName);
-                LevelUpData.LocationId = details.LocationId;
-                LevelUpData.MerchantName = details.MerchantName;
+                LevelUpData.Instance.LocationId = details.LocationId;
+                LevelUpData.Instance.MerchantName = details.MerchantName;
             }
             else
             {
                 FillLocationData(locationId);
-                LevelUpData.LocationId = locationId;
+                LevelUpData.Instance.LocationId = locationId;
             }
 
             SetSaveButtonState(true);
@@ -194,7 +170,7 @@ namespace LevelUpConfigTool
 
         private void ReloadLocationDataButton_Click(object sender, RoutedEventArgs e)
         {
-            if (null == LevelUpData || string.IsNullOrEmpty(LevelUpData.AccessToken))
+            if (null == LevelUpData.Instance || string.IsNullOrEmpty(LevelUpData.Instance.AccessToken))
             {
                 ShowMessageBox("Please authenticate!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
@@ -211,8 +187,8 @@ namespace LevelUpConfigTool
             //Get locations async then fill the combo box on callback
             GetLocationsAsyncDelegate getLocationsAsync = new GetLocationsAsyncDelegate(this.GetLocations);
 
-            IAsyncResult result = getLocationsAsync.BeginInvoke(LevelUpData.AccessToken,
-                                                                LevelUpData.MerchantId.GetValueOrDefault(0),
+            IAsyncResult result = getLocationsAsync.BeginInvoke(LevelUpData.Instance.AccessToken,
+                                                                LevelUpData.Instance.MerchantId.GetValueOrDefault(0),
                                                                 new AsyncCallback(FillLocationsComboBoxCallback),
                                                                 getLocationsAsync);
         }
@@ -235,7 +211,7 @@ namespace LevelUpConfigTool
 
             try
             {
-                token = LevelUpConfigGlobals.Api.Authenticate(Helpers.GetApiKey(), username, password);
+                token = LevelUpExampleAppGlobals.Api.Authenticate(LevelUpExampleAppGlobals.ApiKey, username, password);
             }
             catch (LevelUpApiException luEx)
             {
@@ -255,7 +231,7 @@ namespace LevelUpConfigTool
 
             try
             {
-                details = LevelUpConfigGlobals.Api.GetLocationDetails(levelUpAccessToken, locationId);
+                details = LevelUpExampleAppGlobals.Api.GetLocationDetails(levelUpAccessToken, locationId);
             }
             catch (LevelUpApiException)
             {
@@ -271,7 +247,7 @@ namespace LevelUpConfigTool
 
             try
             {
-                locations = LevelUpConfigGlobals.Api.ListLocations(levelUpAccessToken, merchantId);
+                locations = LevelUpExampleAppGlobals.Api.ListLocations(levelUpAccessToken, merchantId);
             }
             catch (LevelUpApiException luEx)
             {
@@ -294,7 +270,7 @@ namespace LevelUpConfigTool
         {
             if (string.IsNullOrEmpty(UserNameTextBox.Text) || string.IsNullOrEmpty(PasswordTextBox.Password))
             {
-                ShowMessageBox("User name and password are required!");
+                SetStatusLabelText("User name and password are required!", LevelUpExampleAppGlobals.ERROR_COLOR);
                 return;
             }
 
@@ -340,7 +316,7 @@ namespace LevelUpConfigTool
             {
                 LocationsGroupBox.Visibility = Visibility.Visible;
                 LocationIdValueLabel.Content = locationId;
-                LevelUpData.LocationId = locationId;
+                LevelUpData.Instance.LocationId = locationId;
             }
             else
             {
@@ -366,7 +342,7 @@ namespace LevelUpConfigTool
                 MerchantNameLabel.Visibility = Visibility.Visible;
                 MerchantNameValueLabel.Visibility = Visibility.Visible;
                 MerchantNameValueLabel.Content = merchantName;
-                LevelUpData.MerchantName = merchantName;
+                LevelUpData.Instance.MerchantName = merchantName;
             }
             else
             {
@@ -428,7 +404,7 @@ namespace LevelUpConfigTool
 
         private void UpdateFields(string levelUpAccessToken, int? merchantId, bool isMerchant)
         {
-            SetStatusLabelText("New Access Token Retrieved", MainWindow.SUCCESS_COLOR);
+            SetStatusLabelText("New Access Token Retrieved", LevelUpExampleAppGlobals.SUCCESS_COLOR);
 
             if (!isMerchant)
             {
@@ -479,9 +455,9 @@ namespace LevelUpConfigTool
             {
                 // always set to false, just before we do save we will check to see whether
                 // we should encrypt it
-                LevelUpData.SetAccessToken(levelUpToken.Token, false);
+                LevelUpData.Instance.AccessToken = levelUpToken.Token;
 
-                LevelUpData.MerchantId = levelUpToken.MerchantId;
+                LevelUpData.Instance.MerchantId = levelUpToken.MerchantId;
 
                 Dispatcher.Invoke(DispatcherPriority.Normal,
                                   new UpdateFieldsDelegate(UpdateFields),

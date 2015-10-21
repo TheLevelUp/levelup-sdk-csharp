@@ -1,6 +1,5 @@
-﻿using ConfigurationTool;
-using LevelUp.Integrations;
-using LevelUp.Integrations.Configuration;
+﻿using System.Reflection;
+using LevelUpExampleApp;
 using LevelUp.Api.Client.Models.Responses;
 using System;
 using System.Collections.Generic;
@@ -13,24 +12,13 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace LevelUpConfigTool
+namespace LevelUpExampleApp
 {
     public partial class MainWindow : Window
     {
-        public const string DEFAULT_CONFIG_FILE_NAME = "LevelUp.Config";
-        internal static readonly Version CONFIG_TOOL_VERSION = new Version(1, 0, 0, 0);
-        private string _pathToConfigFile = Path.Combine(Environment.CurrentDirectory, DEFAULT_CONFIG_FILE_NAME);
-        public static readonly Brush SUCCESS_COLOR = new SolidColorBrush(Colors.LimeGreen);
-        public static readonly Brush ERROR_COLOR = new SolidColorBrush(Colors.IndianRed);
-
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private LevelUpData LevelUpData
-        {
-            get { return LevelUpConfigGlobals.LevelUpData; }
         }
 
         #region UI Event Handlers
@@ -41,8 +29,8 @@ namespace LevelUpConfigTool
             const string supportWebSite = "http://support.thelevelup.com";
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(". : LevelUp Configuration Tool");
-            sb.AppendLine(string.Format("Version {0}", CONFIG_TOOL_VERSION));
+            sb.AppendLine(". : LevelUp Example App");
+            sb.AppendLine(string.Format("Version {0}", LevelUpExampleAppGlobals.AppVersion));
             sb.AppendLine(string.Format("{0}{0}For assistance please call us at {1}",
                                         Environment.NewLine,
                                         supportPhoneNumber));
@@ -55,24 +43,21 @@ namespace LevelUpConfigTool
 
         private void ConfigTabControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (File.Exists(_pathToConfigFile))
+            try
             {
-                try
-                {
-                    LevelUpConfigGlobals.LoadConfigFile(_pathToConfigFile);
-                }
-                catch (Exception ex)
-                {
-                    Helpers.ShowMessageBox(this,
-                                           "Config File Load error: " + ex.Message,
-                                           MessageBoxButton.OK,
-                                           MessageBoxImage.Error);
+                LevelUpExampleAppGlobals.LoadConfigFile();
+            }
+            catch (Exception ex)
+            {
+                Helpers.ShowMessageBox(this,
+                                       "Config File Load error: " + ex.Message,
+                                       MessageBoxButton.OK,
+                                       MessageBoxImage.Error);
 
-                    SetStatusLabelText("Error on File Load", ERROR_COLOR);
-                }
+                SetStatusLabelText("Error on File Load", LevelUpExampleAppGlobals.ERROR_COLOR);
             }
 
-            FileLocationTextBox.Text = _pathToConfigFile;
+            FileLocationTextBox.Text = LevelUpExampleAppGlobals.LevelUpConfigFilePath;
         }
 
         private void FileLocationTextBox_KeyDown(object sender, KeyEventArgs e)
@@ -89,7 +74,8 @@ namespace LevelUpConfigTool
             {
                 LoadButton.IsEnabled = true;
             }
-            _pathToConfigFile = FileLocationTextBox.Text;
+
+            LevelUpExampleAppGlobals.LevelUpConfigFilePath = FileLocationTextBox.Text;
         }
 
         private void LoadButton_Click(object sender, RoutedEventArgs e)
@@ -99,9 +85,9 @@ namespace LevelUpConfigTool
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(_pathToConfigFile))
+            if (string.IsNullOrEmpty(LevelUpExampleAppGlobals.LevelUpConfigFilePath))
             {
-                SetStatusLabelText("Specify save location", ERROR_COLOR);
+                SetStatusLabelText("Specify save location", LevelUpExampleAppGlobals.ERROR_COLOR);
                 Helpers.ShowMessageBox(this,
                                        "Please specify a save location",
                                        MessageBoxButton.OK,
@@ -111,60 +97,29 @@ namespace LevelUpConfigTool
 
             try
             {
-                _pathToConfigFile = Path.GetFullPath(_pathToConfigFile);
+                LevelUpExampleAppGlobals.LevelUpConfigFilePath = Path.GetFullPath(LevelUpExampleAppGlobals.LevelUpConfigFilePath);
             }
             catch (Exception)
             {
-                SetStatusLabelText("Invalid save location", ERROR_COLOR);
+                SetStatusLabelText("Invalid save location", LevelUpExampleAppGlobals.ERROR_COLOR);
                 return;
             }
 
-            List<string> errorMessages = new List<string>();
-            List<IConfigSection> configurationsToSave = new List<IConfigSection>();
-
-            foreach (TabItem tab in ConfigTabControl.Items)
+            string errorMessages;
+            if (LevelUpData.Instance.IsValid(out errorMessages))
             {
-                ISavable savable = tab as ISavable;
-
-                if (null == savable)
-                {
-                    continue;
-                }
-
-                string[] errors;
-
-                if (savable.IsValid(out errors))
-                {
-                    configurationsToSave.Add(savable.GetData());
-                }
-                else
-                {
-                    errorMessages.AddRange(errors);
-                }
-            }
-
-            string tippingErrorMessage;
-
-            if (!TipsConfiguredCorrectly(configurationsToSave, out tippingErrorMessage))
-            {
-                errorMessages.Add(tippingErrorMessage);
-            }
-
-            if (errorMessages.Count > 0)
-            {
-                SetStatusLabelText("Validation Failed", ERROR_COLOR);
-                string msg = String.Join(Environment.NewLine, errorMessages.ToArray());
-                Helpers.ShowMessageBox(this, msg, MessageBoxButton.OK, MessageBoxImage.Error);
+                SetStatusLabelText("Validation Failed", LevelUpExampleAppGlobals.ERROR_COLOR);
+                Helpers.ShowMessageBox(this, errorMessages, MessageBoxButton.OK, MessageBoxImage.Error);
 
                 return;
             }
 
-            if (!UserHasPermissionToSaveFile(_pathToConfigFile))
+            if (!UserHasPermissionToSaveFile(LevelUpExampleAppGlobals.LevelUpConfigFilePath))
             {
                 string msg = String.Format("Current user does not have permissions to save configuration to " +
                                            "{0}.{1}{1}Please restart the application and " +
                                            "run it as an administrator.",
-                                           _pathToConfigFile,
+                                           LevelUpExampleAppGlobals.LevelUpConfigFilePath,
                                            Environment.NewLine);
 
                 Helpers.ShowMessageBox(this, msg, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -172,36 +127,36 @@ namespace LevelUpConfigTool
                 return;
             }
 
-            Serializer.SerializationFormat format =
-                XmlFormatRadioButton.IsChecked.HasValue && XmlFormatRadioButton.IsChecked.Value
-                    ? Serializer.SerializationFormat.Xml
-                    : Serializer.SerializationFormat.Json;
-
             try
             {
-                LevelUpConfigManager.Save(configurationsToSave,
-                                          _pathToConfigFile,
-                                          format);
+                if (XmlFormatRadioButton.IsChecked.HasValue && XmlFormatRadioButton.IsChecked.Value)
+                {
+                    LevelUpData.Instance.SerializeToXml(LevelUpExampleAppGlobals.LevelUpConfigFilePath);
+                }
+                else
+                {
+                    LevelUpData.Instance.SerializeToJson(LevelUpExampleAppGlobals.LevelUpConfigFilePath);
+                }
 
-                SetStatusLabelText("Config Data Saved Successfully!", SUCCESS_COLOR);
+                SetStatusLabelText("Config Data Saved Successfully!", LevelUpExampleAppGlobals.SUCCESS_COLOR);
             }
             catch (UnauthorizedAccessException)
             {
                 // just in case the permissions changed between the time we did the check and
                 // the time the save occurred (highly unlikely)
                 const string msg = "Insufficient Permissions";
-                SetStatusLabelText(msg, ERROR_COLOR);
+                SetStatusLabelText(msg, LevelUpExampleAppGlobals.ERROR_COLOR);
                 Helpers.ShowMessageBox(this,
                                        string.Format("{0}: User does not have permission to save to {1}",
                                                      msg,
-                                                     _pathToConfigFile),
+                                                     LevelUpExampleAppGlobals.LevelUpConfigFilePath),
                                        MessageBoxButton.OK,
                                        MessageBoxImage.Error);
             }
             catch (Exception ex)
             {
                 const string msg = "Error on Save";
-                SetStatusLabelText(msg, ERROR_COLOR);
+                SetStatusLabelText(msg, LevelUpExampleAppGlobals.ERROR_COLOR);
                 Helpers.ShowMessageBox(this,
                                        string.Format("{0}: {1}", msg, ex.Message),
                                        MessageBoxButton.OK,
@@ -215,29 +170,30 @@ namespace LevelUpConfigTool
 
         private void DoLoad()
         {
-            _pathToConfigFile = FileLocationTextBox.Text.Trim('"', ' ');
-            FileLocationTextBox.Text = _pathToConfigFile;
+            LevelUpExampleAppGlobals.LevelUpConfigFilePath = FileLocationTextBox.Text.Trim('"', ' ');
+            FileLocationTextBox.Text = LevelUpExampleAppGlobals.LevelUpConfigFilePath;
 
-            if (!File.Exists(_pathToConfigFile))
+            if (!File.Exists(LevelUpExampleAppGlobals.LevelUpConfigFilePath))
             {
-                SetStatusLabelText("Config file not found", ERROR_COLOR);
+                SetStatusLabelText("Config file not found", LevelUpExampleAppGlobals.ERROR_COLOR);
                 return;
             }
 
             try
             {
-                LevelUpConfigGlobals.LoadConfigFile(_pathToConfigFile);
+                LevelUpExampleAppGlobals.LoadConfigFile();
             }
             catch (Exception ex)
             {
                 Helpers.ShowMessageBox(this,
                                        string.Format("Error loading config file: {0}{1}{2}",
-                                                     _pathToConfigFile,
+                                                     LevelUpExampleAppGlobals.LevelUpConfigFilePath,
                                                      Environment.NewLine,
                                                      ex.Message),
                                        MessageBoxButton.OK,
                                        MessageBoxImage.Error);
-                SetStatusLabelText("Error loading config file", ERROR_COLOR);
+
+                SetStatusLabelText("Error loading config file", LevelUpExampleAppGlobals.ERROR_COLOR);
             }
         }
 
@@ -250,7 +206,7 @@ namespace LevelUpConfigTool
         {
             if(!string.IsNullOrEmpty(text))
             {
-                StatusLabel.Foreground = color ?? ERROR_COLOR;
+                StatusLabel.Foreground = color ?? LevelUpExampleAppGlobals.ERROR_COLOR;
                 StatusLabel.Content = text;
             }
         }

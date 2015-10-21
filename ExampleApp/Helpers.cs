@@ -4,35 +4,16 @@ using System.Reflection;
 using System.Text;
 using System.Windows;
 
-namespace LevelUpConfigTool
+namespace LevelUpExampleApp
 {
     internal static class Helpers
     {
-        private const string API_KEY = "Your LevelUp API Key goes here."; //TODO: Set your API key here or save it in a text file named api_key.txt in the application folder
-
-        internal static string GetApiKey()
-        {
-            string currentDirectoryName = 
-                Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
-
-            string apiKeyFilePath = Path.Combine(currentDirectoryName, "api_key.txt");
-
-            string apiKey = null;
-
-            if (File.Exists(apiKeyFilePath))
-            {
-                apiKey = File.ReadAllText(apiKeyFilePath).Trim();
-            }
-
-            return apiKey;
-        }
-
         internal static void ShowMessageBox(Window window,
                                             string message,
                                             MessageBoxButton buttons = MessageBoxButton.OK,
                                             MessageBoxImage icon = MessageBoxImage.Information)
         {
-            MessageBox.Show(window, message, "LevelUp Configuration Tool", buttons, icon);
+            MessageBox.Show(window, message, "LevelUp Example App", buttons, icon);
         }
 
         internal static bool VerifyIsInt(ref StringBuilder sb, string valueToVerify, string name)
