@@ -13,11 +13,13 @@ namespace LevelUpExampleApp
     public static class LevelUpExampleAppGlobals
     {
         //TODO: Set your API key here or save it in a text file named api_key.txt in the application folder
-        private const string API_KEY = null;
+        private const string API_KEY = "fe087350104c4eb397374fa227730f20a0698c90f3073b709a02360b78de1e8b";
 
+        public const string PLEASE_AUTHENTICATE = "Please Authenticate";
         public const string DEFAULT_CONFIG_FILE_NAME = "LevelUp.Config";
 
         private static ILevelUpClient _api;
+        private static string _apiKey;
         private static string _levelUpConfigFilePath;
         private static readonly string _currentDirectoryName =
             Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
@@ -41,7 +43,9 @@ namespace LevelUpExampleApp
                 return _api ?? (_api = LevelUpClientFactory.Create("LevelUp",
                                                                    "ExampleApp",
                                                                    AppVersion.ToString(),
-                                                                   ".NET 3.0"));
+                                                                   ".NET 3.0",
+                                                                   Path.Combine(_currentDirectoryName,
+                                                                                "BaseUrl.config")));
             }
         }
 
@@ -49,7 +53,9 @@ namespace LevelUpExampleApp
         {
             get
             {
-                return !File.Exists(_apiKeyFilePath) ? API_KEY : File.ReadAllText(_apiKeyFilePath).Trim();
+                return !string.IsNullOrEmpty(_apiKey)
+                           ? _apiKey
+                           : (_apiKey = GetApiKey());
             }
         }
 
@@ -121,6 +127,11 @@ namespace LevelUpExampleApp
                                        MessageBoxButton.OK,
                                        MessageBoxImage.Error);
             }
+        }
+
+        private static string GetApiKey()
+        {
+            return !File.Exists(_apiKeyFilePath) ? API_KEY : File.ReadAllText(_apiKeyFilePath).Trim();
         }
     }
 }

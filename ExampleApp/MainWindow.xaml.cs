@@ -1,8 +1,4 @@
-﻿using System.Reflection;
-using LevelUpExampleApp;
-using LevelUp.Api.Client.Models.Responses;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Security;
 using System.Security.Permissions;
@@ -58,6 +54,15 @@ namespace LevelUpExampleApp
             }
 
             FileLocationTextBox.Text = LevelUpExampleAppGlobals.LevelUpConfigFilePath;
+
+            if (string.IsNullOrEmpty(LevelUpExampleAppGlobals.ApiKey))
+            {
+                SetStatusLabelText("Please set LevelUp API Key", LevelUpExampleAppGlobals.ERROR_COLOR);
+            }
+            else if(!LevelUpData.Instance.IsValid())
+            {
+                SetStatusLabelText(LevelUpExampleAppGlobals.PLEASE_AUTHENTICATE, LevelUpExampleAppGlobals.ERROR_COLOR);
+            }
         }
 
         private void FileLocationTextBox_KeyDown(object sender, KeyEventArgs e)

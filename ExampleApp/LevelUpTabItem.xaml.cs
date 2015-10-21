@@ -16,7 +16,6 @@ namespace LevelUpExampleApp
     public partial class LevelUpTabItem : TabItem
     {
         private MainWindow _parentWin;
-        private const string PLEASE_AUTHENTICATE = "Please Authenticate";
 
         private MainWindow ParentWindow
         {
@@ -51,7 +50,7 @@ namespace LevelUpExampleApp
 
             if (!LevelUpData.Instance.IsValid(out errorMessages))
             {
-                SetStatusLabelText(PLEASE_AUTHENTICATE, LevelUpExampleAppGlobals.ERROR_COLOR);
+                SetStatusLabelText(LevelUpExampleAppGlobals.PLEASE_AUTHENTICATE, LevelUpExampleAppGlobals.ERROR_COLOR);
                 return;
             }
 
@@ -85,14 +84,6 @@ namespace LevelUpExampleApp
             LocationsComboBox.IsEnabled = true;
             ReloadLocationDataButton.IsEnabled = true;
             SetSaveButtonState(true);
-        }
-
-        private void LevelUpTabItem_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(LevelUpExampleAppGlobals.ApiKey))
-            {
-                SetStatusLabelText("Please set LevelUp API Key", LevelUpExampleAppGlobals.ERROR_COLOR);
-            }
         }
 
         public bool IsValid(out string[] errorMessages)
