@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelUp.Api.Client", "LevelUp.Api.Client\LevelUp.Api.Client.csproj", "{12992069-4E54-49B3-A6BE-44AC577A76FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelUp.Api.Client", "LevelUpIntegrationSdk\LevelUp.Api.Client\LevelUp.Api.Client.csproj", "{12992069-4E54-49B3-A6BE-44AC577A76FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelUp.Api.Client.Test", "LevelUp.Api.Client.Test\LevelUp.Api.Client.Test.csproj", "{5069A123-A987-4715-8849-74773BA5D76A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelUp.Api.Client.Test", "LevelUpIntegrationSdk\LevelUp.Api.Client.Test\LevelUp.Api.Client.Test.csproj", "{5069A123-A987-4715-8849-74773BA5D76A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{97A02655-4F4D-4215-A430-630C7345BF2C}"
 	ProjectSection(SolutionItems) = preProject
@@ -12,15 +12,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{97A026
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelUp.Api.Utilities", "LevelUp.Api.Utilities\LevelUp.Api.Utilities.csproj", "{E186FA36-867A-4509-8C04-D2330699278D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelUp.Api.Utilities", "LevelUpIntegrationSdk\LevelUp.Api.Utilities\LevelUp.Api.Utilities.csproj", "{E186FA36-867A-4509-8C04-D2330699278D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelUp.Api.Utilities.Test", "LevelUp.Api.Utilities.Test\LevelUp.Api.Utilities.Test.csproj", "{A6D162BD-8D75-4A8A-99D2-1894F912354B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelUp.Api.Utilities.Test", "LevelUpIntegrationSdk\LevelUp.Api.Utilities.Test\LevelUp.Api.Utilities.Test.csproj", "{A6D162BD-8D75-4A8A-99D2-1894F912354B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelUp.Api.Http", "LevelUp.Api.Http\LevelUp.Api.Http.csproj", "{E3BA93A9-C367-447D-9668-095B46AC607E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelUp.Api.Http", "LevelUpIntegrationSdk\LevelUp.Api.Http\LevelUp.Api.Http.csproj", "{E3BA93A9-C367-447D-9668-095B46AC607E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelUp.Api.Http.Test", "LevelUp.Api.Http.Test\LevelUp.Api.Http.Test.csproj", "{8C34D8E3-2BEC-418D-B26F-79FCB4F8A905}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelUp.Api.Http.Test", "LevelUpIntegrationSdk\LevelUp.Api.Http.Test\LevelUp.Api.Http.Test.csproj", "{8C34D8E3-2BEC-418D-B26F-79FCB4F8A905}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurationTool", "..\ExampleApp\ConfigurationTool.csproj", "{702C6536-9E90-4455-B56D-14A13D2F2C99}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleApp", "ExampleApp\ExampleApp.csproj", "{702C6536-9E90-4455-B56D-14A13D2F2C99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
