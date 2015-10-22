@@ -1,6 +1,7 @@
 ﻿using System.Windows.Media;
 using LevelUp.Api.Client.Models.Requests;
 using LevelUp.Api.Client.Models.Responses;
+using LevelUp.Api.Http;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -70,23 +71,36 @@ namespace LevelUpExampleApp
 
         private void GetOrderDetailsButton_Click(object sender, RoutedEventArgs e)
         {
-            OrderDetailsResponse response =
-                LevelUpExampleAppGlobals.Api.GetMerchantOrderDetails(LevelUpData.Instance.AccessToken,
-                                                                     LevelUpData.Instance.MerchantId.GetValueOrDefault(0),
-                                                                     _lastOrderUuid);
+            string resultText = null;
+
+            try
+            {
+                OrderDetailsResponse response =
+                    LevelUpExampleAppGlobals.Api.GetMerchantOrderDetails(LevelUpData.Instance.AccessToken,
+                                                                         LevelUpData.Instance.MerchantId
+                                                                                    .GetValueOrDefault(0),
+                                                                         _lastOrderUuid);
+                resultText = JsonConvert.SerializeObject(response);
+            }
+            catch (LevelUpApiException luEx)
+            {
+                SetStatusLabelText(string.Format("Get Order Details Error: {0}", luEx.StatusCode),
+                                   LevelUpExampleAppGlobals.ERROR_COLOR);
+                resultText = luEx.Message;
+            }
 
             ResponseTextBox.Clear();
-            ResponseTextBox.Text = JsonConvert.SerializeObject(response);
+            ResponseTextBox.Text = resultText;
         }
 
         private void OrderButton_Click(object sender, RoutedEventArgs e)
         {
-            ResponseTextBox.Clear();
+            string resultText = null;
+            bool enableButtons = false;
 
             try
             {
                 _levelUpOrder = JsonConvert.DeserializeObject<Order>(OrderContentTextBox.Text);
-
             }
             catch (Exception)
             {
@@ -98,13 +112,25 @@ namespace LevelUpExampleApp
                 return;
             }
 
-            OrderResponse response = LevelUpExampleAppGlobals.Api.PlaceOrder(LevelUpData.Instance.AccessToken,
-                                                                             _levelUpOrder);
-            _lastOrderUuid = response.Identifier;
+            try
+            {
+                OrderResponse response = LevelUpExampleAppGlobals.Api.PlaceOrder(LevelUpData.Instance.AccessToken,
+                                                                                 _levelUpOrder);
+                _lastOrderUuid = response.Identifier;
+                resultText = JsonConvert.SerializeObject(response);
+                enableButtons = true;
+            }
+            catch (LevelUpApiException luEx)
+            {
+                SetStatusLabelText(string.Format("Create Order Error: {0}", luEx.StatusCode),
+                                   LevelUpExampleAppGlobals.ERROR_COLOR);
+                resultText = luEx.Message;
+            }
 
-            ResponseTextBox.Text = JsonConvert.SerializeObject(response);
-            RefundLastOrderButton.IsEnabled = true;
-            GetLastOrderDetailsButton.IsEnabled = true;
+            ResponseTextBox.Clear();
+            ResponseTextBox.Text = resultText;
+            RefundLastOrderButton.IsEnabled = enableButtons;
+            GetLastOrderDetailsButton.IsEnabled = enableButtons;
             PlaceOrderButton.IsEnabled = false;
         }
 
@@ -134,39 +160,71 @@ namespace LevelUpExampleApp
 
         private void RefundButton_Click(object sender, RoutedEventArgs e)
         {
-            RefundResponse response = LevelUpExampleAppGlobals.Api.RefundOrder(LevelUpData.Instance.AccessToken,
-                                                                               _lastOrderUuid);
+            string resultText = null;
+            bool enableButtons = true;
+
+            try
+            {
+                RefundResponse response = LevelUpExampleAppGlobals.Api.RefundOrder(LevelUpData.Instance.AccessToken,
+                                                                                   _lastOrderUuid);
+                resultText = JsonConvert.SerializeObject(response);
+                enableButtons = false;
+            }
+            catch (LevelUpApiException luEx)
+            {
+                SetStatusLabelText(string.Format("Refund Last Order Error: {0}", luEx.StatusCode),
+                                   LevelUpExampleAppGlobals.ERROR_COLOR);
+                resultText = luEx.Message;
+            }
 
             ResponseTextBox.Clear();
-            ResponseTextBox.Text = JsonConvert.SerializeObject(response);
+            ResponseTextBox.Text = resultText;
 
-            RefundLastOrderButton.IsEnabled = false;
-            PlaceOrderButton.IsEnabled = true;
+            RefundLastOrderButton.IsEnabled = enableButtons;
+            PlaceOrderButton.IsEnabled = !enableButtons;
         }
 
         private void ShowRecentOrdersButton_Click(object sender, RoutedEventArgs e)
         {
+            string resultText = null;
+
             if (!LoadLevelUpData())
             {
                 return;
             }
 
-            var orders = LevelUpExampleAppGlobals.Api.ListOrders(LevelUpData.Instance.AccessToken,
-                                                                 LevelUpData.Instance.LocationId.GetValueOrDefault(0));
-
-            StringBuilder sb = new StringBuilder();
-            int limit = 10;
-
-            for (int i = 0; i < limit; i++)
+            try
             {
-                if (i <= orders.Count && orders[i] != null)
+                var orders = LevelUpExampleAppGlobals.Api.ListOrders(LevelUpData.Instance.AccessToken,
+                                                                     LevelUpData.Instance.LocationId.GetValueOrDefault(0));
+
+                StringBuilder sb = new StringBuilder();
+                int limit = 10;
+
+                for (int i = 0; i < limit; i++)
                 {
-                    sb.AppendLine(JsonConvert.SerializeObject(orders[i]));
+                    if (i >= orders.Count)
+                    {
+                        break;
+                    }
+
+                    if (orders[i] != null)
+                    {
+                        sb.AppendLine(JsonConvert.SerializeObject(orders[i]));
+                    }
                 }
+
+                resultText = sb.ToString();
+            }
+            catch (LevelUpApiException luEx)
+            {
+                SetStatusLabelText(string.Format("Show Orders Error: {0}", luEx.StatusCode),
+                                   LevelUpExampleAppGlobals.ERROR_COLOR);
+                resultText = luEx.Message;
             }
 
             ResponseTextBox.Clear();
-            ResponseTextBox.Text = sb.ToString();
+            ResponseTextBox.Text = resultText;
         }
 
         #endregion UI Event Handlers

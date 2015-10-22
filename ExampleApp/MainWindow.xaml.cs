@@ -15,6 +15,9 @@ namespace LevelUpExampleApp
         public MainWindow()
         {
             InitializeComponent();
+
+            //Make sure the window never gets to tall
+            this.MaxHeight = SystemParameters.WorkArea.Height - 20;
         }
 
         #region UI Event Handlers
@@ -111,7 +114,7 @@ namespace LevelUpExampleApp
             }
 
             string errorMessages;
-            if (LevelUpData.Instance.IsValid(out errorMessages))
+            if (!LevelUpData.Instance.IsValid(out errorMessages))
             {
                 SetStatusLabelText("Validation Failed", LevelUpExampleAppGlobals.ERROR_COLOR);
                 Helpers.ShowMessageBox(this, errorMessages, MessageBoxButton.OK, MessageBoxImage.Error);

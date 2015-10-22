@@ -17,7 +17,6 @@
 
 using System.IO;
 using LevelUp.Api.Http;
-using LevelUp.Api.Client.Models;
 using LevelUp.Api.Client.Models.Requests;
 using LevelUp.Api.Client.Models.Responses;
 using Newtonsoft.Json;

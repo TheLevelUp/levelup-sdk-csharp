@@ -26,7 +26,9 @@ namespace LevelUp.Api.Http
     {
         #region Static Members
 
-        public static LevelUpApiException Initialize<T>(IList<T> messages, HttpStatusCode status, Exception innerException = null)
+        public static LevelUpApiException Initialize<T>(IList<T> messages,
+                                                        HttpStatusCode status,
+                                                        Exception innerException = null)
         {
             StringBuilder sb = new StringBuilder();
 
