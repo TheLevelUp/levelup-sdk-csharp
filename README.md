@@ -46,4 +46,4 @@ Several unit tests have been written to ensure the continued quality of the Leve
 
 Now you should be able to run the unit tests for this project by opening the TestExplorer window within Visual Studio and selecting the Run All option.
 
-We strongly recommend that you perform your unit testing in the **LevelUp Sandbox Environment** to minimize unexpected transfer of wealth.
+We *strongly recommend* that you perform your unit testing in the **LevelUp Sandbox Environment** to minimize unexpected transfer of wealth.
