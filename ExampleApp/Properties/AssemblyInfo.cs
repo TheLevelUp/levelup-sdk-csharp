@@ -11,8 +11,8 @@ using System.Windows;
 [assembly: AssemblyDescription("An application providing an example of how to use LevelUp's API")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("SCVNGR Inc.")]
-[assembly: AssemblyProduct("Example App")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyProduct("LevelUp Example App")]
+[assembly: AssemblyCopyright("Copyright © LevelUp 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -51,5 +51,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]

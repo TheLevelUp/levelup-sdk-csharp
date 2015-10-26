@@ -85,7 +85,7 @@ namespace LevelUpExampleApp
         {
             string resultText = null;
 
-            SetStatusLabelText(string.Empty, LevelUpExampleAppGlobals.SUCCESS_COLOR);
+            ClearStatusLabelText();
 
             try
             {
@@ -112,7 +112,7 @@ namespace LevelUpExampleApp
             string resultText = null;
             bool enableButtons = false;
 
-            SetStatusLabelText(string.Empty, LevelUpExampleAppGlobals.SUCCESS_COLOR);
+            ClearStatusLabelText();
 
             try
             {
@@ -179,7 +179,7 @@ namespace LevelUpExampleApp
             string resultText = null;
             bool enableButtons = true;
 
-            SetStatusLabelText(string.Empty, LevelUpExampleAppGlobals.SUCCESS_COLOR);
+            ClearStatusLabelText();
 
             try
             {
@@ -210,6 +210,8 @@ namespace LevelUpExampleApp
             {
                 return;
             }
+
+            ClearStatusLabelText();
 
             try
             {
@@ -280,6 +282,14 @@ namespace LevelUpExampleApp
             if (null != ParentWindow)
             {
                 ParentWindow.SetStatusLabelText(text, color);
+            }
+        }
+
+        private void ClearStatusLabelText()
+        {
+            if (null != ParentWindow)
+            {
+                ParentWindow.ClearStatusLabel();
             }
         }
 
