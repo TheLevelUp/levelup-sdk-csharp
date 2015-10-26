@@ -58,9 +58,27 @@ namespace LevelUp.Api.Http
 
         public HttpStatusCode StatusCode { get; private set; }
 
+        /// <summary>
+        /// Returns a formatted string message describing the Exception
+        /// </summary>
+        /// <param name="verbose">Set to true to get stack trace information. 
+        /// False for an abbreviated informational string</param>
+        /// <returns>A formatted information string</returns>
+        public string ToString(bool verbose)
+        {
+            return string.Format("{0}Http Status: [{1}] {2}",
+                                 verbose ? base.ToString() + Environment.NewLine : string.Empty,
+                                 (int)StatusCode,
+                                 (HttpStatusCodeExtended)StatusCode);
+        }
+
+        /// <summary>
+        /// Returns a brief formatted string message describing the exception
+        /// </summary>
+        /// <returns>A formatted informational string</returns>
         public override string ToString()
         {
-            return string.Format("{0} Http Status: {1} [{2}]", base.ToString(), StatusCode, (int)StatusCode);
+            return ToString(false);
         }
     }
 }

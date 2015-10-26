@@ -16,7 +16,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Label x:Name="QrDataLabel" Content="QR Code Data:" Grid.Column="0" />
-            <TextBox x:Name="QrDataTextBox" Text="Enter QR code data here" Margin="2,0,0,0" Grid.Column="1" LostFocus="OnQrTextBoxLostFocus" GotFocus="OnQrTextBoxGotFocus" TextChanged="OnQrTextBoxTextChanged" />
+            <TextBox x:Name="QrDataTextBox" Text="Enter QR code data here" Margin="2,0,0,0" Grid.Column="1" VerticalContentAlignment="Center" LostFocus="OnQrTextBoxLostFocus" GotFocus="OnQrTextBoxGotFocus" TextChanged="OnQrTextBoxTextChanged" />
             <Button x:Name="CreateOrderButton" Content="Create Order" IsEnabled="false" Grid.Column="2" MinWidth="80" Margin="2,0,0,0" Click="CreateOrderButton_Click"/>
         </Grid>
         <TextBox x:Name="OrderContentTextBox" Grid.Row="1" IsReadOnly="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" Height="120" />

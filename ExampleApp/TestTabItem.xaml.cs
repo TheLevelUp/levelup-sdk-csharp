@@ -17,6 +17,9 @@ namespace LevelUpExampleApp
         private string _lastOrderUuid;
         private MainWindow _parentWin = null;
         const int SPEND_AMOUNT_CENTS = 10;
+        private readonly int? DISCOUNT_APPLIED = null;
+        private readonly int? GIFT_CREDIT_AVAILABLE = null;
+        private const int EXEMPTED_AMOUNT_TOTAL = 0;
 
         private MainWindow ParentWindow
         {
@@ -25,9 +28,14 @@ namespace LevelUpExampleApp
 
         private readonly List<Item> _orderItems = new List<Item>
             {
-                new Item("Baklava", "A tasty Turkish treat", "9999", "123456789", "Pastry", 5, 5),
+                new Item("Baklava", "A tasty Turkish treat", "9999", string.Empty, "Pastry", 5, 5),
                 new Item("Meatball Sub", "A seriously saucy spuckie", "2468", "987654321", "Hoagies", 2, 2, 1),
                 new Item("Coouuuuukie Crisp", "Sugary breakfast dessert", "13579", "11111", "Cereal", 3, 1, 3),
+                new Item("COFFEE", "Black as a moonless night", null, null, "Brain fuel", 15, 15, 1, 
+                    new List<Item>
+                        {
+                            new Item("Sugar", "None", null, null, "Holds", 0, 0, 0, null),
+                        }),
             };
 
         #region Delegates
@@ -59,12 +67,16 @@ namespace LevelUpExampleApp
             PlaceOrderButton.IsEnabled = true;
 
             _levelUpOrder = new Order(LevelUpData.Instance.LocationId.GetValueOrDefault(0),
-                          QrDataTextBox.Text.Trim(),
-                          SPEND_AMOUNT_CENTS,
-                          null,
-                          "Seth",
-                          "1234",
-                          _orderItems);
+                                      QrDataTextBox.Text.Trim(),
+                                      SPEND_AMOUNT_CENTS,
+                                      DISCOUNT_APPLIED,
+                                      GIFT_CREDIT_AVAILABLE,
+                                      EXEMPTED_AMOUNT_TOTAL,
+                                      "Register 0",
+                                      "Seth",
+                                      "Order # 1234",
+                                      true,
+                                      _orderItems);
 
             OrderContentTextBox.Text = JsonConvert.SerializeObject(_levelUpOrder);
         }
@@ -72,6 +84,8 @@ namespace LevelUpExampleApp
         private void GetOrderDetailsButton_Click(object sender, RoutedEventArgs e)
         {
             string resultText = null;
+
+            SetStatusLabelText(string.Empty, LevelUpExampleAppGlobals.SUCCESS_COLOR);
 
             try
             {
@@ -84,7 +98,7 @@ namespace LevelUpExampleApp
             }
             catch (LevelUpApiException luEx)
             {
-                SetStatusLabelText(string.Format("Get Order Details Error: {0}", luEx.StatusCode),
+                SetStatusLabelText(string.Format("Get Order Details Error: {0}", luEx.ToString(false)),
                                    LevelUpExampleAppGlobals.ERROR_COLOR);
                 resultText = luEx.Message;
             }
@@ -98,6 +112,8 @@ namespace LevelUpExampleApp
             string resultText = null;
             bool enableButtons = false;
 
+            SetStatusLabelText(string.Empty, LevelUpExampleAppGlobals.SUCCESS_COLOR);
+
             try
             {
                 _levelUpOrder = JsonConvert.DeserializeObject<Order>(OrderContentTextBox.Text);
@@ -107,7 +123,7 @@ namespace LevelUpExampleApp
                 ShowMessageBox("Order format is not valid!\n\nCannot place order",
                                MessageBoxButton.OK,
                                MessageBoxImage.Error);
-                OrderContentTextBox.Clear();
+                SetStatusLabelText("Order Format Error", LevelUpExampleAppGlobals.ERROR_COLOR);
                 PlaceOrderButton.IsEnabled = false;
                 return;
             }
@@ -122,7 +138,7 @@ namespace LevelUpExampleApp
             }
             catch (LevelUpApiException luEx)
             {
-                SetStatusLabelText(string.Format("Create Order Error: {0}", luEx.StatusCode),
+                SetStatusLabelText(string.Format("Create Order Error: {0}", luEx.ToString(false)),
                                    LevelUpExampleAppGlobals.ERROR_COLOR);
                 resultText = luEx.Message;
             }
@@ -163,6 +179,8 @@ namespace LevelUpExampleApp
             string resultText = null;
             bool enableButtons = true;
 
+            SetStatusLabelText(string.Empty, LevelUpExampleAppGlobals.SUCCESS_COLOR);
+
             try
             {
                 RefundResponse response = LevelUpExampleAppGlobals.Api.RefundOrder(LevelUpData.Instance.AccessToken,
@@ -172,7 +190,7 @@ namespace LevelUpExampleApp
             }
             catch (LevelUpApiException luEx)
             {
-                SetStatusLabelText(string.Format("Refund Last Order Error: {0}", luEx.StatusCode),
+                SetStatusLabelText(string.Format("Refund Last Order Error: {0}", luEx.ToString(false)),
                                    LevelUpExampleAppGlobals.ERROR_COLOR);
                 resultText = luEx.Message;
             }
@@ -218,7 +236,7 @@ namespace LevelUpExampleApp
             }
             catch (LevelUpApiException luEx)
             {
-                SetStatusLabelText(string.Format("Show Orders Error: {0}", luEx.StatusCode),
+                SetStatusLabelText(string.Format("Show Orders Error: {0}", luEx.ToString(false)),
                                    LevelUpExampleAppGlobals.ERROR_COLOR);
                 resultText = luEx.Message;
             }
