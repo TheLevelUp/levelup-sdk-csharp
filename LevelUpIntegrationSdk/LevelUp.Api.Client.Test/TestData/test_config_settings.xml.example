@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LevelUpTestConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ClientId>sample id</ClientId>
+  <ApiKey>sample id</ApiKey>
   <Username>youremail@yourdomain.com</Username>
   <Password>password</Password>
   <EmailAddress>youremail@yourdomain.com</EmailAddress>

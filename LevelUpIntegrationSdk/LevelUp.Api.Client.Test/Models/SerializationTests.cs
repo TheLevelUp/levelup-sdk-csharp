@@ -28,7 +28,7 @@ namespace LevelUp.Api.Client.Test
         [TestMethod]
         public void SerializeDeserialize_AccessTokenRequest()
         {
-            AccessTokenRequest token = new AccessTokenRequest(LevelUpTestConfiguration.Current.ClientId,
+            AccessTokenRequest token = new AccessTokenRequest(LevelUpTestConfiguration.Current.ApiKey,
                                                               LevelUpTestConfiguration.Current.Username,
                                                               LevelUpTestConfiguration.Current.Password);
 

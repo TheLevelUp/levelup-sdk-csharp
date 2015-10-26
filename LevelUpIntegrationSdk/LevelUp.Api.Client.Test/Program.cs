@@ -36,7 +36,7 @@ namespace LevelUp.Api.Client.Test
 
                 Console.WriteLine("========== Authenticate ==========\n");
 
-                AccessToken token = v14.Authenticate(LevelUpTestConfiguration.Current.ClientId,
+                AccessToken token = v14.Authenticate(LevelUpTestConfiguration.Current.ApiKey,
                                                      LevelUpTestConfiguration.Current.Username,
                                                      LevelUpTestConfiguration.Current.Password);
                 Console.WriteLine(token.ToString());

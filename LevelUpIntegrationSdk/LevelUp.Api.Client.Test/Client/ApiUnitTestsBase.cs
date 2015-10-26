@@ -37,7 +37,7 @@ namespace LevelUp.Api.Client.Test
         {
             get
             {
-                return _accessToken ?? (_accessToken = Api.Authenticate(LevelUpTestConfiguration.Current.ClientId,
+                return _accessToken ?? (_accessToken = Api.Authenticate(LevelUpTestConfiguration.Current.ApiKey,
                                                                         LevelUpTestConfiguration.Current.Username,
                                                                         LevelUpTestConfiguration.Current.Password));
             }

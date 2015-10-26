@@ -26,6 +26,9 @@ namespace LevelUp.Api.Client.Test
     [XmlRoot(ElementName = "LevelUpTestConfiguration")]
     public class LevelUpTestConfiguration
     {
+        private const string CONFIG_FILENAME = "test_config_settings.xml";
+        private const string CONFIG_EXAMPLE_FILENAME = CONFIG_FILENAME + ".example";
+
         [XmlIgnore]
         private static LevelUpTestConfiguration _current = null;
 
@@ -35,24 +38,21 @@ namespace LevelUp.Api.Client.Test
             get { return _current ?? (_current = ReadTestConfiguration()); }
         }
 
-        public string ClientId { get; set; }
+        public string ApiKey { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string EmailAddress { get; set; }
-
         public string QrData { get; set; }
         public string QrDataWith10PercentTip { get; set; }
-
         public string InvalidQrData { get; set; }
-
         public string GiftCardData { get; set; }
 
         private static LevelUpTestConfiguration ReadTestConfiguration()
         {
+            LevelUpTestConfiguration configuration = null;
+
             XmlSerializer ser = new XmlSerializer(typeof(LevelUpTestConfiguration));
             
-            const string CONFIG_FILENAME = "test_config_settings.xml";
-            const string CONFIG_EXAMPLE_FILENAME = "test_config_settings.xml.example";
             string config_files_directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             string config_filepath = Path.Combine(config_files_directory, CONFIG_FILENAME);
@@ -72,8 +72,6 @@ namespace LevelUp.Api.Client.Test
 
                 throw new FileNotFoundException(errorMessageBuilder.ToString());
             }
-
-            LevelUpTestConfiguration configuration = null;
 
             using (StreamReader reader = new StreamReader(config_filepath))
             {

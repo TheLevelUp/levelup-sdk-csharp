@@ -25,7 +25,7 @@ namespace LevelUp.Api.Client.Test
         {
             public const string COMPANY_NAME = "LevelUp POS Team";
             public const string PRODUCT_NAME = "C# Integration SDK";
-            public const string PRODUCT_VERSION = "0.1";
+            public const string PRODUCT_VERSION = "1.0";
             public const string OS_NAME = "Windows, .NET 3.0+";
             public const int POS_MERCHANT_ID = 3225;
             public const int POS_LOCATION_ID = 3796;
