@@ -126,7 +126,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="TestData\BaseUrl.config" />
     <None Include="TestData\LevelUpBaseUri.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -156,7 +155,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>robocopy "$(ProjectDir)TestData" "$(TargetDir)\" baseurl.config test_config_settings.xml</PostBuildEvent>
+    <PostBuildEvent>(robocopy "$(ProjectDir)TestData" "$(TargetDir)\" levelupbaseuri.config test_config_settings.xml) ^&amp; IF %25ERRORLEVEL%25 LEQ 1 exit 0</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
