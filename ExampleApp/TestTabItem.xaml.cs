@@ -64,8 +64,6 @@ namespace LevelUpExampleApp
                 return;
             }
 
-            PlaceOrderButton.IsEnabled = true;
-
             _levelUpOrder = new Order(LevelUpData.Instance.LocationId.GetValueOrDefault(0),
                                       QrDataTextBox.Text.Trim(),
                                       SPEND_AMOUNT_CENTS,
@@ -105,6 +103,11 @@ namespace LevelUpExampleApp
 
             ResponseTextBox.Clear();
             ResponseTextBox.Text = resultText;
+        }
+
+        private void OnOrderContentTextChanged(object sender, TextChangedEventArgs e)
+        {
+            PlaceOrderButton.IsEnabled = !string.IsNullOrEmpty(OrderContentTextBox.Text);
         }
 
         private void OrderButton_Click(object sender, RoutedEventArgs e)
@@ -147,7 +150,6 @@ namespace LevelUpExampleApp
             ResponseTextBox.Text = resultText;
             RefundLastOrderButton.IsEnabled = enableButtons;
             GetLastOrderDetailsButton.IsEnabled = enableButtons;
-            PlaceOrderButton.IsEnabled = false;
         }
 
         private void OnQrTextBoxGotFocus(object sender, RoutedEventArgs e)
@@ -199,7 +201,6 @@ namespace LevelUpExampleApp
             ResponseTextBox.Text = resultText;
 
             RefundLastOrderButton.IsEnabled = enableButtons;
-            PlaceOrderButton.IsEnabled = !enableButtons;
         }
 
         private void ShowRecentOrdersButton_Click(object sender, RoutedEventArgs e)

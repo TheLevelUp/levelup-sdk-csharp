@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LevelUpTestConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ApiKey>sample id</ApiKey>
+  <ApiKey>Your API Key</ApiKey>
   <Username>youremail@yourdomain.com</Username>
   <Password>password</Password>
   <EmailAddress>youremail@yourdomain.com</EmailAddress>
-  <QrData>qrdata</QrData>
-  <QrDataWith10PercentTip>qrdata</QrDataWith10PercentTip>
-  <GiftCardData>qrdata</GiftCardData>
-  <InvalidQrData>qrdata</InvalidQrData>
+  <QrData>LU0200001Z1YQIYA5JEY3R43030000LU</QrData>
+  <QrDataWith10PercentTip>LU0200001Z1YQIYA5JEY3R430300A0LU</QrDataWith10PercentTip>
+  <GiftCardData>LU0200001P8L9J1MCMBUS0WK030000LU</GiftCardData>
+  <InvalidQrData>LUThisIsNotAValidLevelUpQrPaymentCodeLU</InvalidQrData>
 </LevelUpTestConfiguration>

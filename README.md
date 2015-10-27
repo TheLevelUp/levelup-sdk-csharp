@@ -34,16 +34,16 @@ If you create an order in the LevelUp Production Environment, real money will ch
 - Open the "LevelUp.Sdk.sln" solution file in Visual Studio
 - Right click on the solution element in the Solution Explorer
 - Select "Rebuild Solution" from the drop down menu
-- You may ignore the error that says `The command "xcopy /Y "%PathToSdkFolder%\LevelUp.Api.Client.Test\Config\test_config_settings.xml" "%PathToSdkFolder%\LevelUp.Api.Client.Test\bin\Net40\"" exited with code 4.` for the moment. It will become relevant for running the unit tests.
+- You may ignore the error that says `The command "xcopy /Y "%PathToSdkFolder%\LevelUp.Api.Client.Test\TestData\test_config_settings.xml" "%PathToSdkFolder%\LevelUp.Api.Client.Test\bin\Net40\"" exited with code 4.` for the moment. It will become relevant for running the unit tests.
 
 ### Running the Example App
 - Open the "LevelUp.Sdk.sln" solution file in Visual Studio
 - Right click the ExampleApp project in the Solution Explorer and select "Set As Startup Project" from the drop-down menu
 - Select the "DEBUG" menu from the menu bar at the top of the solution window then select "Start Debugging" from the drop-down
 
-### Running the Unit Tests
-Several unit tests have been written to ensure the continued quality of the LevelUp C# Integration SDK. We have included the source code and projects for these tests so that you may inspect, augment, and run them if you like. To be able to run them, you must modify the file named `%PathToSdkFolder%\LevelUpIntegrationSdk\LevelUp.Api.Client.Test\Config\test_config_settings.xml.example` in a text editor and fill in the fields with your account information. Then save the file and rename it to "test_config_settings.xml". The fields you will have to modify are as follows: ApiKey, Account Username, Account Password, Account Email Address, QR Code Payment Token, QR Code Payment Token with 10% tip encoded, QR Code Payment Token for an anonymous gift card user account, & QR Code that is not a LevelUp payment token.
+### Running the Automated Tests
+Several automated tests have been written to ensure the continued quality of the LevelUp C# Integration SDK. We have included the source code and projects for these tests so that you may inspect, augment, and run them if you like. To be able to run them, you must modify the file named `%PathToSdkFolder%\LevelUpIntegrationSdk\LevelUp.Api.Client.Test\TestData\test_config_settings.xml.example` in a text editor and fill in the fields with your account information. Then save the file and rename it to "test_config_settings.xml". The fields you will have to modify are as follows: API Key, Account Username, Account Password, & Account Email Address. You may also, optionally, update the QR Code Payment Token, QR Code Payment Token with 10% tip encoded, QR Code Payment Token for an anonymous gift card user account, & QR Code that is not a LevelUp payment token.
 
 Now you should be able to run the unit tests for this project by opening the TestExplorer window within Visual Studio and selecting the Run All option.
 
-We *strongly recommend* that you perform your unit testing in the **LevelUp Sandbox Environment** to minimize unexpected transfer of wealth.
+We *strongly recommend* that you perform your unit testing in the **LevelUp Sandbox Environment** to minimize  unexpected transfer of wealth.
