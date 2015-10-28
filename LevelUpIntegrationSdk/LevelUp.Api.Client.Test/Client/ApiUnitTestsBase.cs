@@ -36,9 +36,9 @@ namespace LevelUp.Api.Client.Test
         {
             get
             {
-                return _accessToken ?? (_accessToken = Api.Authenticate(LevelUpTestConfiguration.Current.ApiKey,
-                                                                        LevelUpTestConfiguration.Current.Username,
-                                                                        LevelUpTestConfiguration.Current.Password));
+                return _accessToken ?? (_accessToken = Api.Authenticate(LevelUpTestConfiguration.Current.App_ApiKey,
+                                                                        LevelUpTestConfiguration.Current.Merchant_Username,
+                                                                        LevelUpTestConfiguration.Current.Merchant_Password));
             }
         }
 
@@ -46,23 +46,23 @@ namespace LevelUp.Api.Client.Test
         {
             get
             {
-                return _api ?? (_api = LevelUpClientFactory.Create(TestData.Valid.COMPANY_NAME,
-                                                                   TestData.Valid.PRODUCT_NAME,
-                                                                   TestData.Valid.PRODUCT_VERSION,
-                                                                   TestData.Valid.OS_NAME,
+                return _api ?? (_api = LevelUpClientFactory.Create(TestConstants.COMPANY_NAME,
+                                                                   TestConstants.PRODUCT_NAME,
+                                                                   TestConstants.PRODUCT_VERSION,
+                                                                   TestConstants.OS_NAME,
                                                                    TestConstants.BASE_URL_CONFIG_FILE));
             }
         }
 
         protected GiftCardAddValueResponse AddValueToGiftCard(int valueToAddInCents)
         {
-            GiftCardAddValueRequest request = new GiftCardAddValueRequest(LevelUpTestConfiguration.Current.GiftCardData,
+            GiftCardAddValueRequest request = new GiftCardAddValueRequest(LevelUpTestConfiguration.Current.User_GiftCardPaymentToken,
                                                                           valueToAddInCents,
-                                                                          TestData.Valid.POS_LOCATION_ID,
+                                                                          LevelUpTestConfiguration.Current.Merchant_LocationId_Visible,
                                                                           "abc123",
                                                                           new List<string>() { "cash", "Credit - Discover" });
 
-            var response = Api.GiftCardAddValue(AccessToken.Token, TestData.Valid.POS_MERCHANT_ID, request);
+            var response = Api.GiftCardAddValue(AccessToken.Token, LevelUpTestConfiguration.Current.Merchant_LocationId_Visible, request);
 
             Assert.IsNotNull(response);
             Assert.AreEqual(valueToAddInCents, response.AmountAddedInCents);
@@ -80,8 +80,8 @@ namespace LevelUp.Api.Client.Test
                                            string qrCodeToUse = null,
                                            bool partialAuthEnabled = false)
         {
-            Order order = new Order(locationId: TestData.Valid.INVISIBLE_LOCATION_ID,
-                                    qrPaymentData: qrCodeToUse ?? LevelUpTestConfiguration.Current.QrData,
+            Order order = new Order(locationId: LevelUpTestConfiguration.Current.Merchant_LocationId_Visible,
+                                    qrPaymentData: qrCodeToUse ?? LevelUpTestConfiguration.Current.User_PaymentToken,
                                     spendAmountCents: spendAmount,
                                     appliedDiscountAmountCents: appliedDiscountAmount,
                                     availableGiftCardAmountCents: availableGiftCardAmount,
@@ -107,7 +107,7 @@ namespace LevelUp.Api.Client.Test
         protected int GetLocationIdForMerchant(int? merchantId)
         {
             IList<Location> locations = Api.ListLocations(AccessToken.Token,
-                                                          merchantId.GetValueOrDefault(TestData.Valid.POS_MERCHANT_ID));
+                                                          merchantId.GetValueOrDefault(LevelUpTestConfiguration.Current.Merchant_Id));
             Assert.IsNotNull(locations);
             Assert.IsTrue(locations.Count > 0);
             Assert.IsNotNull(locations[0]);

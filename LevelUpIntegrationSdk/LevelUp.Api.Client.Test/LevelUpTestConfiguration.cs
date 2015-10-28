@@ -38,14 +38,20 @@ namespace LevelUp.Api.Client.Test
             get { return _current ?? (_current = ReadTestConfiguration()); }
         }
 
-        public string ApiKey { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string EmailAddress { get; set; }
-        public string QrData { get; set; }
-        public string QrDataWith10PercentTip { get; set; }
-        public string InvalidQrData { get; set; }
-        public string GiftCardData { get; set; }
+        public string App_ApiKey { get; set; }
+        public string Merchant_Username { get; set; }
+        public string Merchant_Password { get; set; }
+        public int Merchant_Id { get; set; }
+        public int Merchant_LocationId_Visible { get; set; }
+        public int Merchant_LocationId_Invisible { get; set; }
+        public string User_EmailAddress { get; set; }
+        public string User_FirstName { get; set; }
+        public string User_LastInitial { get; set; }
+        public int User_Id { get; set; }
+        public string User_PaymentToken { get; set; }
+        public string User_PaymentTokenWith10PercentTip { get; set; }
+        public string User_InvalidPaymentToken { get; set; }
+        public string User_GiftCardPaymentToken { get; set; }
 
         private static LevelUpTestConfiguration ReadTestConfiguration()
         {

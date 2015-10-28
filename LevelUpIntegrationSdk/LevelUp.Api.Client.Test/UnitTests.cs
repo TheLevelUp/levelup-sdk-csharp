@@ -34,9 +34,9 @@ namespace LevelUp.Api.Client.Test
         {
             get
             {
-                return _accessToken ?? (_accessToken = Api.Authenticate(LevelUpTestConfiguration.Current.ApiKey,
-                                                                        LevelUpTestConfiguration.Current.Username,
-                                                                        LevelUpTestConfiguration.Current.Password));
+                return _accessToken ?? (_accessToken = Api.Authenticate(LevelUpTestConfiguration.Current.App_ApiKey,
+                                                                        LevelUpTestConfiguration.Current.Merchant_Username,
+                                                                        LevelUpTestConfiguration.Current.Merchant_Password));
             }
         }
 
@@ -44,10 +44,10 @@ namespace LevelUp.Api.Client.Test
         {
             get
             {
-                return _api ?? (_api = LevelUpClientFactory.Create(TestData.Valid.COMPANY_NAME,
-                                                                   TestData.Valid.PRODUCT_NAME,
-                                                                   TestData.Valid.PRODUCT_VERSION,
-                                                                   TestData.Valid.OS_NAME,
+                return _api ?? (_api = LevelUpClientFactory.Create(TestConstants.COMPANY_NAME,
+                                                                   TestConstants.PRODUCT_NAME,
+                                                                   TestConstants.PRODUCT_VERSION,
+                                                                   TestConstants.OS_NAME,
                                                                    TestConstants.BASE_URL_CONFIG_FILE));
             }
         }
@@ -57,10 +57,10 @@ namespace LevelUp.Api.Client.Test
         [TestMethod]
         public void ApiFactory_Default()
         {
-            var defaultVersion = LevelUpClientFactory.Create(TestData.Valid.COMPANY_NAME,
-                                                             TestData.Valid.PRODUCT_NAME,
-                                                             TestData.Valid.PRODUCT_VERSION,
-                                                             TestData.Valid.OS_NAME,
+            var defaultVersion = LevelUpClientFactory.Create(TestConstants.COMPANY_NAME,
+                                                             TestConstants.PRODUCT_NAME,
+                                                             TestConstants.PRODUCT_VERSION,
+                                                             TestConstants.OS_NAME,
                                                              TestConstants.BASE_URL_CONFIG_FILE);
 
             Assert.IsNotNull(defaultVersion);
@@ -96,7 +96,7 @@ namespace LevelUp.Api.Client.Test
 
             try
             {
-                var location = Api.GetLocationDetails(AccessToken.Token, TestData.Valid.INVISIBLE_LOCATION_ID);
+                var location = Api.GetLocationDetails(AccessToken.Token, LevelUpTestConfiguration.Current.Merchant_LocationId_Invisible);
                 Assert.Fail("Expected to catch a LevelUpApiException when requesting details for an invisible location");
             }
             catch (LevelUpApiException luEx)
@@ -110,17 +110,16 @@ namespace LevelUp.Api.Client.Test
         [TestMethod]
         public void LocationDetails_Visible()
         {
-            var location = Api.GetLocationDetails(AccessToken.Token, TestData.Valid.VISIBLE_LOCATION_ID);
+            var location = Api.GetLocationDetails(AccessToken.Token, LevelUpTestConfiguration.Current.Merchant_LocationId_Visible);
             Assert.IsNotNull(location);
-            Assert.IsTrue(location.IsVisible);
-            Assert.AreEqual(TestData.Valid.VISIBLE_MERCHANT_ID, location.MerchantId);
-            Assert.AreEqual(TestData.Valid.VISIBLE_LOCATION_MERCHANT_NAME, location.MerchantName);
+            Assert.IsTrue(location.IsVisible);  
+            Assert.AreEqual(LevelUpTestConfiguration.Current.Merchant_Id, location.MerchantId);
         }
 
         [TestMethod]
         public void MerchantId()
         {
-            Assert.AreEqual(AccessToken.MerchantId.GetValueOrDefault(0), TestData.Valid.POS_MERCHANT_ID);
+            Assert.AreEqual(AccessToken.MerchantId.GetValueOrDefault(0), LevelUpTestConfiguration.Current.Merchant_Id);
         }
 
         [TestMethod]
@@ -128,7 +127,7 @@ namespace LevelUp.Api.Client.Test
         {
             var merchantCredit = Api.GetMerchantFundedCredit(AccessToken.Token,
                                                              GetLocationIdForMerchant(AccessToken.MerchantId),
-                                                             LevelUpTestConfiguration.Current.QrData);
+                                                             LevelUpTestConfiguration.Current.User_PaymentToken);
             Assert.IsNotNull(merchantCredit);
             Assert.IsTrue(merchantCredit.DiscountAmount >= 0);
         }
@@ -138,7 +137,7 @@ namespace LevelUp.Api.Client.Test
         private int GetLocationIdForMerchant(int? merchantId)
         {
             IList<Location> locations = Api.ListLocations(AccessToken.Token,
-                                                          merchantId.GetValueOrDefault(TestData.Valid.POS_MERCHANT_ID));
+                                                          merchantId.GetValueOrDefault(LevelUpTestConfiguration.Current.Merchant_Id));
             Assert.IsNotNull(locations);
             Assert.IsTrue(locations.Count > 0);
             Assert.IsNotNull(locations[0]);

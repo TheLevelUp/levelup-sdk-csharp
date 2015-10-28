@@ -36,8 +36,8 @@ namespace LevelUp.Api.Client.Test
             // generate a new email via a guid
             string uniqueEmail = string.Format("{0}+test@thelevelup.com", Guid.NewGuid().ToString("N"));
 
-            CreateUserRequest request = new CreateUserRequest(TestData.Valid.POS_TEST_USER_FIRST_NAME, 
-                                                              TestData.Valid.POS_TEST_USER_LAST_INITIAL,
+            CreateUserRequest request = new CreateUserRequest(LevelUpTestConfiguration.Current.User_FirstName,
+                                                              LevelUpTestConfiguration.Current.User_LastInitial,
                                                               uniqueEmail,
                                                               "password");
 
@@ -49,9 +49,9 @@ namespace LevelUp.Api.Client.Test
         [ExpectedException(typeof(LevelUpApiException))]
         public void CreateUser_WillFailIfEmailIsNotUnique()
         {
-            CreateUserRequest request = new CreateUserRequest(TestData.Valid.POS_TEST_USER_FIRST_NAME,
-                                                              TestData.Valid.POS_TEST_USER_LAST_INITIAL,
-                                                              LevelUpTestConfiguration.Current.EmailAddress,
+            CreateUserRequest request = new CreateUserRequest(LevelUpTestConfiguration.Current.User_FirstName,
+                                                              LevelUpTestConfiguration.Current.User_LastInitial,
+                                                              LevelUpTestConfiguration.Current.User_EmailAddress,
                                                               "password");
 
             Api.CreateUser(AccessToken.Token, request);
@@ -60,7 +60,7 @@ namespace LevelUp.Api.Client.Test
         [TestMethod]
         public void GetUser()
         {
-            User user = Api.GetUser(AccessToken.Token, TestData.Valid.POS_TEST_USER_ID);
+            User user = Api.GetUser(AccessToken.Token, LevelUpTestConfiguration.Current.User_Id);
             Assert.IsNotNull(user);
         }
 
@@ -75,7 +75,7 @@ namespace LevelUp.Api.Client.Test
         [Ignore]
         public void ResetPassword()
         {
-            Api.PasswordResetRequest(LevelUpTestConfiguration.Current.EmailAddress);
+            Api.PasswordResetRequest(LevelUpTestConfiguration.Current.User_EmailAddress);
             // because the method didn't throw we know it worked.
         }
 
@@ -83,7 +83,7 @@ namespace LevelUp.Api.Client.Test
         [Ignore]
         public void UpdateUser()
         {
-            UpdateUserRequest request = new UpdateUserRequest(TestData.Valid.POS_TEST_USER_ID)
+            UpdateUserRequest request = new UpdateUserRequest(LevelUpTestConfiguration.Current.User_Id)
             {
                 BornAt = DateTime.Today.AddYears(-25)
             };

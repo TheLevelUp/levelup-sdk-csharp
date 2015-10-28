@@ -46,16 +46,18 @@ namespace LevelUp.Api.Client.Test
             const int expectedStatus = (int)HttpStatusCodeExtended.UnprocessableEntity;
             const string expectedMessage = MINIMUM_AMOUNT_ERROR_MESSAGE;
 
-            GiftCardAddValueRequest request = new GiftCardAddValueRequest(LevelUpTestConfiguration.Current.GiftCardData,
+            GiftCardAddValueRequest request = new GiftCardAddValueRequest(LevelUpTestConfiguration.Current.User_GiftCardPaymentToken,
                                                                           0,
-                                                                          TestData.Valid.POS_LOCATION_ID,
+                                                                          LevelUpTestConfiguration.Current.Merchant_LocationId_Visible,
                                                                           "abc123",
                                                                           new List<string>() {"cash", "Credit - Discover"},
                                                                           null);
 
             try
             {
-                var response = base.Api.GiftCardAddValue(base.AccessToken.Token, TestData.Valid.POS_MERCHANT_ID, request);
+                var response = base.Api.GiftCardAddValue(base.AccessToken.Token,
+                                                         LevelUpTestConfiguration.Current.Merchant_Id,
+                                                         request);
                 Assert.Fail("Expected LevelUpApiException on add zero value but did not catch it.");
             }
             catch (LevelUpApiException luEx)
@@ -74,15 +76,15 @@ namespace LevelUp.Api.Client.Test
             const int expectedStatus = (int) HttpStatusCodeExtended.UnprocessableEntity;
             const string expectedMessage = MINIMUM_AMOUNT_ERROR_MESSAGE;
 
-            GiftCardAddValueRequest request = new GiftCardAddValueRequest(LevelUpTestConfiguration.Current.GiftCardData,
+            GiftCardAddValueRequest request = new GiftCardAddValueRequest(LevelUpTestConfiguration.Current.User_GiftCardPaymentToken,
                                                                           NEGATIVE_VALUE,
-                                                                          TestData.Valid.POS_LOCATION_ID,
+                                                                          LevelUpTestConfiguration.Current.Merchant_LocationId_Visible,
                                                                           "abc123",
                                                                           new List<string>() { "cash", "Credit - Discover" });
 
             try
             {
-                var response = base.Api.GiftCardAddValue(base.AccessToken.Token, TestData.Valid.POS_MERCHANT_ID, request);
+                var response = base.Api.GiftCardAddValue(base.AccessToken.Token, LevelUpTestConfiguration.Current.Merchant_Id, request);
                 Assert.Fail("Expected LevelUpApiException on add negative value but did not catch it.");
             }
             catch (LevelUpApiException luEx)
@@ -99,10 +101,10 @@ namespace LevelUp.Api.Client.Test
         {
             var addValueResponse = AddValueToGiftCard(VALUE_TO_ADD_REMOVE);
 
-            var request = new GiftCardRemoveValueRequest(LevelUpTestConfiguration.Current.GiftCardData,
+            var request = new GiftCardRemoveValueRequest(LevelUpTestConfiguration.Current.User_GiftCardPaymentToken,
                                                          VALUE_TO_ADD_REMOVE);
 
-            var response = Api.GiftCardDestroyValue(AccessToken.Token, TestData.Valid.POS_MERCHANT_ID, request);
+            var response = Api.GiftCardDestroyValue(AccessToken.Token, LevelUpTestConfiguration.Current.Merchant_Id, request);
 
             Assert.IsNotNull(response);
             Assert.AreEqual(VALUE_TO_ADD_REMOVE, response.AmountRemovedInCents);
@@ -118,12 +120,12 @@ namespace LevelUp.Api.Client.Test
             const string expectedMessage = MUST_REMOVE_POSITIVE_ERROR_MESSAGE;
 
             GiftCardRemoveValueRequest request =
-                new GiftCardRemoveValueRequest(LevelUpTestConfiguration.Current.GiftCardData, 0);
+                new GiftCardRemoveValueRequest(LevelUpTestConfiguration.Current.User_GiftCardPaymentToken, 0);
 
             try
             {
                 var response = base.Api.GiftCardDestroyValue(base.AccessToken.Token,
-                                                            TestData.Valid.POS_MERCHANT_ID,
+                                                            LevelUpTestConfiguration.Current.Merchant_Id,
                                                             request);
                 Assert.Fail("Expected LevelUpApiException on remove zero value but did not catch it.");
             }
@@ -144,12 +146,12 @@ namespace LevelUp.Api.Client.Test
             const string expectedMessage = MUST_REMOVE_POSITIVE_ERROR_MESSAGE;
 
             GiftCardRemoveValueRequest request =
-                new GiftCardRemoveValueRequest(LevelUpTestConfiguration.Current.GiftCardData, NEGATIVE_VALUE);
+                new GiftCardRemoveValueRequest(LevelUpTestConfiguration.Current.User_GiftCardPaymentToken, NEGATIVE_VALUE);
 
             try
             {
                 var response = base.Api.GiftCardDestroyValue(base.AccessToken.Token,
-                                                            TestData.Valid.POS_MERCHANT_ID,
+                                                            LevelUpTestConfiguration.Current.Merchant_Id,
                                                             request);
                 Assert.Fail("Expected LevelUpApiException on remove negative value but did not catch it.");
             }
@@ -167,10 +169,10 @@ namespace LevelUp.Api.Client.Test
         {
             var addValueResponse = AddValueToGiftCard(VALUE_TO_ADD_REMOVE);
 
-            var request = new GiftCardRemoveValueRequest(LevelUpTestConfiguration.Current.GiftCardData,
+            var request = new GiftCardRemoveValueRequest(LevelUpTestConfiguration.Current.User_GiftCardPaymentToken,
                                                          addValueResponse.NewGiftCardAmountInCents);
 
-            var response = Api.GiftCardDestroyValue(AccessToken.Token, TestData.Valid.POS_MERCHANT_ID, request);
+            var response = Api.GiftCardDestroyValue(AccessToken.Token, LevelUpTestConfiguration.Current.Merchant_Id, request);
 
             Assert.IsNotNull(response);
             Assert.AreEqual(0, response.NewGiftCardAmountInCents);
@@ -189,12 +191,12 @@ namespace LevelUp.Api.Client.Test
 
             var addValueResponse = AddValueToGiftCard(1);
 
-            var request = new GiftCardRemoveValueRequest(LevelUpTestConfiguration.Current.GiftCardData,
+            var request = new GiftCardRemoveValueRequest(LevelUpTestConfiguration.Current.User_GiftCardPaymentToken,
                                                          addValueResponse.NewGiftCardAmountInCents + 1);
 
             try
             {
-                var response = Api.GiftCardDestroyValue(AccessToken.Token, TestData.Valid.POS_MERCHANT_ID, request);
+                var response = Api.GiftCardDestroyValue(AccessToken.Token, LevelUpTestConfiguration.Current.Merchant_Id, request);
                 Assert.Fail("Expected LevelUpApiException on remove more value than is available but did not catch it.");
             }
             catch (LevelUpApiException luEx)

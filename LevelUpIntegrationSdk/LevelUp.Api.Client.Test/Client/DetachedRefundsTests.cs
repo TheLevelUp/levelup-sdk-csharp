@@ -32,7 +32,7 @@ namespace LevelUp.Api.Client.Test
         public void CreateSucceeds_WhenQrCodeValid()
         {
             DetachedRefundResponse response = CreateDetachedRefund(AccessToken.Token, 
-                                                                   LevelUpTestConfiguration.Current.QrData, 
+                                                                   LevelUpTestConfiguration.Current.User_PaymentToken, 
                                                                    EXPECTED_SPEND_AMOUNT_CENTS);
             Assert.IsNotNull(response);
             Assert.AreEqual(EXPECTED_SPEND_AMOUNT_CENTS, response.CreditAmountCents);
@@ -48,7 +48,7 @@ namespace LevelUp.Api.Client.Test
             try
             {
                 CreateDetachedRefund(AccessToken.Token,
-                                     LevelUpTestConfiguration.Current.InvalidQrData, EXPECTED_SPEND_AMOUNT_CENTS);
+                                     LevelUpTestConfiguration.Current.User_InvalidPaymentToken, EXPECTED_SPEND_AMOUNT_CENTS);
                 Assert.Fail("Expected LevelUpApiException on refund with bad Qr data but did not catch it!");
             }
             catch (LevelUpApiException luEx)
@@ -64,7 +64,7 @@ namespace LevelUp.Api.Client.Test
                                                             string qrCodeToUse, 
                                                             int creditAmountInCents)
         {
-            DetachedRefund refund = new DetachedRefund(TestData.Valid.INVISIBLE_LOCATION_ID,
+            DetachedRefund refund = new DetachedRefund(LevelUpTestConfiguration.Current.Merchant_LocationId_Visible,
                                                        qrCodeToUse,
                                                        creditAmountInCents);
 

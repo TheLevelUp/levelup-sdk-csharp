@@ -58,9 +58,9 @@ namespace LevelUp.Api.Client.Test
         public void MerchantFundedCredit()
         {
             MerchantFundedCreditResponse creditResponse = Api.GetMerchantFundedCredit(AccessToken.Token,
-                                                                                      TestData.Valid.POS_LOCATION_ID,
+                                                                                      LevelUpTestConfiguration.Current.Merchant_LocationId_Visible,
                                                                                       LevelUpTestConfiguration.Current
-                                                                                                              .QrData);
+                                                                                                              .User_PaymentToken);
 
             Assert.IsNotNull(creditResponse);
             Assert.IsNotNull(creditResponse.DiscountAmount);
@@ -72,18 +72,18 @@ namespace LevelUp.Api.Client.Test
         {
             //Basic discount get. No item data
             MerchantFundedCreditResponse creditResponse = Api.GetMerchantFundedCredit(AccessToken.Token,
-                                                                                      TestData.Valid.POS_LOCATION_ID,
+                                                                                      LevelUpTestConfiguration.Current.Merchant_LocationId_Visible,
                                                                                       LevelUpTestConfiguration.Current
-                                                                                                              .QrData);
+                                                                                                              .User_PaymentToken);
 
             Assert.IsNotNull(creditResponse);
             Assert.IsNotNull(creditResponse.DiscountAmount);
             Assert.IsNotNull(creditResponse.GiftCardAmount);
 
             MerchantFundedCreditResponse itemCreditResponse = Api.GetMerchantFundedCredit(AccessToken.Token,
-                                                                                          TestData.Valid.POS_LOCATION_ID,
+                                                                                          LevelUpTestConfiguration.Current.Merchant_LocationId_Visible,
                                                                                           LevelUpTestConfiguration
-                                                                                              .Current.QrData,
+                                                                                              .Current.User_PaymentToken,
                                                                                           "Test the items without discount eligible item",
                                                                                           _items);
 
@@ -101,9 +101,9 @@ namespace LevelUp.Api.Client.Test
             Item itemWithDiscountType1Config = _discountEligibleItems[0];
 
             MerchantFundedCreditResponse creditResponse = Api.GetMerchantFundedCredit(AccessToken.Token,
-                                                                                      TestData.Valid.POS_LOCATION_ID,
+                                                                                      LevelUpTestConfiguration.Current.Merchant_LocationId_Visible,
                                                                                       LevelUpTestConfiguration.Current
-                                                                                                              .QrData);
+                                                                                                              .User_PaymentToken);
 
             Assert.IsNotNull(creditResponse);
             Assert.IsNotNull(creditResponse.DiscountAmount);
@@ -112,9 +112,9 @@ namespace LevelUp.Api.Client.Test
             List<Item> itemsIncludingDiscountEligible = new List<Item>(_items) {itemWithDiscountType1Config};
 
             MerchantFundedCreditResponse itemCreditResponse = Api.GetMerchantFundedCredit(AccessToken.Token,
-                                                                                  TestData.Valid.POS_LOCATION_ID,
+                                                                                  LevelUpTestConfiguration.Current.Merchant_LocationId_Visible,
                                                                                   LevelUpTestConfiguration
-                                                                                      .Current.QrData,
+                                                                                      .Current.User_PaymentToken,
                                                                                   "Test the items with discount eligible item",
                                                                                   itemsIncludingDiscountEligible);
 
@@ -135,9 +135,9 @@ namespace LevelUp.Api.Client.Test
             Item itemWithDiscountType2Config = _discountEligibleItems[1];
 
             MerchantFundedCreditResponse creditResponse = Api.GetMerchantFundedCredit(AccessToken.Token,
-                                                                                      TestData.Valid.POS_LOCATION_ID,
+                                                                                      LevelUpTestConfiguration.Current.Merchant_LocationId_Visible,
                                                                                       LevelUpTestConfiguration.Current
-                                                                                                              .QrData);
+                                                                                                              .User_PaymentToken);
 
             Assert.IsNotNull(creditResponse);
             Assert.IsNotNull(creditResponse.DiscountAmount);
@@ -146,9 +146,9 @@ namespace LevelUp.Api.Client.Test
             List<Item> itemsIncludingDiscountEligible = new List<Item>(_items) { itemWithDiscountType2Config };
 
             MerchantFundedCreditResponse itemCreditResponse = Api.GetMerchantFundedCredit(AccessToken.Token,
-                                                                                  TestData.Valid.POS_LOCATION_ID,
+                                                                                  LevelUpTestConfiguration.Current.Merchant_LocationId_Visible,
                                                                                   LevelUpTestConfiguration
-                                                                                      .Current.QrData,
+                                                                                      .Current.User_PaymentToken,
                                                                                   "Test the items with discount eligible item",
                                                                                   itemsIncludingDiscountEligible);
 
@@ -170,9 +170,9 @@ namespace LevelUp.Api.Client.Test
             Item itemWithDiscountType2Config = _discountEligibleItems[1];
 
             MerchantFundedCreditResponse creditResponse = Api.GetMerchantFundedCredit(AccessToken.Token,
-                                                                                      TestData.Valid.POS_LOCATION_ID,
+                                                                                      LevelUpTestConfiguration.Current.Merchant_LocationId_Visible,
                                                                                       LevelUpTestConfiguration.Current
-                                                                                                              .QrData);
+                                                                                                              .User_PaymentToken);
 
             Assert.IsNotNull(creditResponse);
             Assert.IsNotNull(creditResponse.DiscountAmount);
@@ -181,9 +181,9 @@ namespace LevelUp.Api.Client.Test
             List<Item> itemsIncludingDiscountEligible = new List<Item>(_items) { itemWithDiscountType1Config };
 
             MerchantFundedCreditResponse itemCreditResponse1 = Api.GetMerchantFundedCredit(AccessToken.Token,
-                                                                                  TestData.Valid.POS_LOCATION_ID,
+                                                                                  LevelUpTestConfiguration.Current.Merchant_LocationId_Visible,
                                                                                   LevelUpTestConfiguration
-                                                                                      .Current.QrData,
+                                                                                      .Current.User_PaymentToken,
                                                                                   "Test the items with discount eligible item",
                                                                                   itemsIncludingDiscountEligible);
 
@@ -200,9 +200,9 @@ namespace LevelUp.Api.Client.Test
             itemsIncludingDiscountEligible.Add(itemWithDiscountType2Config);
 
             MerchantFundedCreditResponse itemCreditResponse2 = Api.GetMerchantFundedCredit(AccessToken.Token,
-                                                                      TestData.Valid.POS_LOCATION_ID,
+                                                                      LevelUpTestConfiguration.Current.Merchant_LocationId_Visible,
                                                                       LevelUpTestConfiguration
-                                                                          .Current.QrData,
+                                                                          .Current.User_PaymentToken,
                                                                       "Test the items with discount eligible item",
                                                                       itemsIncludingDiscountEligible);
 

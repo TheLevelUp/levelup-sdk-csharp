@@ -89,9 +89,9 @@
       <HintPath>..\packages\CompareNETObjects.2.01.0.0\lib\net40\KellermanSoftware.Compare-NET-Objects.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -105,7 +105,6 @@
     <Compile Include="Client\CreditCardTests.cs" />
     <Compile Include="Client\DetachedRefundsTests.cs" />
     <Compile Include="Client\GiftCardTests.cs" />
-    <Compile Include="Client\LoyaltyTests.cs" />
     <Compile Include="Client\MerchantFundedCreditTests.cs" />
     <Compile Include="Client\OrdersTests.cs" />
     <Compile Include="Client\PaymentTokenTests.cs" />
@@ -116,7 +115,6 @@
     <Compile Include="SettableJsonSerializationTests.cs" />
     <Compile Include="LevelUpTestConfiguration.cs" />
     <Compile Include="TestConstants.cs" />
-    <Compile Include="TestData\TestData.cs" />
     <Compile Include="TestLevelUpEndpoints.cs" />
     <Compile Include="TestUtilities.cs" />
     <Compile Include="UnitTests.cs" />
@@ -128,16 +126,16 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="TestData\TestLevelUpCustomPath.Config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestData\TestLevelUpCustomPath1.Config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestData\TestLevelUpCustomPath2.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestData\TestLevelUpCustomPath3.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestData\test_config_settings.xml.example" />
   </ItemGroup>
@@ -157,6 +155,7 @@
     </Content>
     <None Include="TestData\LevelUpBaseUri.config">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

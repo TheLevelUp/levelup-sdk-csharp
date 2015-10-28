@@ -29,17 +29,17 @@ namespace LevelUp.Api.Client.Test
         {
             try
             {
-                ILevelUpClient v14 = LevelUpClientFactory.Create(TestData.Valid.COMPANY_NAME,
-                                                                 TestData.Valid.PRODUCT_NAME,
-                                                                 TestData.Valid.PRODUCT_VERSION,
-                                                                 TestData.Valid.OS_NAME,
+                ILevelUpClient v14 = LevelUpClientFactory.Create(TestConstants.COMPANY_NAME,
+                                                                 TestConstants.PRODUCT_NAME,
+                                                                 TestConstants.PRODUCT_VERSION,
+                                                                 TestConstants.OS_NAME,
                                                                  TestConstants.BASE_URL_CONFIG_FILE);
 
                 Console.WriteLine("========== Authenticate ==========\n");
 
-                AccessToken token = v14.Authenticate(LevelUpTestConfiguration.Current.ApiKey,
-                                                     LevelUpTestConfiguration.Current.Username,
-                                                     LevelUpTestConfiguration.Current.Password);
+                AccessToken token = v14.Authenticate(LevelUpTestConfiguration.Current.App_ApiKey,
+                                                     LevelUpTestConfiguration.Current.Merchant_Username,
+                                                     LevelUpTestConfiguration.Current.Merchant_Password);
                 Console.WriteLine(token.ToString());
 
                 Console.WriteLine("========== Locations ==========\n");
@@ -51,8 +51,8 @@ namespace LevelUp.Api.Client.Test
                 Console.WriteLine("========== Filtered Orders ==========\n");
 
                 int locationId = locations[0].LocationId;
-                var nameFilter = new OrdersByCustomerNameFilter(TestData.Valid.POS_TEST_USER_FIRST_NAME,
-                                                                TestData.Valid.POS_TEST_USER_LAST_INITIAL);
+                var nameFilter = new OrdersByCustomerNameFilter(LevelUpTestConfiguration.Current.User_FirstName,
+                                                                LevelUpTestConfiguration.Current.User_LastInitial);
                 const int numPagesToSearch = 5;
 
                 var filteredOrders = ((LevelUpClient) v14).ListFilteredOrders(token.Token,

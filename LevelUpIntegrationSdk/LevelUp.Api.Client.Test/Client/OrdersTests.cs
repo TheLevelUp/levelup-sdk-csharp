@@ -38,8 +38,8 @@ namespace LevelUp.Api.Client.Test
         public OrdersTests()
         {
             _dateFilter = new OrdersByDateFilter(_filterStartDate, _filterEndDate);
-            _nameFilter = new OrdersByCustomerNameFilter(TestData.Valid.POS_TEST_USER_FIRST_NAME,
-                                                         TestData.Valid.POS_TEST_USER_LAST_INITIAL);
+            _nameFilter = new OrdersByCustomerNameFilter(LevelUpTestConfiguration.Current.User_FirstName,
+                                                         LevelUpTestConfiguration.Current.User_LastInitial);
         }
 
         [TestMethod]
@@ -52,7 +52,7 @@ namespace LevelUp.Api.Client.Test
             {
                 PlaceOrder(AccessToken.Token, 
                            spendAmount: EXPECTED_SPEND_AMOUNT_CENTS, 
-                           qrCodeToUse: LevelUpTestConfiguration.Current.InvalidQrData);
+                           qrCodeToUse: LevelUpTestConfiguration.Current.User_InvalidPaymentToken);
                 Assert.Fail("Expected LevelUpApiException on order with bad Qr data but did not catch it!");
             }
             catch (LevelUpApiException luEx)
@@ -71,7 +71,7 @@ namespace LevelUp.Api.Client.Test
 
             OrderResponse orderResponse = PlaceOrder(AccessToken.Token,
                                                      spendAmount: EXPECTED_SPEND_AMOUNT_CENTS,
-                                                     qrCodeToUse: LevelUpTestConfiguration.Current.QrData);
+                                                     qrCodeToUse: LevelUpTestConfiguration.Current.User_PaymentToken);
 
             Assert.IsNotNull(orderResponse);
             Assert.AreEqual(EXPECTED_SPEND_AMOUNT_CENTS, orderResponse.SpendAmount);
@@ -94,7 +94,7 @@ namespace LevelUp.Api.Client.Test
             var orderResponse = PlaceOrder(AccessToken.Token,
                                            spendAmount: spendAmount,
                                            exemptionAmount: exemptionAmount,
-                                           qrCodeToUse: LevelUpTestConfiguration.Current.QrData);
+                                           qrCodeToUse: LevelUpTestConfiguration.Current.User_PaymentToken);
 
             Loyalty postLoyalty = Api.GetLoyalty(AccessToken.Token, AccessToken.MerchantId.GetValueOrDefault());
 
@@ -114,7 +114,7 @@ namespace LevelUp.Api.Client.Test
             OrderResponse response = PlaceOrder(AccessToken.Token,
                                                 spendAmount: spendAmountCents,
                                                 appliedDiscountAmount: discountAmountCents,
-                                                qrCodeToUse: LevelUpTestConfiguration.Current.QrData);
+                                                qrCodeToUse: LevelUpTestConfiguration.Current.User_PaymentToken);
 
             Assert.IsNotNull(response);
             Assert.AreEqual(spendAmountCents, response.SpendAmount);
@@ -129,9 +129,10 @@ namespace LevelUp.Api.Client.Test
             const int giftCardValueToAddIfZero = 1000;
 
             MerchantFundedCreditResponse creditResponse = Api.GetMerchantFundedCredit(AccessToken.Token,
-                                                                                      TestData.Valid.POS_LOCATION_ID,
                                                                                       LevelUpTestConfiguration.Current
-                                                                                                              .QrData);
+                                                                                                              .Merchant_LocationId_Visible,
+                                                                                      LevelUpTestConfiguration.Current
+                                                                                                              .User_PaymentToken);
 
             Assert.IsNotNull(creditResponse);
             Assert.IsNotNull(creditResponse.GiftCardAmount);
@@ -141,8 +142,8 @@ namespace LevelUp.Api.Client.Test
                 AddValueToGiftCard(giftCardValueToAddIfZero);
 
                 creditResponse = Api.GetMerchantFundedCredit(AccessToken.Token,
-                                                             TestData.Valid.POS_LOCATION_ID,
-                                                             LevelUpTestConfiguration.Current.QrData);
+                                                             LevelUpTestConfiguration.Current.Merchant_LocationId_Visible,
+                                                             LevelUpTestConfiguration.Current.User_PaymentToken);
 
                 Assert.IsNotNull(creditResponse);
                 Assert.IsNotNull(creditResponse.GiftCardAmount);
@@ -151,7 +152,7 @@ namespace LevelUp.Api.Client.Test
             OrderResponse response = PlaceOrder(AccessToken.Token,
                                                 spendAmount: spendAmountCents,
                                                 availableGiftCardAmount: creditResponse.GiftCardAmount,
-                                                qrCodeToUse: LevelUpTestConfiguration.Current.QrData);
+                                                qrCodeToUse: LevelUpTestConfiguration.Current.User_PaymentToken);
 
             Assert.IsNotNull(response);
             Assert.AreEqual(spendAmountCents, response.SpendAmount);
@@ -165,15 +166,16 @@ namespace LevelUp.Api.Client.Test
             const int spendAmountCents = 10;
 
             MerchantFundedCreditResponse creditResponse = Api.GetMerchantFundedCredit(AccessToken.Token,
-                                                                          TestData.Valid.POS_LOCATION_ID,
-                                                                          LevelUpTestConfiguration.Current
-                                                                                                  .QrData);
+                                                                                      LevelUpTestConfiguration.Current
+                                                                                                              .Merchant_LocationId_Visible,
+                                                                                      LevelUpTestConfiguration.Current
+                                                                                                              .User_PaymentToken);
 
             OrderResponse response = PlaceOrder(AccessToken.Token,
                                                 spendAmount: spendAmountCents,
                                                 appliedDiscountAmount: 5,
                                                 availableGiftCardAmount: creditResponse.GiftCardAmount,
-                                                qrCodeToUse: LevelUpTestConfiguration.Current.QrData);
+                                                qrCodeToUse: LevelUpTestConfiguration.Current.User_PaymentToken);
 
             Assert.IsNotNull(response);
             Assert.AreEqual(spendAmountCents, response.SpendAmount);
@@ -185,10 +187,10 @@ namespace LevelUp.Api.Client.Test
         public void Order_With_DiscountAmount_And_GiftCardAmount_PartialAuthAllowed()
         {
             const int excessAmountCents = 10;
-            string qrCodeToUse = LevelUpTestConfiguration.Current.GiftCardData;
+            string qrCodeToUse = LevelUpTestConfiguration.Current.User_GiftCardPaymentToken;
 
             MerchantFundedCreditResponse creditResponse = Api.GetMerchantFundedCredit(AccessToken.Token,
-                                                                                      TestData.Valid.POS_LOCATION_ID,
+                                                                                      LevelUpTestConfiguration.Current.Merchant_LocationId_Visible,
                                                                                       qrCodeToUse);
             int discountToApply = Math.Min(creditResponse.DiscountAmount, 5);
             int spendAmountCents = creditResponse.DiscountAmount + creditResponse.GiftCardAmount + excessAmountCents;
@@ -210,10 +212,10 @@ namespace LevelUp.Api.Client.Test
         public void Order_With_DiscountAmount_And_GiftCardAmount_PartialAuthNotAllowed()
         {
             const int excessAmountCents = 10;
-            string qrCodeToUse = LevelUpTestConfiguration.Current.GiftCardData;
+            string qrCodeToUse = LevelUpTestConfiguration.Current.User_GiftCardPaymentToken;
 
             MerchantFundedCreditResponse creditResponse = Api.GetMerchantFundedCredit(AccessToken.Token,
-                                                                                      TestData.Valid.POS_LOCATION_ID,
+                                                                                      LevelUpTestConfiguration.Current.Merchant_LocationId_Visible,
                                                                                       qrCodeToUse);
             int discountToApply = Math.Min(creditResponse.DiscountAmount, 5);
             int spendAmountCents = creditResponse.DiscountAmount + creditResponse.GiftCardAmount + excessAmountCents;
@@ -245,7 +247,7 @@ namespace LevelUp.Api.Client.Test
         {
             OrderResponse orderResponse = PlaceOrder(AccessToken.Token,
                                                      spendAmount: EXPECTED_SPEND_AMOUNT_CENTS,
-                                                     qrCodeToUse: LevelUpTestConfiguration.Current.QrData);
+                                                     qrCodeToUse: LevelUpTestConfiguration.Current.User_PaymentToken);
 
             Assert.IsNotNull(orderResponse);
             Assert.AreEqual(EXPECTED_SPEND_AMOUNT_CENTS, orderResponse.SpendAmount);
@@ -265,7 +267,7 @@ namespace LevelUp.Api.Client.Test
             OrderResponse orderResponse = PlaceOrder(AccessToken.Token,
                                                      spendAmount: EXPECTED_SPEND_AMOUNT_CENTS,
                                                      exemptionAmount: 10,
-                                                     qrCodeToUse: LevelUpTestConfiguration.Current.QrData);
+                                                     qrCodeToUse: LevelUpTestConfiguration.Current.User_PaymentToken);
             Assert.IsNotNull(orderResponse);
             Assert.AreEqual(EXPECTED_SPEND_AMOUNT_CENTS, orderResponse.SpendAmount);
             Assert.AreEqual(EXPECTED_SPEND_AMOUNT_CENTS, orderResponse.Total);
@@ -307,7 +309,7 @@ namespace LevelUp.Api.Client.Test
             OrderResponse orderResponse = 
                 PlaceOrder(AccessToken.Token,
                            spendAmount: EXPECTED_SPEND_AMOUNT_CENTS,
-                           qrCodeToUse: LevelUpTestConfiguration.Current.QrDataWith10PercentTip);
+                           qrCodeToUse: LevelUpTestConfiguration.Current.User_PaymentTokenWith10PercentTip);
 
             Assert.IsNotNull(orderResponse);
             Assert.AreEqual(EXPECTED_SPEND_AMOUNT_CENTS, orderResponse.SpendAmount);

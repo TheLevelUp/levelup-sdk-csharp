@@ -28,9 +28,9 @@ namespace LevelUp.Api.Client.Test
         [TestMethod]
         public void SerializeDeserialize_AccessTokenRequest()
         {
-            AccessTokenRequest token = new AccessTokenRequest(LevelUpTestConfiguration.Current.ApiKey,
-                                                              LevelUpTestConfiguration.Current.Username,
-                                                              LevelUpTestConfiguration.Current.Password);
+            AccessTokenRequest token = new AccessTokenRequest(LevelUpTestConfiguration.Current.App_ApiKey,
+                                                              LevelUpTestConfiguration.Current.Merchant_Username,
+                                                              LevelUpTestConfiguration.Current.Merchant_Password);
 
             AccessTokenRequest deserialized = TestUtilities.SerializeThenDeserialize<AccessTokenRequest>(token);
 
@@ -52,8 +52,8 @@ namespace LevelUp.Api.Client.Test
         [TestMethod]
         public void SerializeDeserialize_DetachedRefund()
         {
-            DetachedRefund refund = new DetachedRefund(TestData.Valid.INVISIBLE_LOCATION_ID, 
-                                                       LevelUpTestConfiguration.Current.QrData,
+            DetachedRefund refund = new DetachedRefund(LevelUpTestConfiguration.Current.Merchant_LocationId_Visible, 
+                                                       LevelUpTestConfiguration.Current.User_PaymentToken,
                                                        creditAmountCents: 1);
 
             DetachedRefund deserialized = TestUtilities.SerializeThenDeserialize(refund);
@@ -81,8 +81,8 @@ namespace LevelUp.Api.Client.Test
             Item mod = new Item("Extra Testing", "Test Modifier", "111", null, "MODS", 1, 1, 1);
             items.Add(new Item("Test Item", "This is a delicious test item", "abc123", null, "MISC", 5, 5, 1, new List<Item>{mod}));
             
-            Order order = new Order(TestData.Valid.INVISIBLE_LOCATION_ID, 
-                                    LevelUpTestConfiguration.Current.QrData,
+            Order order = new Order(LevelUpTestConfiguration.Current.Merchant_LocationId_Visible, 
+                                    LevelUpTestConfiguration.Current.User_PaymentToken,
                                     1, 
                                     null,
                                     null, 
@@ -113,7 +113,7 @@ namespace LevelUp.Api.Client.Test
         [TestMethod]
         public void SerializeDeserialize_GiftCardAddValue()
         {
-            GiftCardAddValueRequest gcAdd = new GiftCardAddValueRequest(LevelUpTestConfiguration.Current.QrData,
+            GiftCardAddValueRequest gcAdd = new GiftCardAddValueRequest(LevelUpTestConfiguration.Current.User_PaymentToken,
                                                                         10,
                                                                         123,
                                                                         "ATestThisIs",
@@ -137,7 +137,7 @@ namespace LevelUp.Api.Client.Test
         [TestMethod]
         public void SerializeDeserialize_GiftCardRemoveValue()
         {
-            GiftCardRemoveValueRequest gcAdd = new GiftCardRemoveValueRequest(LevelUpTestConfiguration.Current.QrData, 10);
+            GiftCardRemoveValueRequest gcAdd = new GiftCardRemoveValueRequest(LevelUpTestConfiguration.Current.User_PaymentToken, 10);
 
             GiftCardRemoveValueRequest deserialized = TestUtilities.SerializeThenDeserialize<GiftCardRemoveValueRequest>(gcAdd);
 
@@ -153,7 +153,7 @@ namespace LevelUp.Api.Client.Test
             Item mod = new Item("Extra Testing", "Test Modifier", "111", null, "MODS", 1, 1, 1);
             items.Add(new Item("Test Item", "This is a delicious test item", "abc123", null, "MISC", 5, 5, 1, new List<Item>{mod}));
 
-            MerchantCreditQuery creditQuery = new MerchantCreditQuery(LevelUpTestConfiguration.Current.QrData,
+            MerchantCreditQuery creditQuery = new MerchantCreditQuery(LevelUpTestConfiguration.Current.User_PaymentToken,
                                                                       "12345",
                                                                       items);
 

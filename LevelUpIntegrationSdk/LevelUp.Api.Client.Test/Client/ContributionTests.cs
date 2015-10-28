@@ -31,7 +31,7 @@ namespace LevelUp.Api.Client.Test
         [TestMethod]
         public void GetContributionTarget()
         {
-            ContributionTarget target = Api.GetContributionTarget(TestData.Valid.CONTRIBUTION_TARGET_ID);
+            ContributionTarget target = Api.GetContributionTarget("5");
             Assert.IsNotNull(target);
         }
 
