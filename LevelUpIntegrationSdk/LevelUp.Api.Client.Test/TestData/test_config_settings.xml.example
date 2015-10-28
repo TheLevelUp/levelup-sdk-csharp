@@ -12,6 +12,6 @@
   <User_Id>2041</User_Id>
   <User_PaymentToken>LU0200001Z1YQIYA5JEY3R43030000LU</User_PaymentToken>
   <User_PaymentTokenWith10PercentTip>LU0200001Z1YQIYA5JEY3R430300A0LU</User_PaymentTokenWith10PercentTip>
-  <User_GiftCardPaymentToken>LU0200001P8L9J1MCMBUS0WK030000LU</User_GiftCardPaymentToken>
+  <User_GiftCardPaymentToken>LU02000020I2YVTX16JO87P0030000LU</User_GiftCardPaymentToken>
   <User_InvalidPaymentToken>LUThisIsNotAValidLevelUpQrPaymentCodeLU</User_InvalidPaymentToken>
 </LevelUpTestConfiguration>
