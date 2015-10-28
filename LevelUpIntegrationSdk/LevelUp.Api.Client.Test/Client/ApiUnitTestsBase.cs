@@ -62,7 +62,7 @@ namespace LevelUp.Api.Client.Test
                                                                           "abc123",
                                                                           new List<string>() { "cash", "Credit - Discover" });
 
-            var response = Api.GiftCardAddValue(AccessToken.Token, LevelUpTestConfiguration.Current.Merchant_LocationId_Visible, request);
+            var response = Api.GiftCardAddValue(AccessToken.Token, LevelUpTestConfiguration.Current.Merchant_Id, request);
 
             Assert.IsNotNull(response);
             Assert.AreEqual(valueToAddInCents, response.AmountAddedInCents);

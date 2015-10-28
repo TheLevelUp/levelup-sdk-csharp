@@ -42,11 +42,11 @@ namespace LevelUp.Api.Client.Test
                 {
                     //This item is configured as a "type 1" discount where the customer is entitled to up to $X in 
                     //discount if some number of items of this type appear on the check.
-                    new Item("10057", "babersgrub - id: 718500", "01230000007", "01230000007", "Test Discount items", 50, 51, 2, null),
+                    new Item("Soylent Green Eggs & Spam", "BreakFastCombo Campaign - id: 95", "55555", "0101001", "Test Discount items", 900, 900, 1, null),
                     //This item is configured as a "type 2" discount where the customer is entitled to up to $Y in 
                     //discount if this item appears on the check. Only 1 item per time period may claim the discount
-                    new Item("Soccer ball", "nedsgrub - id: 718354", string.Empty, string.Empty, "Test Discount items", 123, 321, 1, null),
-                    
+                    new Item("Sprockets", "SprocketSpecial Campaign - id: 96", "1234", "4321", "Test Discount Items", 350, 350, 1, null),
+
                     //In all cases, the actual discount amount returned from the MFC endpoint should be the eligible
                     //discount amount. That is, if $X is available and only $Y (where Y < X) is sent as 
                     //charged_price * quantity, (note: discount to apply to items is calculated based on charged_price/quantity)
@@ -96,6 +96,7 @@ namespace LevelUp.Api.Client.Test
         }
 
         [TestMethod]
+        [Ignore]
         public void MerchantFundedCredit_WithItems_Discount_Type1()
         {
             Item itemWithDiscountType1Config = _discountEligibleItems[0];
@@ -130,6 +131,7 @@ namespace LevelUp.Api.Client.Test
         }
 
         [TestMethod]
+        [Ignore]
         public void MerchantFundedCredit_WithItems_Discount_Type2()
         {
             Item itemWithDiscountType2Config = _discountEligibleItems[1];
@@ -164,6 +166,7 @@ namespace LevelUp.Api.Client.Test
         }
 
         [TestMethod]
+        [Ignore]
         public void MerchantFundedCredit_WithItems()
         {
             Item itemWithDiscountType1Config = _discountEligibleItems[0];

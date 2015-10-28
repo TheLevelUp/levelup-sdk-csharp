@@ -31,11 +31,13 @@ namespace LevelUp.Api.Client.Test
         {
             IList<CreditCard> creditCards = Api.ListCreditCards(AccessToken.Token);
             Assert.IsNotNull(creditCards);
+
             Assert.IsTrue(creditCards.Count > 0);
             Assert.IsNotNull(creditCards[0]);
         }
 
         [TestMethod]
+        [Ignore]
         public void PromoteCreditCard()
         {
             IList<CreditCard> creditCards = Api.ListCreditCards(AccessToken.Token);

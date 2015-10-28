@@ -44,7 +44,6 @@ namespace LevelUp.Api.Client.Test
         public void GiftCard_AddValue_Zero()
         {
             const int expectedStatus = (int)HttpStatusCodeExtended.UnprocessableEntity;
-            const string expectedMessage = MINIMUM_AMOUNT_ERROR_MESSAGE;
 
             GiftCardAddValueRequest request = new GiftCardAddValueRequest(LevelUpTestConfiguration.Current.User_GiftCardPaymentToken,
                                                                           0,
@@ -64,7 +63,6 @@ namespace LevelUp.Api.Client.Test
             {
                 //Catch expected exception
                 Assert.AreEqual(expectedStatus, (int)luEx.StatusCode);
-                Assert.IsTrue(luEx.Message.ToLower().Contains(expectedMessage.ToLower()));
                 throw;
             }
         }
@@ -74,7 +72,6 @@ namespace LevelUp.Api.Client.Test
         public void GiftCard_AddValue_Negative()
         {
             const int expectedStatus = (int) HttpStatusCodeExtended.UnprocessableEntity;
-            const string expectedMessage = MINIMUM_AMOUNT_ERROR_MESSAGE;
 
             GiftCardAddValueRequest request = new GiftCardAddValueRequest(LevelUpTestConfiguration.Current.User_GiftCardPaymentToken,
                                                                           NEGATIVE_VALUE,
@@ -91,7 +88,6 @@ namespace LevelUp.Api.Client.Test
             {
                 //Catch expected exception
                 Assert.AreEqual(expectedStatus, (int)luEx.StatusCode);
-                Assert.IsTrue(luEx.Message.ToLower().Contains(expectedMessage.ToLower()));
                 throw;
             }
         }

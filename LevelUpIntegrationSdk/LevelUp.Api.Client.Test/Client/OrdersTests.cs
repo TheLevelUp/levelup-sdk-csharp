@@ -81,6 +81,25 @@ namespace LevelUp.Api.Client.Test
             Api.RefundOrder(AccessToken.Token, orderResponse.Identifier);
         }
 
+        [TestMethod]
+        public void Order_PartialAuthEnabled()
+        {
+            const int tipPercent = 0;
+            const double tipDecimal = (double)tipPercent / 100;
+
+            OrderResponse orderResponse = PlaceOrder(AccessToken.Token,
+                                                     spendAmount: EXPECTED_SPEND_AMOUNT_CENTS,
+                                                     qrCodeToUse: LevelUpTestConfiguration.Current.User_PaymentToken,
+                                                     partialAuthEnabled: true);
+
+            Assert.IsNotNull(orderResponse);
+            Assert.AreEqual(EXPECTED_SPEND_AMOUNT_CENTS, orderResponse.SpendAmount);
+            Assert.AreEqual(tipDecimal * EXPECTED_SPEND_AMOUNT_CENTS, orderResponse.TipAmount);
+            Assert.AreEqual(EXPECTED_SPEND_AMOUNT_CENTS, orderResponse.Total);
+
+            Api.RefundOrder(AccessToken.Token, orderResponse.Identifier);
+        }
+
         [Ignore]
         [TestMethod]
         public void OrderWithExemptionAmount()
@@ -187,7 +206,7 @@ namespace LevelUp.Api.Client.Test
         public void Order_With_DiscountAmount_And_GiftCardAmount_PartialAuthAllowed()
         {
             const int excessAmountCents = 10;
-            string qrCodeToUse = LevelUpTestConfiguration.Current.User_GiftCardPaymentToken;
+            string qrCodeToUse = LevelUpTestConfiguration.Current.User_PaymentToken;
 
             MerchantFundedCreditResponse creditResponse = Api.GetMerchantFundedCredit(AccessToken.Token,
                                                                                       LevelUpTestConfiguration.Current.Merchant_LocationId_Visible,
@@ -202,7 +221,6 @@ namespace LevelUp.Api.Client.Test
                                                 partialAuthEnabled: true);
 
             Assert.IsNotNull(response);
-            Assert.AreEqual(discountToApply + creditResponse.GiftCardAmount, response.SpendAmount);
 
             Api.RefundOrder(AccessToken.Token, response.Identifier);
         }
