@@ -23,20 +23,10 @@ namespace LevelUp.Api.Client.Test
         {
             public const string COMPANY_NAME = "LevelUp POS Team";
             public const string PRODUCT_NAME = "C# Integration SDK";
-            public const string PRODUCT_VERSION = "1.0";
+            public const string PRODUCT_VERSION = "2.0";
             public const string OS_NAME = "Windows, .NET 3.0+";
-            public const int POS_MERCHANT_ID = 3225;
-            public const int POS_LOCATION_ID = 3796;
-            public const int POS_TEST_USER_ID = 231564;
-            public const string POS_TEST_USER_FIRST_NAME = "Test";
-            public const string POS_TEST_USER_LAST_INITIAL = "U";
 
             public const string CONTRIBUTION_TARGET_ID = "5";
-
-            public const int INVISIBLE_LOCATION_ID = 3796;
-            public const int VISIBLE_LOCATION_ID = 7929;
-            public const int VISIBLE_MERCHANT_ID = 5869;
-            public const string VISIBLE_LOCATION_MERCHANT_NAME = "Grass Roots Cafe";
         }
 
         internal static class Invalid
