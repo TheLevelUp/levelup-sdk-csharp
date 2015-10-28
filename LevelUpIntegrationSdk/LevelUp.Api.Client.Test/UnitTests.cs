@@ -45,7 +45,8 @@ namespace LevelUp.Api.Client.Test
                 return _api ?? (_api = LevelUpClientFactory.Create(TestData.Valid.COMPANY_NAME,
                                                                    TestData.Valid.PRODUCT_NAME,
                                                                    TestData.Valid.PRODUCT_VERSION,
-                                                                   TestData.Valid.OS_NAME));
+                                                                   TestData.Valid.OS_NAME,
+                                                                   TestConstants.BASE_URL_CONFIG_FILE));
             }
         }
 
@@ -57,7 +58,8 @@ namespace LevelUp.Api.Client.Test
             var defaultVersion = LevelUpClientFactory.Create(TestData.Valid.COMPANY_NAME,
                                                              TestData.Valid.PRODUCT_NAME,
                                                              TestData.Valid.PRODUCT_VERSION,
-                                                             TestData.Valid.OS_NAME);
+                                                             TestData.Valid.OS_NAME,
+                                                             TestConstants.BASE_URL_CONFIG_FILE);
 
             Assert.IsNotNull(defaultVersion);
             Assert.IsTrue(defaultVersion is ILevelUpClient);

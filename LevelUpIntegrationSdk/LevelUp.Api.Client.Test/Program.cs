@@ -32,7 +32,8 @@ namespace LevelUp.Api.Client.Test
                 ILevelUpClient v14 = LevelUpClientFactory.Create(TestData.Valid.COMPANY_NAME,
                                                                  TestData.Valid.PRODUCT_NAME,
                                                                  TestData.Valid.PRODUCT_VERSION,
-                                                                 TestData.Valid.OS_NAME);
+                                                                 TestData.Valid.OS_NAME,
+                                                                 TestConstants.BASE_URL_CONFIG_FILE);
 
                 Console.WriteLine("========== Authenticate ==========\n");
 

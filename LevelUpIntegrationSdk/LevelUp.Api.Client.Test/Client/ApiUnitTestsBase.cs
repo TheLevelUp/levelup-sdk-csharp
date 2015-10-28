@@ -15,7 +15,6 @@
 // </license>
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-using LevelUp.Api.Client;
 using LevelUp.Api.Client.Models.Requests;
 using LevelUp.Api.Client.Models.Responses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -50,7 +49,8 @@ namespace LevelUp.Api.Client.Test
                 return _api ?? (_api = LevelUpClientFactory.Create(TestData.Valid.COMPANY_NAME,
                                                                    TestData.Valid.PRODUCT_NAME,
                                                                    TestData.Valid.PRODUCT_VERSION,
-                                                                   TestData.Valid.OS_NAME));
+                                                                   TestData.Valid.OS_NAME,
+                                                                   TestConstants.BASE_URL_CONFIG_FILE));
             }
         }
 
