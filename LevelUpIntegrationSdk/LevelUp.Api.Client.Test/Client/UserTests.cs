@@ -15,7 +15,6 @@
 // </license>
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-using LevelUp.Api.Client;
 using LevelUp.Api.Client.Models.Requests;
 using LevelUp.Api.Client.Models.Responses;
 using LevelUp.Api.Http;
@@ -26,6 +25,8 @@ using System.Collections.Generic;
 namespace LevelUp.Api.Client.Test
 {
     [TestClass]
+    [DeploymentItem("LevelUpBaseUri.txt")]
+    [DeploymentItem("test_config_settings.xml")]
     public class UserTests : ApiUnitTestsBase
     {
         [TestMethod]

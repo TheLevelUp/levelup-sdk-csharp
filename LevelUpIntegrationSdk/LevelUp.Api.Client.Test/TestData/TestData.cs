@@ -19,8 +19,6 @@ namespace LevelUp.Api.Client.Test
 {
     internal static class TestData
     {
-        public const string DEFAULT_PATH_TO_URI_CONFIG = "LevelUpBaseUri.config";
-
         internal static class Valid
         {
             public const string COMPANY_NAME = "LevelUp POS Team";

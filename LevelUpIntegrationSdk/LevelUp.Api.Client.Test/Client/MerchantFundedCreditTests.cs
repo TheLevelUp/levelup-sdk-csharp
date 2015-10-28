@@ -24,6 +24,8 @@ using System.Collections.Generic;
 namespace LevelUp.Api.Client.Test
 {
     [TestClass]
+    [DeploymentItem("LevelUpBaseUri.txt")]
+    [DeploymentItem("test_config_settings.xml")]
     public class MerchantFundedCreditTests : ApiUnitTestsBase
     {
         private List<Item> _items;

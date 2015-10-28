@@ -15,16 +15,17 @@
 // </license>
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-using System;
-using System.Collections.Generic;
-using LevelUp.Api.Client;
 using LevelUp.Api.Client.Models.Responses;
 using LevelUp.Api.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 
 namespace LevelUp.Api.Client.Test
 {
     [TestClass]
+    [DeploymentItem("LevelUpBaseUri.txt")]
+    [DeploymentItem("test_config_settings.xml")]
     public class ContributionTests : ApiUnitTestsBase
     {
         [TestMethod]

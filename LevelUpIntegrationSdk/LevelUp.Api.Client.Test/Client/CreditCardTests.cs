@@ -22,6 +22,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace LevelUp.Api.Client.Test
 {
     [TestClass]
+    [DeploymentItem("LevelUpBaseUri.txt")]
+    [DeploymentItem("test_config_settings.xml")]
     public class CreditCardTests : ApiUnitTestsBase
     {
         [TestMethod]

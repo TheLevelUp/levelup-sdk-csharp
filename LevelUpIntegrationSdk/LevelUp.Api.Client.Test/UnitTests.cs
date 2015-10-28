@@ -23,6 +23,8 @@ using LevelUp.Api.Http;
 namespace LevelUp.Api.Client.Test
 {
     [TestClass]
+    [DeploymentItem("LevelUpBaseUri.txt")]
+    [DeploymentItem("test_config_settings.xml")]
     public class ApiUnitTests
     {
         private ILevelUpClient _api;

@@ -15,11 +15,10 @@
 // </license>
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
-using LevelUp.Api.Client;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FluentAssertions;
 
 namespace LevelUp.Api.Client.Test
 {
@@ -27,6 +26,7 @@ namespace LevelUp.Api.Client.Test
     public class ClientTests
     {
         [TestClass]
+        [DeploymentItem(@"TestData\LevelUpBaseUri.config")]
         public class ReadBaseUriFromFile: ApiUnitTestsBase
         {
             private const string PRODUCTION_BASE_URL = @"https://api.thelevelup.com/";
@@ -71,13 +71,13 @@ namespace LevelUp.Api.Client.Test
             public void DefaultPath_CustomUri()
             {
                 const string customUri = "http://staging.thelevelup.com/";
-                string source = Path.Combine(TEST_DATA_DIR_PREFIX, TestData.DEFAULT_PATH_TO_URI_CONFIG);
+                string source = Path.Combine(TEST_DATA_DIR_PREFIX, TestConstants.DEFAULT_URI_CONFIG_FILE);
                 bool copied = false;
 
                 if (File.Exists(source))
                 {
                     File.Copy(source,
-                              Path.Combine(Environment.CurrentDirectory, TestData.DEFAULT_PATH_TO_URI_CONFIG),
+                              Path.Combine(Environment.CurrentDirectory, TestConstants.DEFAULT_URI_CONFIG_FILE),
                               true);
                     copied = true;
                 }
@@ -92,9 +92,9 @@ namespace LevelUp.Api.Client.Test
 
                 if (copied &&
                     File.Exists(Path.Combine(Environment.CurrentDirectory, 
-                    TestData.DEFAULT_PATH_TO_URI_CONFIG)))
+                    TestConstants.DEFAULT_URI_CONFIG_FILE)))
                 {
-                    File.Delete(Path.Combine(Environment.CurrentDirectory, TestData.DEFAULT_PATH_TO_URI_CONFIG));
+                    File.Delete(Path.Combine(Environment.CurrentDirectory, TestConstants.DEFAULT_URI_CONFIG_FILE));
                 }
             }
 

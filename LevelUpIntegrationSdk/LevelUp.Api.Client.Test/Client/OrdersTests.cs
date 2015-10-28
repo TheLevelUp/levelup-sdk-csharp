@@ -25,6 +25,8 @@ using System.Collections.Generic;
 namespace LevelUp.Api.Client.Test
 {
     [TestClass]
+    [DeploymentItem("LevelUpBaseUri.txt")]
+    [DeploymentItem("test_config_settings.xml")]
     public class OrdersTests : ApiUnitTestsBase
     {
         private const int NUM_PAGES_TO_SEARCH = 5;

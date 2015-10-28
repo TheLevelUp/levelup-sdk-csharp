@@ -109,13 +109,13 @@
     <Compile Include="Client\MerchantFundedCreditTests.cs" />
     <Compile Include="Client\OrdersTests.cs" />
     <Compile Include="Client\PaymentTokenTests.cs" />
-    <Compile Include="TestConstants.cs" />
     <Compile Include="Models\SerializationTests.cs" />
     <Compile Include="Client\UserTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettableJsonSerializationTests.cs" />
     <Compile Include="LevelUpTestConfiguration.cs" />
+    <Compile Include="TestConstants.cs" />
     <Compile Include="TestData\TestData.cs" />
     <Compile Include="TestLevelUpEndpoints.cs" />
     <Compile Include="TestUtilities.cs" />
@@ -152,13 +152,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="LevelUpBaseUrl.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="LevelUpBaseUri.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="TestData\LevelUpBaseUri.config">
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y "$(ProjectDir)TestData\test_config_settings.xml" "$(TargetDir)"</PostBuildEvent>
+    <PostBuildEvent>xcopy /Y "$(ProjectDir)\levelupbaseuri.txt" "$(TargetDir)"
+xcopy /Y "$(ProjectDir)TestData\test_config_settings.xml" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
