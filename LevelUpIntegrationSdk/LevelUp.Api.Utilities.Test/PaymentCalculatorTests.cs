@@ -172,6 +172,11 @@ namespace LevelUp.Api.Utilities.Test
                 set { context = value; }
             }
 
+            /// <summary>
+            /// This test reads in test data from an Excel spreadsheet and executes the tests based on the data therein
+            /// To run this test, you need to download and install the Microsoft Access Database Engine Redistributable
+            /// Which is available here: https://www.microsoft.com/en-us/download/details.aspx?id=13255. 
+            /// </summary>
             [TestMethod]
             [DeploymentItem("payment_calculator_test_data.xlsx")]
             [DataSource("System.Data.OleDb",
