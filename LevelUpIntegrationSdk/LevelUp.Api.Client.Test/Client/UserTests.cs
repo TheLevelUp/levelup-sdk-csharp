@@ -58,13 +58,6 @@ namespace LevelUp.Api.Client.Test
         }
 
         [TestMethod]
-        public void GetUser()
-        {
-            User user = Api.GetUser(AccessToken.Token, LevelUpTestConfiguration.Current.User_Id);
-            Assert.IsNotNull(user);
-        }
-
-        [TestMethod]
         public void ListUserAddresses()
         {
             IList<UserAddress> addresses = Api.ListUserAddresses(AccessToken.Token);
@@ -77,20 +70,6 @@ namespace LevelUp.Api.Client.Test
         {
             Api.PasswordResetRequest(LevelUpTestConfiguration.Current.User_EmailAddress);
             // because the method didn't throw we know it worked.
-        }
-
-        [TestMethod]
-        [Ignore]
-        public void UpdateUser()
-        {
-            UpdateUserRequest request = new UpdateUserRequest(LevelUpTestConfiguration.Current.User_Id)
-            {
-                BornAt = DateTime.Today.AddYears(-25)
-            };
-
-            User user = Api.UpdateUser(AccessToken.Token, request);
-
-            Assert.IsNotNull(user);
         }
     }
 }
