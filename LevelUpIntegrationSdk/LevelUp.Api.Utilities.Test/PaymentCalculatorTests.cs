@@ -156,12 +156,6 @@ namespace LevelUp.Api.Utilities.Test
             [TestMethod]
             public void DiscountToApply_ExemptionItemsTotalExceedsDiscount()
             {
-                const decimal merchantCredit = 2m;
-                const decimal paymentAmount = 5m;
-                const decimal amountDueIncludingTax = 10m;
-                const decimal taxAmount = 0m;
-                const decimal totalExemption = 3m;
-
                 decimal[,] values = new decimal[,]
                     {
                         //MFC, Payment, amount due w/ tax,   tax, exempt, expected discount
