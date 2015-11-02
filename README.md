@@ -1,34 +1,34 @@
 LevelUp integration SDK C#
 ---
 
-This repo contains releases for the LevelUp C# Integration SDK.
+This repository contains releases for the LevelUp C# Integration SDK.
 
 Binaries are available in the [releases](https://github.com/TheLevelUp/levelup-integration-sdk-csharp/releases) section.
 
 ### Requirements
 The LevelUp SDK is designed to work with the .NET 3.0 platform and was built using Visual Studio’s MSBuild system. The SDK depends on the [RestSharp](http://restsharp.org/) and [NewtonSoft Json.NET](http://james.newtonking.com/projects/json-net.aspx) libraries, which are added to the project via [NuGet](https://www.nuget.org/).
 
-The LevelUp SDK Example App depends on the SDK library. Instructions on setting up and building the Example App source code are provided in the installation section.
+The LevelUp SDK Example App depends on the SDK library. Instructions on setting up and building the Example App source code are provided below.
 
 ### Getting Started
-Before you can make any progress with the LevelUp C# Integration SDK, you will need to [sign up for a LevelUp account](http://developer.thelevelup.com/getting-started/creating-your-app/). Once you have a LevelUp account, you can log in to your [Developer Center](https://www.thelevelup.com/developer/sandbox/apps) and obtain an API Key.
+Before you can make any progress with the LevelUp C# Integration SDK, you will need to sign up for a LevelUp account [[Sandbox](https://sandbox.thelevelup.com/users/new) | [Production](https://www.thelevelup.com/users/new)]. Once you have a LevelUp account, you can log in to your Developer Center [[Sandbox](https://www.thelevelup.com/developer/sandbox/apps) | [Production](https://www.thelevelup.com/developer/production/apps)] and obtain an API Key.
 
 ### Configuring Your API Key
-To use the LevelUp SDK, you will need to first [obtain a LevelUp Sandbox Environment API key](https://www.thelevelup.com/developer/sandbox/apps). You will need this API key to make authentication calls to the LevelUp platform.
+To use the LevelUp SDK, you will need to first obtain a LevelUp API key [[Sandbox](https://www.thelevelup.com/developer/sandbox/apps) | [Production](https://www.thelevelup.com/developer/production/apps)]. You will need this API key to make authentication calls to the LevelUp platform.
 
-The Example App has a default API key for the LevelUp Sandbox environment preloaded in the code. Once you obtain your own API key, you should overwrite the `API_KEY` value in LevelUpExampleAppConfigGlobals  and/or update the value in the `Api_Key.txt` file both of which are found in the Example App project. 
+The Example App has a default API key for the **LevelUp Sandbox Environment** preloaded in the code. Once you obtain your own API Key for the [Sandbox Environment](https://www.thelevelup.com/developer/sandbox/apps), you should overwrite the `API_KEY` value in LevelUpExampleAppConfigGlobals  and/or update the value in the `Api_Key.txt` file both of which are found in the Example App project. 
 
 ### Configuring the Environment
 ###### LevelUp Sandbox Environment 
 By default, the Example App works in the **LevelUp Sandbox Environment**. In this environment, any orders created will not use real money and customer's accounts will not be charged. This is a great environment to do your testing in! 
 
 ###### LevelUp Production Environment
-Once you are ready to move to production, you will need to [obtain a  LevelUp Production Environment API Key](https://www.thelevelup.com/developer/production/apps) and update the value in the `Api_Key.txt` file. Additionally, you will need to delete the `BaseUrl.config` file from your application directory. 
+Once you are ready to move to production, you will need to obtain another LevelUp API Key for the [Production Environment](https://www.thelevelup.com/developer/production/apps) and update the value in the `Api_Key.txt` file. Additionally, you will need to delete the `BaseUrl.config` file from your application directory. 
 
 If no `BaseUrl.config` file is present, the SDK will default to the **LevelUp Production Environment**. Other Url's may be put into the `BaseUrl.config` file to aid in testing as long as they have [valid formatting](https://en.wikipedia.org/wiki/Uniform_Resource_Locator#Syntax).
 
 ##### !! WARNING !!
-If you create an order in the LevelUp Production Environment, real money will change hands and any relevant accounts will be charged. Conversely, if you deploy a solution that is pointed at the LevelUp Sandbox Environment, no money will be paid.
+If you create an order in the **LevelUp Production Environment**, real money will change hands and any relevant accounts will be charged. Conversely, if you deploy a solution that is pointed at the **LevelUp Sandbox Environment**, no money will be paid.
 
 ### Building SDK & Example App
 - Open the "LevelUp.Sdk.sln" solution file in Visual Studio
@@ -43,7 +43,6 @@ If you create an order in the LevelUp Production Environment, real money will ch
 
 ### Running the Automated Tests
 Several automated tests have been written to ensure the continued quality of the LevelUp C# Integration SDK. We have included the source code and projects for these tests so that you may inspect, augment, and run them if you like. 
-
 
 To be able to run the tests, there are several steps you must take. First, you must modify the file named `%PathToSdkFolder%\LevelUpIntegrationSdk\LevelUp.Api.Client.Test\TestData\test_config_settings.xml.example` in a text editor and fill in the fields with your account information. Then save the file and rename it to "test_config_settings.xml". The fields you will have to modify are as follows: App API Key, Merchant Account Username, Merchant Account Password, Merchant Account Id, Id of a location for that merchant marked visible, & Id of a location for that merchant NOT marked as visible. You may also, optionally, update the other fields at your discretion.
 
