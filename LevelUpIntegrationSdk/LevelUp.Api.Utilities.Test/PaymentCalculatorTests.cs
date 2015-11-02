@@ -128,10 +128,19 @@ namespace LevelUp.Api.Utilities.Test
             {
                 decimal[,] values = new decimal[,]
                     {
-                        //MFC, Payment, amount due with tax, tax, exempt, expected discount
-                        {5m,      6m,     7m,    0m,     4m,    2m},
-                        {13m, 16.07m, 16.07m, 1.05m, 10.02m,    5m},
-                        {13m, 16.07m, 16.07m,    0m, 10.02m, 6.05m}
+                        //MFC, Payment, amount due w/ tax,   tax, exempt, expected discount
+                        {  5m,      6m,                7m,    0m,     4m,               3m},
+                        {  2m,      5m,               11m,    1m,     1m,               2m},
+                        {  2m,      7m,                5m,    0m,   1.5m,               2m},
+                        {  2m,   8.99m,             8.99m,    0m,  1.25m,               2m},
+                        {  4m,     10m,               10m,    0m,     3m,               4m},
+                        {  4m,      5m,                5m,    0m,     3m,               2m},
+                        {  4m,      4m,                5m,    0m,     3m,               2m},
+                        {  4m,      3m,                5m,    0m,     3m,               2m},
+                        {  4m,      3m,                3m,    0m,     2m,               1m},
+                        {  4m,      1m,                1m,    0m,     3m,               0m},
+                        { 13m,  16.07m,            16.07m, 1.05m, 10.02m,               5m},
+                        { 13m,  16.07m,            16.07m,    0m, 10.02m,            6.05m},
                     };
 
                 for (int i = 0; i < values.GetLength(0); i++)
@@ -140,7 +149,7 @@ namespace LevelUp.Api.Utilities.Test
                                                                values[i, 1],
                                                                values[i, 2],
                                                                values[i, 3],
-                                                               values[i, 4]).Should().Be(values[i, 5]);
+                                                               values[i, 4]).Should().Be(values[i, 5], "Row = {0}", i);
                 }
             }
 
@@ -153,11 +162,27 @@ namespace LevelUp.Api.Utilities.Test
                 const decimal taxAmount = 0m;
                 const decimal totalExemption = 3m;
 
-                PaymentCalculator.CalculateDiscountToApply(merchantCredit,
-                                                           paymentAmount,
-                                                           amountDueIncludingTax,
-                                                           taxAmount,
-                                                           totalExemption).Should().Be(2);
+                decimal[,] values = new decimal[,]
+                    {
+                        //MFC, Payment, amount due w/ tax,   tax, exempt, expected discount
+                        {  2m,      5m,               10m,    0m,     3m,               2m},
+                        {  2m,      5m,               10m,    0m,     6m,               2m},
+                        {  2m,      5m,                5m,    0m,     5m,               0m},
+                        {  2m,      5m,                5m,    0m,     4m,               1m},
+                        {  2m,      5m,                5m,    0m,     3m,               2m},
+                        {  0m,      5m,               10m,    0m,     4m,               0m},
+                        {  2m,      5m,               10m,    0m,     5m,               2m},
+                        {  2m,      5m,               10m,    0m,     9m,               1m},
+                    };
+
+                for (int i = 0; i < values.GetLength(0); i++)
+                {
+                    PaymentCalculator.CalculateDiscountToApply(values[i, 0],
+                                                               values[i, 1],
+                                                               values[i, 2],
+                                                               values[i, 3],
+                                                               values[i, 4]).Should().Be(values[i, 5], "Row = {0}", i);
+                }
             }
         }
 

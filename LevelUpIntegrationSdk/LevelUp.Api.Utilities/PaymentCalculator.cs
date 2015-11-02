@@ -135,8 +135,16 @@ namespace LevelUp.Api.Utilities
                                                        decimal taxAmountDueInDollars,
                                                        decimal exemptedItemsTotalInDollars)
         {
-            decimal paymentRequested = Math.Max(0, Math.Min(paymentAmountInDollars,
-                                                            amountDueInDollars - taxAmountDueInDollars));
+            decimal amountDueLessTax = Math.Max(0, amountDueInDollars - taxAmountDueInDollars);
+
+            decimal paymentRequested = Math.Max(0, Math.Min(paymentAmountInDollars, amountDueLessTax));
+
+            if (paymentRequested < amountDueLessTax)
+            {
+                decimal remainingAmountDueAfterPayment = amountDueLessTax - paymentRequested;
+
+                exemptedItemsTotalInDollars = Math.Max(0, exemptedItemsTotalInDollars - remainingAmountDueAfterPayment);
+            }
 
             return CalculateDiscountToApply(merchantFundedCreditAvailableInDollars,
                                             paymentRequested,
@@ -160,6 +168,8 @@ namespace LevelUp.Api.Utilities
         }
 
         #endregion Static Discount Application Calculation Methods
+
+        #region Payment Applications Calculation Methods
 
         /// <summary>
         /// Class to aid in the calculation of LevelUp payment/discount types and amounts to apply to a check
@@ -504,5 +514,7 @@ namespace LevelUp.Api.Utilities
 
             return paymentTypes;
         }
+
+        #endregion Payment Applications Calculation Methods
     }
 }
