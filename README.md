@@ -11,7 +11,7 @@ The LevelUp SDK is designed to work with the .NET 3.0 platform and was built usi
 The LevelUp SDK Example App depends on the SDK library. Instructions on setting up and building the Example App source code are provided below.
 
 ### Getting Started
-Before you can make any progress with the LevelUp C# Integration SDK, you will need to sign up for a LevelUp account [[Sandbox](https://sandbox.thelevelup.com/users/new) | [Production](https://www.thelevelup.com/users/new)]. Once you have a LevelUp account, you can log in to your Developer Center [[Sandbox](https://www.thelevelup.com/developer/sandbox/apps) | [Production](https://www.thelevelup.com/developer/production/apps)] and obtain an API Key.
+Before you can make any progress with the LevelUp C# Integration SDK, you will need to [sign up for a LevelUp account](https://www.thelevelup.com/users/new). Once you have a LevelUp account, you can log in to your Developer Center [[Sandbox](https://www.thelevelup.com/developer/sandbox/apps) | [Production](https://www.thelevelup.com/developer/production/apps)] and obtain an API Key.
 
 ### Configuring Your API Key
 To use the LevelUp SDK, you will need to first obtain a LevelUp API key [[Sandbox](https://www.thelevelup.com/developer/sandbox/apps) | [Production](https://www.thelevelup.com/developer/production/apps)]. You will need this API key to make authentication calls to the LevelUp platform.
