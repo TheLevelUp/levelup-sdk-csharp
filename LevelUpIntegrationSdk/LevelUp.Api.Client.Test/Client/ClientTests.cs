@@ -71,7 +71,7 @@ namespace LevelUp.Api.Client.Test
             [DeploymentItem(@"TestData\LevelUpBaseUri.config", "TestData")]
             public void DefaultPath_CustomUri()
             {
-                const string customUri = "http://staging.thelevelup.com/";
+                const string customUri = "http://www.thelevelup.com/";
                 string source = Path.Combine(TEST_DATA_DIR_PREFIX, TestConstants.DEFAULT_URI_CONFIG_FILE);
                 bool copied = false;
 
