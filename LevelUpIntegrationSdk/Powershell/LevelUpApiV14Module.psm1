@@ -1,6 +1,5 @@
 ﻿## Base Uris ##
 $productionBaseURI = "https://api.thelevelup.com/"
-$stagingBaseURI = "https://api.staging-levelup.com/"
 $sandboxBaseURI = "https://sandbox.thelevelup.com/"
 
 #####################
