@@ -59,7 +59,8 @@ namespace LevelUp.Api.Utilities
             return CalculateDiscountToApply(merchantFundedCreditAvailableInCents,
                                             amountDueInCents,
                                             amountDueInCents,
-                                            taxAmountDueInCents);
+                                            taxAmountDueInCents,
+                                            0);
         }
 
         /// <summary>

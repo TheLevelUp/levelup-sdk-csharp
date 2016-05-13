@@ -24,6 +24,8 @@ namespace LevelUp.Api.Utilities.Test
     [TestClass]
     public class PaymentCalculatorTests
     {
+        private const decimal DOLLARS_TO_CENTS_CONVERT_FACTOR = 100;
+
         [TestClass]
         public class DiscountToApplyTests
         {
@@ -32,8 +34,18 @@ namespace LevelUp.Api.Utilities.Test
             {
                 const decimal merchantCredit = 10m;
                 const decimal amountDueBeforeTax = 5m;
+                const decimal expectedDiscount = 5m;
 
-                PaymentCalculator.CalculateDiscountToApply(merchantCredit, amountDueBeforeTax).Should().Be(5);
+                PaymentCalculator.CalculateDiscountToApply(merchantCredit, amountDueBeforeTax)
+                                 .Should()
+                                 .Be(expectedDiscount);
+
+                long merchantCreditInCents = Convert.ToInt64(merchantCredit * DOLLARS_TO_CENTS_CONVERT_FACTOR);
+                long amountDueBeforeTaxInCents = Convert.ToInt64(amountDueBeforeTax * DOLLARS_TO_CENTS_CONVERT_FACTOR);
+
+                PaymentCalculator.CalculateDiscountToApply(merchantCreditInCents, amountDueBeforeTaxInCents)
+                                 .Should()
+                                 .Be(expectedDiscount);
             }
 
             [TestMethod]
@@ -57,8 +69,18 @@ namespace LevelUp.Api.Utilities.Test
             {
                 const decimal merchantCredit = 2m;
                 const decimal amountDueBeforeTax = 10m;
+                const decimal expectedDiscount = 2m;
 
-                PaymentCalculator.CalculateDiscountToApply(merchantCredit, amountDueBeforeTax).Should().Be(2);
+                PaymentCalculator.CalculateDiscountToApply(merchantCredit, amountDueBeforeTax)
+                                 .Should()
+                                 .Be(expectedDiscount);
+
+                long merchantCreditInCents = Convert.ToInt64(merchantCredit * DOLLARS_TO_CENTS_CONVERT_FACTOR);
+                long amountDueBeforeTaxInCents = Convert.ToInt64(amountDueBeforeTax * DOLLARS_TO_CENTS_CONVERT_FACTOR);
+
+                PaymentCalculator.CalculateDiscountToApply(merchantCreditInCents, amountDueBeforeTaxInCents)
+                                 .Should()
+                                 .Be(expectedDiscount);
             }
 
             [TestMethod]
