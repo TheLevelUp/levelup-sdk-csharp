@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LevelUpTestConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ClientId>your api key</ClientId>
+  <MerchantUsername>yourSandboxMerchantEmail@yourdomain.com</MerchantUsername>
+  <MerchantPassword>mechant_password</MerchantPassword>
+  <MerchantEmailAddress>yourSandboxMerchantEmail@yourdomain.com</MerchantEmailAddress>
+  <ConsumerUsername>yourSandboxConsumerEmail@yourdomain.com</ConsumerUsername>
+  <ConsumerPassword>consumer_password</ConsumerPassword>
+  <ConsumerEmailAddress>yourSandboxConsumerEmail@yourdomain.com</ConsumerEmailAddress>
+  <ConsumerWithNoLinkedPaymentUsername>yourSandboxConsumerWithNoPaymentLinkedEmail@yourdomain.com</ConsumerWithNoLinkedPaymentUsername>
+  <ConsumerWithNoLinkedPaymentPassword>consumer_no_linked_payment_password</ConsumerWithNoLinkedPaymentPassword>
+  <ConsumerWithNoLinkedPaymentEmailAddress>yourSandboxConsumerWithNoPaymentLinkedEmail@yourdomain.com</ConsumerWithNoLinkedPaymentEmailAddress>
+  <ConsumerQrData>LU02...your_consumer_qr_code...00LU</ConsumerQrData>
+  <ConsumerQrDataWith10PercentTip>LU02...your_consumer_qr_code...0A0LU</ConsumerQrDataWith10PercentTip>
+  <ConsumerWithNoLinkedPaymentQrData>LU02...your_consumer_qr_code_with_no_linked_payment...00LU</ConsumerWithNoLinkedPaymentQrData>
+  <GiftCardData>LU02...your_consumer_gift_card_code...00LU</GiftCardData>
+  <TestCreditCardEncryptedNumber>$bt4|javascript_1_3_9$s+jfo0...your_braintree_encrypted_credit_card_number...kHsBM8=</TestCreditCardEncryptedNumber>
+  <TestCreditCardEncryptedCvv>$bt4|javascript_1_3_9$B25+JXuR...your_braintree_encrypted_credit_card_cvv...lFy0I=</TestCreditCardEncryptedCvv>
+  <CompanyName>Sample Company, Inc.</CompanyName>
+  <ProductName>LevelUp Integration</ProductName>
+  <ProductVersion>0.1</ProductVersion>
+  <OperatingSystem>Windows, .NET 3.0+</OperatingSystem>
+  <MerchantId>217</MerchantId>
+  <MerchantLocationId>291</MerchantLocationId>
+  <ConsumerUserFirstName>yourSandboxConsumerUserFirstName</ConsumerUserFirstName>
+  <ConsumerUserLastInitial>W</ConsumerUserLastInitial>
+  <ConsumerId>25078</ConsumerId>
+</LevelUpTestConfiguration>

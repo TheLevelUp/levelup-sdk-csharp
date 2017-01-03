@@ -1,3 +1,5 @@
+test_config_settings.xml
+
 # Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
 [Bb]in/
 [Oo]bj/
@@ -16,6 +18,7 @@ TestResults
 # Build results
 [Dd]ebug/
 [Rr]elease/
+[Bb]uild[Oo]utput/
 x64/
 *_i.c
 *_p.c
