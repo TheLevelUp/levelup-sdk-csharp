@@ -17,8 +17,10 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using System;
 using FluentAssertions;
 using KellermanSoftware.CompareNetObjects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Test
@@ -40,13 +42,20 @@ namespace LevelUp.Api.Client.Test
 
         public static void VerifyJsonIsEquivalent<T>(string objAsJson1, string objAsJson2) where T : class
         {
-            T obj1 = JsonConvert.DeserializeObject<T>(objAsJson1) as T;
-            T obj2 = JsonConvert.DeserializeObject<T>(objAsJson2) as T;
+            VerifyJsonIsEquivalent(objAsJson1, objAsJson2, typeof(T));
+        }
+
+        public static void VerifyJsonIsEquivalent(string objAsJson1, string objAsJson2, Type deserializationType)
+        {
+            var obj1 = JsonConvert.DeserializeObject(objAsJson1, deserializationType);
+            var obj2 = JsonConvert.DeserializeObject(objAsJson2, deserializationType);
 
             obj1.Should().NotBeNull();
             obj2.Should().NotBeNull();
 
-            obj1.ShouldBeEquivalentTo(obj2);
+            var compared = new CompareLogic().Compare(obj1, obj2);
+
+            Assert.IsTrue(compared.AreEqual, compared.DifferencesString);
         }
     }
 }

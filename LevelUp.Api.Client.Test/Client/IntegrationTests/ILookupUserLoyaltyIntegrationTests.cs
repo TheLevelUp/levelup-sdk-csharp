@@ -18,7 +18,6 @@
 #endregion
 
 using LevelUp.Api.Client.ClientInterfaces;
-using LevelUp.Api.Client.Models.Requests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LevelUp.Api.Client.Test.Client
@@ -27,7 +26,7 @@ namespace LevelUp.Api.Client.Test.Client
     public class ILookupUserLoyaltyIntegrationTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void GetLoyalty()
         {
             ClientModuleIntegrationTestingUtilities.RemoveAnyGiftCardCreditOnConsumerUserAccount();
@@ -37,11 +36,7 @@ namespace LevelUp.Api.Client.Test.Client
                 LevelUpTestConfiguration.Current.MerchantId);
             Assert.AreEqual(initialLoyalty.MerchantId, LevelUpTestConfiguration.Current.MerchantId);
 
-            ICreateOrders ordersClient = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<ICreateOrders>();
-            ordersClient.PlaceOrder(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken, 
-                                    new Order(  LevelUpTestConfiguration.Current.MerchantLocationId, 
-                                                LevelUpTestConfiguration.Current.ConsumerQrData, 
-                                                100, 0, 0, 0, null, null, null, true, null));
+            ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer();
 
             var finalLoyalty = loyaltyClient.GetLoyalty(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpUserAccessToken, 
                                                         LevelUpTestConfiguration.Current.MerchantId);

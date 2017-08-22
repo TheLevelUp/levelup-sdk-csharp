@@ -17,9 +17,10 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using System;
 using System.Collections.Generic;
 using LevelUp.Api.Client.Models.Responses;
-using LevelUp.Api.Utilities;
+using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.ClientInterfaces
 {

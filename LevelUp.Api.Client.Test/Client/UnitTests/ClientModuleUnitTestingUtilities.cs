@@ -17,7 +17,6 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-extern alias ThirdParty;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -26,7 +25,7 @@ using LevelUp.Api.Client.Models.Requests;
 using LevelUp.Api.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using ThirdParty.RestSharp;
+using RestSharp;
 
 namespace LevelUp.Api.Client.Test.Client
 {
@@ -102,7 +101,8 @@ namespace LevelUp.Api.Client.Test.Client
 
                         if (!string.IsNullOrEmpty(expectedRequestBody))
                         {
-                            TestUtilities.VerifyJsonIsEquivalent<U>(expectedRequestBody, body);
+                            Type Q = typeof(U).GetProperty("Body")?.PropertyType ?? typeof(U);
+                            TestUtilities.VerifyJsonIsEquivalent(expectedRequestBody, body, Q);
                         }
 
                         if (expectedAccessToken != null && !string.IsNullOrEmpty(accessToken) &&

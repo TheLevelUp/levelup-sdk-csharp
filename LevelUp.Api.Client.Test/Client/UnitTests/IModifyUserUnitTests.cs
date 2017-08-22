@@ -17,13 +17,12 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-extern alias ThirdParty;
 using System.Collections.Generic;
 using System.Net;
 using LevelUp.Api.Client.ClientInterfaces;
 using LevelUp.Api.Client.Models.Requests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ThirdParty.RestSharp;
+using RestSharp;
 
 namespace LevelUp.Api.Client.Test.Client
 {
@@ -63,7 +62,7 @@ namespace LevelUp.Api.Client.Test.Client
         };
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void CreateUserShouldSucceed()
         {
             string expectedRequestUrl = "https://sandbox.thelevelup.com/v14/users";
@@ -79,8 +78,8 @@ namespace LevelUp.Api.Client.Test.Client
                                                     "}}", apiKey, email, firstName, lastName, password);
 
             IModifyUser client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IModifyUser, CreateUserRequest>(
-expectedCreateOrUpdateUserResponse, expectedRequestBody, expectedRequestUrl: expectedRequestUrl);
-var user = client.CreateUser(apiKey, firstName, lastName, email, password);
+                expectedCreateOrUpdateUserResponse, expectedRequestBody, expectedRequestUrl: expectedRequestUrl);
+            var user = client.CreateUser(apiKey, firstName, lastName, email, password);
 
             Assert.AreEqual(user.GlobalCreditAmount, globalCreditAmount);
             Assert.AreEqual(user.Gender, gender);
@@ -88,7 +87,7 @@ var user = client.CreateUser(apiKey, firstName, lastName, email, password);
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void UpdateUserShouldSucceed()
         {
             string expectedRequestUrl = "https://sandbox.thelevelup.com/v14/users/123";
@@ -104,7 +103,7 @@ var user = client.CreateUser(apiKey, firstName, lastName, email, password);
 
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void PasswordResetRequestShouldSucceed()
         {
             const string expectedRequestUrl = "https://sandbox.thelevelup.com/v14/passwords";

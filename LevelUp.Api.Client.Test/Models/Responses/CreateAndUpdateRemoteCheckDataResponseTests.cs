@@ -102,7 +102,7 @@ namespace LevelUp.Api.Client.Test.Models.Responses
             };
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void Deserialize()
         {
             string uuid = Guid.NewGuid().ToString("N");

@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="FunctionDefinitions.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="Constants.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -17,15 +17,16 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using System.Globalization;
+
 namespace LevelUp.Api.Utilities
 {
-    public delegate TResult Func<TResult>();
+    public static class Constants
+    {
+        public static readonly CultureInfo EnUsCulture = new CultureInfo("en-US");
 
-    public delegate TResult Func<T, TResult>(T a);
-
-    public delegate TResult Func<T1, T2, TResult>(T1 arg1, T2 arg2);
-
-    public delegate TResult Func<T1, T2, T3, TResult>(T1 arg1, T2 arg2, T3 arg3);
-
-    public delegate TResult Func<T1, T2, T3, T4, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4);
+        public const string Iso8601DateFormat = "yyyy-MM-dd";
+        public const string Iso8601DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+        public const string Iso8601DateTimeOffsetFormat = "yyyy-MM-ddTHH:mm:sszzz";
+    }
 }

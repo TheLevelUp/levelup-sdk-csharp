@@ -17,11 +17,11 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Net;
 using LevelUp.Api.Client.Models.Requests;
 using LevelUp.Api.Http;
-using LevelUp.Api.Utilities;
 
 namespace LevelUp.Api.Client.RequestVisitors
 {

@@ -17,7 +17,6 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using System;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Responses

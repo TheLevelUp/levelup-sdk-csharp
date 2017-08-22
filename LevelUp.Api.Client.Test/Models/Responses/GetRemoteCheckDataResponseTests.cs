@@ -29,7 +29,7 @@ namespace LevelUp.Api.Client.Test.Models.Responses
     public class GetRemoteCheckDataResponseTests : ModelTestsBase
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void Deserialize()
         {
             string identifier = Guid.NewGuid().ToString("N");
@@ -45,7 +45,7 @@ namespace LevelUp.Api.Client.Test.Models.Responses
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void Deserialize_NullDiscount()
         {
             string identifier = Guid.NewGuid().ToString("N"); 

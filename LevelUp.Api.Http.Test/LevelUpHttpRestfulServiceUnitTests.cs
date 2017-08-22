@@ -17,10 +17,9 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-extern alias ThirdParty;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ThirdParty.RestSharp;
+using RestSharp;
 
 namespace LevelUp.Api.Http.Test
 {
@@ -33,7 +32,7 @@ namespace LevelUp.Api.Http.Test
         readonly string Body = "message body" + System.Environment.NewLine + "for testing";
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void GetShouldSucceed()
         {
             var service = new LevelUpHttpRestfulService((url, request, userAgent) =>
@@ -48,7 +47,7 @@ namespace LevelUp.Api.Http.Test
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void GetShouldNotHaveAnIssueWithNullParams()
         {
             var service = new LevelUpHttpRestfulService((url, request, userAgent) =>
@@ -64,7 +63,7 @@ namespace LevelUp.Api.Http.Test
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void PostShouldSucceed()
         {
             var service = new LevelUpHttpRestfulService((url, request, userAgent) =>
@@ -81,7 +80,7 @@ namespace LevelUp.Api.Http.Test
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void DeleteShouldSucceed()
         {
             var service = new LevelUpHttpRestfulService((url, request, userAgent) =>
@@ -96,7 +95,7 @@ namespace LevelUp.Api.Http.Test
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void PutShouldSucceed()
         {
             var service = new LevelUpHttpRestfulService((url, request, userAgent) =>

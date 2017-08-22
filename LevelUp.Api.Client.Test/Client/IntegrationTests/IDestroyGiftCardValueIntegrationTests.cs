@@ -27,7 +27,7 @@ namespace LevelUp.Api.Client.Test.Client
     public class IDestroyGiftCardValueIntegrationTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void DestroyGiftCardValue()
         {
             const int giftCardAmountToAdd = 2000;
@@ -39,7 +39,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void DestroyGiftCardValue_ShouldFailForGreaterThanGiftCardCredit()
         {
             DestroyGiftCardValue_TestForApiException(1000, 2000, LevelUpTestConfiguration.Current.ConsumerQrData, 
@@ -48,7 +48,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void DestroyGiftCardValue_ShouldFailForZeroValue()
         {
             DestroyGiftCardValue_TestForApiException(1000, 0, LevelUpTestConfiguration.Current.ConsumerQrData,
@@ -57,7 +57,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void DestroyGiftCardValue_ShouldFailForNegativeValue()
         {
             DestroyGiftCardValue_TestForApiException(1000, -1000, LevelUpTestConfiguration.Current.ConsumerQrData,
@@ -66,7 +66,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void DestroyGiftCardValue_ShouldFailForInvalidQrCode()
         {
             DestroyGiftCardValue_TestForApiException(1000, 1000, "this_value_is_invalid",
@@ -75,7 +75,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void DestroyGiftCardValue_ShouldFailForInvalidMerchantToken()
         {
             DestroyGiftCardValue_TestForApiException(1000, 1000, LevelUpTestConfiguration.Current.ConsumerQrData,
@@ -102,8 +102,7 @@ namespace LevelUp.Api.Client.Test.Client
         private void AddThenDestroyGiftCardValue(int giftCardAmountToAdd, int giftCardAmountToDelete, string QrCode, string merchantToken)
         {
             IDestroyGiftCardValue destroyInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IDestroyGiftCardValue>();
-            IRetrieveMerchantFundedCredit lookupInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IRetrieveMerchantFundedCredit>();
-
+            
             ClientModuleIntegrationTestingUtilities.RemoveAnyGiftCardCreditOnConsumerUserAccount();
             ClientModuleIntegrationTestingUtilities.AddGiftCardCreditOnConsumerUserAccount(giftCardAmountToAdd);
 
@@ -116,12 +115,13 @@ namespace LevelUp.Api.Client.Test.Client
             Assert.AreEqual(destroyed.PreviousGiftCardAmountInCents, giftCardAmountToAdd);
             Assert.AreEqual(destroyed.NewGiftCardAmountInCents, giftCardAmountToAdd - giftCardAmountToDelete);
 
-            var loyalty = lookupInterface.GetMerchantFundedCredit(
+            IRetrieveMerchantFundedGiftCardCredit queryInterface  = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IRetrieveMerchantFundedGiftCardCredit>();
+            var loyalty = queryInterface.GetMerchantFundedGiftCardCredit(
                 ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
                 LevelUpTestConfiguration.Current.MerchantLocationId, 
                 LevelUpTestConfiguration.Current.ConsumerQrData);
 
-            Assert.AreEqual(loyalty.GiftCardAmount, giftCardAmountToAdd - giftCardAmountToDelete);
+            Assert.AreEqual(loyalty.TotalAmount, giftCardAmountToAdd - giftCardAmountToDelete);
 
             ClientModuleIntegrationTestingUtilities.RemoveAnyGiftCardCreditOnConsumerUserAccount();
         }

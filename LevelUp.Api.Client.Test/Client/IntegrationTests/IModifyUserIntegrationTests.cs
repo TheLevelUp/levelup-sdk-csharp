@@ -29,7 +29,7 @@ namespace LevelUp.Api.Client.Test.Client
     public class IModifyUserIntegrationTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         [Ignore]    // Shouldn't keep making a bunch of sandbox users, at least by default
         public void CreateUserShouldSucceed()
         {
@@ -46,7 +46,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
         
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         [ExpectedException(typeof(LevelUpApiException))]
         public void CreateUser_WillFailIfEmailIsNotUnique()
         {
@@ -61,7 +61,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void UpdateUserShoudSucceed()
         {
             UpdateUserRequestBody request = new UpdateUserRequestBody(LevelUpTestConfiguration.Current.ConsumerId)

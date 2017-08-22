@@ -36,16 +36,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentAssertions">
-      <HintPath>..\packages\FluentAssertions.3.3.0\lib\net40\FluentAssertions.dll</HintPath>
+    <Reference Include="FluentAssertions, Version=4.19.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.4.19.2\lib\net40\FluentAssertions.dll</HintPath>
     </Reference>
-    <Reference Include="FluentAssertions.Core">
-      <HintPath>..\packages\FluentAssertions.3.3.0\lib\net40\FluentAssertions.Core.dll</HintPath>
+    <Reference Include="FluentAssertions.Core, Version=4.19.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.4.19.2\lib\net40\FluentAssertions.Core.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp.Net2, Version=102.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.Net2.1.1.11\lib\net20\RestSharp.Net2.dll</HintPath>
-      <Private>True</Private>
-      <Aliases>ThirdParty</Aliases>
+    <Reference Include="KellermanSoftware.Compare-NET-Objects, Version=3.8.0.0, Culture=neutral, PublicKeyToken=d970ace04cc85217, processorArchitecture=MSIL">
+      <HintPath>..\packages\CompareNETObjects.3.08.0.0\lib\net40\KellermanSoftware.Compare-NET-Objects.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -56,13 +60,12 @@
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\LevelUp.Api.Utilities.Test\TestCategories.cs">
-      <Link>TestCategories.cs</Link>
-    </Compile>
+    <Compile Include="AgentIdentifierTests.cs" />
     <Compile Include="HttpRestUnitTests.cs" />
     <Compile Include="LevelUpHttpRestfulServiceUnitTests.cs" />
     <Compile Include="LevelUpUriBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestCategory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LevelUp.Api.Http\LevelUp.Api.Http.csproj">

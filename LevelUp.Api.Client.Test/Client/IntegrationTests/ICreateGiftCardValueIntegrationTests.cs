@@ -27,7 +27,7 @@ namespace LevelUp.Api.Client.Test.Client
     public class ICreateGiftCardValueIntegrationTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void CreateGiftCardValue()
         {
             const int valueToAdd = 1000;
@@ -62,7 +62,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         [ExpectedException(typeof(LevelUp.Api.Http.LevelUpApiException), "Failed to throw exception for a gift card value below $10.")]
         public void CreateGiftCardValue_BelowMinimum()
         {
@@ -78,7 +78,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         [ExpectedException(typeof(LevelUp.Api.Http.LevelUpApiException), "Failed to throw exception for a negative gift card value.")]
         public void CreateGiftCardValue_NegativeAmount()
         {

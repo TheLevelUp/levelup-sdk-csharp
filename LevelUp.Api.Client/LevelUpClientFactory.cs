@@ -17,7 +17,6 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Net;
 using LevelUp.Api.Client.ClientInterfaces;
@@ -98,26 +97,6 @@ namespace LevelUp.Api.Client
             var client = new LevelUpClient(GetDefaultLevelUpRequestEngine(identifier, enviornment, restService));
             return (T) (object) client;
         }
-
-        
-
-        [Obsolete("Use the smaller more specific interfaces crated by the Create<T>(...) method.")]
-        public static ILevelUpClient Create(string companyName,
-                                            string productName,
-                                            string productVersion,
-                                            string osName)
-        {
-            return Create(new AgentIdentifier(companyName, productName, productVersion, osName));
-        }
-
-        [Obsolete("Use the smaller more specific interfaces created by the Create<T>(...) method.")]
-        public static ILevelUpClient Create(AgentIdentifier identifier)
-        {
-            LevelUpEnvironment enviornment = LevelUpEnvironment.Production;
-            IRestfulService httpRestService = new LevelUpHttpRestfulService();
-            return new LevelUpClient(GetDefaultLevelUpRequestEngine(identifier, enviornment, httpRestService));
-        }
-
 
         /// <summary>
         /// Creates an IRequestVisitor<IResponse> (i.e. the "request execution engine") using the default

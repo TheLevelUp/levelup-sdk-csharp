@@ -29,6 +29,11 @@ namespace LevelUp.Api.Client.Models.Requests
     [JsonConverter(typeof(LevelUpModelSerializer))]
     public class CreateUserRequestBody
     {
+        private CreateUserRequestBody()
+        {
+            // Private constructor for deserialization
+        }
+
         /// <summary>
         /// Instantiates a CreateUserRequest object
         /// </summary>

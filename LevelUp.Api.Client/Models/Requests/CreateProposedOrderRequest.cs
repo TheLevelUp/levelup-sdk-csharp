@@ -62,7 +62,7 @@ namespace LevelUp.Api.Client.Models.Requests
                                     int locationId,
                                     string qrPaymentData,
                                     int spendAmountCents,
-                                    int taxAmountCents,
+                                    int? taxAmountCents,
                                     int exemptionAmountCents,
                                     string register,
                                     string cashier,

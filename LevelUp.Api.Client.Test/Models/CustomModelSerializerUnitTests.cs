@@ -28,7 +28,7 @@ namespace LevelUp.Api.Client.Test.Models
     public class CustomModelSerializerUnitTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void SerializeDeserialize_CustomSerializableModel()
         {
             var customSerializableModel = GetExampleCustomSerializableModel();
@@ -49,7 +49,7 @@ namespace LevelUp.Api.Client.Test.Models
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void SerializeDeserialize_NonCustomSerializableModel()
         {
             var standardSerializableModel = GetExampleNonCustomSerializableModel();
@@ -70,7 +70,7 @@ namespace LevelUp.Api.Client.Test.Models
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void SerializeDeserialize_ComposedSerializableModel()
         {
             var customSerializableModelDetails = GetExampleCustomSerializableModel();

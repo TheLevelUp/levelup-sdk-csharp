@@ -36,7 +36,9 @@ namespace LevelUp.Api.Client.ClientInterfaces
         /// the Authenticate() method</param>
         /// <param name="locationId">LevelUp Location ID for the store in which the order is being placed.</param>
         /// <param name="qrPaymentData">The customer's scanned QR code payment data</param>
-        /// <param name="spendAmountCents">The amount due on the check in cents</param>
+        /// <param name="totalOutstandingAmountCents">The total remaining amount that is due on the check in cents</param>
+        /// <param name="spendAmountCents">The amount that the customer would like to pay towards the total outstanding 
+        /// amount on the check</param>
         /// <param name="taxAmountCents">The tax amount that will be paid by the current pending order.</param>
         /// <param name="exemptionAmountCents">The portion the spendAmount that is exempted from being used to
         /// earn and redeem credit.</param>
@@ -59,8 +61,9 @@ namespace LevelUp.Api.Client.ClientInterfaces
         ProposedOrderResponse CreateProposedOrder(  string accessToken,
                                                     int locationId,
                                                     string qrPaymentData,
+                                                    int totalOutstandingAmountCents,
                                                     int spendAmountCents,
-                                                    int taxAmountCents,
+                                                    int? taxAmountCents,
                                                     int exemptionAmountCents,
                                                     string register = null,
                                                     string cashier = null,
@@ -80,7 +83,9 @@ namespace LevelUp.Api.Client.ClientInterfaces
         /// <param name="locationId">LevelUp Location ID for the store in which the order is being placed.</param>
         /// <param name="qrPaymentData">The customer's scanned QR code payment data</param>
         /// <param name="proposedOrderUuid">The unique ID that was returned when the order was first proposed.</param>
-        /// <param name="spendAmountCents">The amount due on the check in cents</param>
+        /// <param name="totalOutstandingAmountCents">The total remaining amount that is due on the check in cents</param>
+        /// <param name="spendAmountCents">The amount that the customer would like to pay towards the total outstanding 
+        /// amount on the check</param>
         /// <param name="taxAmountCents">The tax amount that will be paid by the current pending order.</param>
         /// <param name="exemptionAmountCents">The portion the spendAmount that is exempted from being used to
         /// earn and redeem credit.</param>
@@ -107,10 +112,11 @@ namespace LevelUp.Api.Client.ClientInterfaces
                                                         int locationId,
                                                         string qrPaymentData,
                                                         string proposedOrderUuid,
+                                                        int totalOutstandingAmountCents,
                                                         int spendAmountCents,
-                                                        int taxAmountCents,
+                                                        int? taxAmountCents,
                                                         int exemptionAmountCents,
-                                                        int appliedDiscountAmountCents,
+                                                        int? appliedDiscountAmountCents,
                                                         string register = null,
                                                         string cashier = null,
                                                         string identifierFromMerchant = null,

@@ -17,11 +17,10 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-extern alias ThirdParty;
 using System.Net;
 using LevelUp.Api.Client.ClientInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ThirdParty.RestSharp;
+using RestSharp;
 
 namespace LevelUp.Api.Client.Test.Client
 {
@@ -29,7 +28,7 @@ namespace LevelUp.Api.Client.Test.Client
     public class IQueryUserUnitTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void ListUserAddressesShouldSucceed()
         {
             const string expectedRequestUrl = "https://sandbox.thelevelup.com/v15/user_addresses";
@@ -68,7 +67,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void GetUserShouldSucceed()
         {
             const int id = 3;

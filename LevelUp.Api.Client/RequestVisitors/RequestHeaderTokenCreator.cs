@@ -20,7 +20,6 @@
 using System;
 using System.Collections.Generic;
 using LevelUp.Api.Client.Models.Requests;
-using LevelUp.Api.Utilities;
 
 namespace LevelUp.Api.Client.RequestVisitors
 {
@@ -39,7 +38,7 @@ namespace LevelUp.Api.Client.RequestVisitors
     /// </remarks>
     public sealed class RequestHeaderTokenCreator : RequestVisitorWithDefault<string>
     {
-        private static readonly Utilities.Func<Request, string> DEFAULT_FUNCTION = (request) => FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken);
+        private static readonly Func<Request, string> DEFAULT_FUNCTION = (request) => FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken);
         
         public RequestHeaderTokenCreator()
             : base(DEFAULT_FUNCTION)
@@ -68,15 +67,6 @@ namespace LevelUp.Api.Client.RequestVisitors
         public override string Visit(PasswordResetRequest request)
         {
             return string.Empty;
-        }
-
-        public override string Visit(OrderRequest request)
-        {
-            if (request.ApiVersion == Http.LevelUpApiVersion.v14)
-            {
-                return FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken);
-            }
-            return FormatAccessTokenString(merchantUserAccessToken: request.AccessToken);
         }
 
         public override string Visit(GiftCardCreditQueryRequest request)

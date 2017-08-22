@@ -17,9 +17,9 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using System;
 using LevelUp.Api.Client.Models.Requests;
 using LevelUp.Api.Client.Models.RequestVisitors;
-using LevelUp.Api.Utilities;
 
 namespace LevelUp.Api.Client.RequestVisitors
 {
@@ -69,16 +69,6 @@ namespace LevelUp.Api.Client.RequestVisitors
         }
 
         public virtual T Visit(GiftCardRemoveValueRequest request)
-        {
-            return DEFAULT_FUNC(request);
-        }
-
-        public virtual T Visit(MerchantCreditQueryRequest request)
-        {
-            return DEFAULT_FUNC(request);
-        }
-
-        public virtual T Visit(OrderRequest request)
         {
             return DEFAULT_FUNC(request);
         }

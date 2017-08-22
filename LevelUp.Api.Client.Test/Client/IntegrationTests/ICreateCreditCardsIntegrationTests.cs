@@ -28,7 +28,7 @@ namespace LevelUp.Api.Client.Test.Client
     public class ICreateCreditCardsIntegrationTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         [Ignore] // Braintree enforces a 50-cards-per-user restriction, so we can't keep adding/removing cards for the test user.
         public void CreateCreditCards()
         {

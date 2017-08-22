@@ -26,7 +26,7 @@ namespace LevelUp.Api.Client.Test.Client
     public class IRetrievePaymentTokenIntegrationTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void GetPaymentToken()
         {
             IRetrievePaymentToken client = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IRetrievePaymentToken>();

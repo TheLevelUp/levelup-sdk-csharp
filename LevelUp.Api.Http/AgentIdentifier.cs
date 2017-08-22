@@ -17,13 +17,13 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using System;
 using System.Text;
 
 namespace LevelUp.Api.Http
 {
     public class AgentIdentifier
     {
-        private const int LENGTH_LIMIT = 20; //20 Character length limit for each field
         private string _companyName = string.Empty;
         private string _productName = string.Empty;
         private string _productVersion = string.Empty;
@@ -38,15 +38,15 @@ namespace LevelUp.Api.Http
         /// <param name="productName">Name of the product or tool into which this software will be built</param>
         /// <param name="productVersion">Version of the product or tool of which this software is a part</param>
         /// <param name="osName">Name of the operating system on which this software runs</param>
-        public AgentIdentifier(string companyName, 
-            string productName,
-            string productVersion,
-            string osName)
+        public AgentIdentifier(string companyName,
+                               string productName,
+                               string productVersion,
+                               string osName)
         {
             this.CompanyName = companyName;
             this.ProductName = productName;
             this.ProductVersion = productVersion;
-            this.OsName = osName;
+            this.OsName = FormatOsName(osName);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace LevelUp.Api.Http
         public string CompanyName
         {
             get { return _companyName; }
-            set { _companyName = TrimStringToLength(value, LENGTH_LIMIT).Replace("\n", string.Empty); }
+            set { _companyName = FlattenString(value); }
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace LevelUp.Api.Http
         public string ProductName
         {
             get { return _productName; }
-            set { _productName = TrimStringToLength(value, LENGTH_LIMIT).Replace("\n", string.Empty); }
+            set { _productName = FlattenString(value); }
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace LevelUp.Api.Http
         public string ProductVersion
         {
             get { return _productVersion; }
-            set { _productVersion = TrimStringToLength(value, LENGTH_LIMIT).Replace("\n", string.Empty); }
+            set { _productVersion = FlattenString(value); }
         }
 
         /// <summary>
@@ -82,28 +82,29 @@ namespace LevelUp.Api.Http
         public string OsName
         {
             get { return _osName; }
-            set { _osName = TrimStringToLength(value, LENGTH_LIMIT).Replace("\n", string.Empty); }
+            set { _osName = FlattenString(value); }
         }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
 
-            //Desired format: "CompanyName ProductName/ProductVersion OsName"
+            //Desired format: "CompanyName-ProductName/ProductVersion [OsName]" from https://tools.ietf.org/html/rfc2616#section-14.43
             if (!string.IsNullOrEmpty(CompanyName))
             {
-                sb.AppendFormat("{0}-", CompanyName);
+                sb.AppendFormat("{0}", CompanyName);
             }
 
             if (!string.IsNullOrEmpty(ProductName))
             {
-                sb.Append(ProductName);
-
-                if (string.IsNullOrEmpty(ProductVersion))
+                if (sb.Length > 0)
                 {
-                    sb.Append(ProductVersion);
+                    sb.Append("-");
                 }
-                else
+
+                sb.AppendFormat("{0}", ProductName);
+
+                if (!string.IsNullOrEmpty(ProductVersion))
                 {
                     sb.AppendFormat("/{0}", ProductVersion);
                 }
@@ -111,15 +112,45 @@ namespace LevelUp.Api.Http
 
             if (!string.IsNullOrEmpty(OsName))
             {
-                sb.AppendFormat(" {0}", OsName);
+                if (sb.Length > 0)
+                {
+                    sb.Append(" ");
+                }
+
+                sb.AppendFormat("[{0}]", OsName);
             }
 
             return sb.ToString();
         }
 
-        private string TrimStringToLength(string stringToTrim, int lengthLimit)
+        private static string FlattenString(string stringToFlatten)
         {
-            return (stringToTrim.Length > LENGTH_LIMIT) ? stringToTrim.Substring(0, lengthLimit) : stringToTrim;
+            if (string.IsNullOrEmpty(stringToFlatten))
+            {
+                return stringToFlatten;
+            }
+
+            string trimmed = stringToFlatten.Trim();
+
+            return trimmed.Replace(Environment.NewLine, "¶");
+        }
+
+        private static string FormatOsName(string osName)
+        {
+            string osVersion = "UNKNOWN OS VERSION";
+
+            try
+            {
+                osVersion = Environment.OSVersion.VersionString;
+            }
+            catch(InvalidOperationException)
+            {
+                //No-op to prevent exceptions from crashing application
+            }
+
+            return string.IsNullOrEmpty(osName)
+                       ? osVersion
+                       : string.Format("{0} | {1}", osName, osVersion);
         }
     }
 }

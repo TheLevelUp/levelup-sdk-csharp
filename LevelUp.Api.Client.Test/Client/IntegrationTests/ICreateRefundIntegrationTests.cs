@@ -18,7 +18,6 @@
 #endregion
 
 using LevelUp.Api.Client.ClientInterfaces;
-using LevelUp.Api.Client.Models.Requests;
 using LevelUp.Api.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -28,36 +27,16 @@ namespace LevelUp.Api.Client.Test.Client
     public class ICreateRefundIntegrationTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
-        public void CreateRefundForV14Order()
-        {
-            ClientModuleIntegrationTestingUtilities.RemoveAnyGiftCardCreditOnConsumerUserAccount();
-            ClientModuleIntegrationTestingUtilities.AddGiftCardCreditOnConsumerUserAccount(1000);
-
-            ICreateOrders orderInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<ICreateOrders>();
-            ICreateRefund refundInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<ICreateRefund>();
-            
-            Order toPlace = new Order( LevelUpTestConfiguration.Current.MerchantLocationId, LevelUpTestConfiguration.Current.ConsumerQrData,
-                2000, 500, 1000, 50, null, null, "CreateOrder_integration_test", true, null);
-
-            var order = orderInterface.PlaceOrder(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken, toPlace);
-            var refund = refundInterface.RefundOrder(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken, order.OrderIdentifier);
-
-            Assert.IsNotNull(refund.TimeOfRefund);
-            Assert.AreEqual(refund.TotalAmount, order.Total);
-        }
-
-        [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void CreateRefundForV15ProposedOrder()
         {
             // These are essentially the same test.
             IManageProposedOrdersIntegrationTests tmp = new IManageProposedOrdersIntegrationTests();
-            tmp.TwoStagePlaceOrderWorkflowShouldSucceed();
+            tmp.ProposedOrderWithDiscountAndGiftCard_ShouldSucceed();
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         [ExpectedException(typeof(Http.LevelUpApiException))]
         public void CreateRefundForNonExistantOrder()
         {
@@ -66,16 +45,11 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         [ExpectedException(typeof(LevelUpApiException))]
         public void CreateRefundForUnFinalizedProposedOrder()
         {
-            IRetrieveMerchantFundedCredit creditClient = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IRetrieveMerchantFundedCredit>();
-
-            var availableCredit = creditClient.GetMerchantFundedCredit(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
-                                                                        LevelUpTestConfiguration.Current.MerchantLocationId,
-                                                                        LevelUpTestConfiguration.Current.ConsumerQrData);
-            int availableDiscountCents = availableCredit.DiscountAmount;
+            int availableDiscountCents = ClientModuleIntegrationTestingUtilities.GetAvailableDiscountCredit(LevelUpTestConfiguration.Current.ConsumerQrData);
 
             const int giftCardAmountToUseInCents = 1000;
             ClientModuleIntegrationTestingUtilities.RemoveAnyGiftCardCreditOnConsumerUserAccount();
@@ -88,6 +62,7 @@ namespace LevelUp.Api.Client.Test.Client
             var proposedOrder = orderClient.CreateProposedOrder(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
                                                                 LevelUpTestConfiguration.Current.MerchantLocationId,
                                                                 LevelUpTestConfiguration.Current.ConsumerQrData,
+                                                                costOfItemInCents,
                                                                 costOfItemInCents,
                                                                 taxAmountInCents,
                                                                 0, null, null, null, null, true, null);

@@ -28,13 +28,13 @@ namespace LevelUp.Api.Client.Test.Client
     public class ICreateDetachedRefundIntegrationTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void CreateDetachedRefund()
         {
             ClientModuleIntegrationTestingUtilities.RemoveAnyGiftCardCreditOnConsumerUserAccount();
 
             const int refundAmountCents = 50;
-            PlaceAnOrderFromTheConsumerTestAccount(refundAmountCents);
+            ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer(refundAmountCents);
 
             ICreateDetachedRefund refundInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<ICreateDetachedRefund>();
             var refundData = new DetachedRefundRequestBody( LevelUpTestConfiguration.Current.MerchantLocationId, 
@@ -45,7 +45,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void CreateFails_WhenQrCodeIsInvalid()
         {
             const string invalidQRCode = "LU02000ROETEST_BAD_QR_DATA_D40200A0LU";
@@ -53,7 +53,7 @@ namespace LevelUp.Api.Client.Test.Client
             ClientModuleIntegrationTestingUtilities.RemoveAnyGiftCardCreditOnConsumerUserAccount();
 
             const int refundAmountCents = 50;
-            PlaceAnOrderFromTheConsumerTestAccount(refundAmountCents);
+            ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer(refundAmountCents);
 
             ICreateDetachedRefund refundInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<ICreateDetachedRefund>();
             var refundData = new DetachedRefundRequestBody( LevelUpTestConfiguration.Current.MerchantLocationId, 
@@ -72,25 +72,6 @@ namespace LevelUp.Api.Client.Test.Client
                                                         LevelUpTestConfiguration.Current.ConsumerQrData, 
                                                         refundAmountCents);
             refundInterface.CreateDetachedRefund(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken, refundData);
-        }
-
-        private void PlaceAnOrderFromTheConsumerTestAccount(int orderAmount)
-        {
-            ICreateOrders orderInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<ICreateOrders>();
-
-            Order toPlace = new Order(  LevelUpTestConfiguration.Current.MerchantLocationId, 
-                                        LevelUpTestConfiguration.Current.ConsumerQrData,
-                                        orderAmount, 
-                                        0, 
-                                        0, 
-                                        0, 
-                                        null, 
-                                        null, 
-                                        null, 
-                                        true, 
-                                        null);
-
-            orderInterface.PlaceOrder(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken, toPlace);
         }
     }
 }

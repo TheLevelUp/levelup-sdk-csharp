@@ -17,13 +17,12 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-extern alias ThirdParty;
 using System.Net;
 using LevelUp.Api.Client.ClientInterfaces;
 using LevelUp.Api.Client.Models.Requests;
 using LevelUp.Api.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ThirdParty.RestSharp;
+using RestSharp;
 
 namespace LevelUp.Api.Client.Test.Client
 {
@@ -31,7 +30,7 @@ namespace LevelUp.Api.Client.Test.Client
     public class IAuthenticateUnitTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void AuthenticationShouldSucceed()
         {
             const string testBaseUri = "https://127.0.0.1";
@@ -49,8 +48,6 @@ namespace LevelUp.Api.Client.Test.Client
                                                        testClientId,
                                                        testMerchantUsername,
                                                        testMerchantPassword);
-            const int expectedUserId = 54321;
-            const int expectedmerchantId = 32225;
 
             // This response format does not matter for this test.
             RestResponse expectedResponse = new RestResponse
@@ -70,7 +67,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void AuthenticationShouldSucceedForCode200OK()
         {
             const int expectedUserId = 54321;
@@ -96,7 +93,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         [ExpectedException((typeof(LevelUpApiException)), "No LevelUpAPI exception was thrown for a response with a return code of 404.")]
         public void AuthenticationShouldFailForErrorCode404NotFound()
         {

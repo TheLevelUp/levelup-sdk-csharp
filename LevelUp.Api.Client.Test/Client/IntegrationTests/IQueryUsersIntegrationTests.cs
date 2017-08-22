@@ -27,7 +27,7 @@ namespace LevelUp.Api.Client.Test.Client
     public class IQueryUsersIntegrationTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void GetUser()
         {
             IQueryUser queryInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IQueryUser>();
@@ -41,7 +41,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void GetLocationDetails()
         {
             IQueryUser queryInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IQueryUser>();

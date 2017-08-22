@@ -19,6 +19,7 @@
 
 using LevelUp.Api.Client.ClientInterfaces;
 using LevelUp.Api.Client.Models.Requests;
+using LevelUp.Api.Client.Models.Responses;
 using LevelUp.Api.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -114,22 +115,22 @@ namespace LevelUp.Api.Client.Test.Client
 
         private static void RemoveAnyGiftCardOnAccount(int merchantId, int merchantLocationId, string userQrCode)
         {
-            IRetrieveMerchantFundedCredit creditClient = GetSandboxedLevelUpModule<IRetrieveMerchantFundedCredit>();
+            IRetrieveMerchantFundedGiftCardCredit creditClient = GetSandboxedLevelUpModule<IRetrieveMerchantFundedGiftCardCredit>();
             IDestroyGiftCardValue giftCardDestroyClient = GetSandboxedLevelUpModule<IDestroyGiftCardValue>();
 
-            var credit = creditClient.GetMerchantFundedCredit(SandboxedLevelUpMerchantAccessToken,
+            var credit = creditClient.GetMerchantFundedGiftCardCredit(SandboxedLevelUpMerchantAccessToken,
                merchantLocationId, userQrCode);
 
-            if (credit.GiftCardAmount == 0)
+            if (credit.TotalAmount == 0)
                 return;
 
             giftCardDestroyClient.GiftCardDestroyValue(SandboxedLevelUpMerchantAccessToken, 
-                merchantId, userQrCode, credit.GiftCardAmount);
+                merchantId, userQrCode, credit.TotalAmount);
 
-            credit = creditClient.GetMerchantFundedCredit(SandboxedLevelUpMerchantAccessToken,
+            credit = creditClient.GetMerchantFundedGiftCardCredit(SandboxedLevelUpMerchantAccessToken,
                merchantLocationId, userQrCode);
 
-            Assert.IsTrue(credit.GiftCardAmount == 0);
+            Assert.IsTrue(credit.TotalAmount == 0);
         }
 
         internal static void AddGiftCardCreditOnConsumerUserAccount(int amountToAdd)
@@ -144,10 +145,10 @@ namespace LevelUp.Api.Client.Test.Client
 
         internal static void AddGiftCardCreditOnUserAccount(string userQrCode, int amountToAdd)
         {
-            IRetrieveMerchantFundedCredit creditClient = GetSandboxedLevelUpModule<IRetrieveMerchantFundedCredit>();
+            IRetrieveMerchantFundedGiftCardCredit creditClient = GetSandboxedLevelUpModule<IRetrieveMerchantFundedGiftCardCredit>();
             ICreateGiftCardValue giftCardClient = GetSandboxedLevelUpModule<ICreateGiftCardValue>();
 
-            var initialCredit = creditClient.GetMerchantFundedCredit(   
+            var initialCredit = creditClient.GetMerchantFundedGiftCardCredit(   
                 ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
                 LevelUpTestConfiguration.Current.MerchantLocationId, userQrCode);
 
@@ -157,10 +158,38 @@ namespace LevelUp.Api.Client.Test.Client
                                             userQrCode, 
                                             amountToAdd);
 
-            var newCredit = creditClient.GetMerchantFundedCredit(SandboxedLevelUpMerchantAccessToken,
+            var newCredit = creditClient.GetMerchantFundedGiftCardCredit(SandboxedLevelUpMerchantAccessToken,
                 LevelUpTestConfiguration.Current.MerchantLocationId, userQrCode);
 
-            Assert.AreEqual(newCredit.GiftCardAmount - initialCredit.GiftCardAmount, amountToAdd);
+            Assert.AreEqual(newCredit.TotalAmount - initialCredit.TotalAmount, amountToAdd);
+        }
+
+        internal static CompletedOrderResponse PlaceOrderAtTestMerchantWithTestConsumer(int total = 100)
+        {
+            ClientModuleIntegrationTestingUtilities.RemoveAnyGiftCardCreditOnConsumerUserAccount();
+
+            IManageProposedOrders orderClient = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IManageProposedOrders>();
+            var proposedOrder = orderClient.CreateProposedOrder(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
+                LevelUpTestConfiguration.Current.MerchantLocationId,
+                LevelUpTestConfiguration.Current.ConsumerQrData,
+                total, total, 0, 0, null, null, null, null, true, null);
+
+            return orderClient.CompleteProposedOrder(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
+                LevelUpTestConfiguration.Current.MerchantLocationId,
+                LevelUpTestConfiguration.Current.ConsumerQrData,
+                proposedOrder.ProposedOrderIdentifier,
+                total, total, 0, 0, proposedOrder.DiscountAmountCents, null, null, null, null, true, null);
+        }
+
+        internal static int GetAvailableDiscountCredit(string qrData)
+        {
+            IManageProposedOrders orderClient = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IManageProposedOrders>();
+
+            var proposedOrder = orderClient.CreateProposedOrder(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
+                LevelUpTestConfiguration.Current.MerchantLocationId,
+                qrData, int.MaxValue, int.MaxValue, 0, 0, null, null, null, null, true, null);
+
+            return proposedOrder.DiscountAmountCents;
         }
     }
 }

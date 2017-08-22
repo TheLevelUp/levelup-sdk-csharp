@@ -77,16 +77,6 @@ namespace LevelUp.Api.Client.RequestVisitors
             return BuildUri(request.ApiVersion, string.Format("merchants/{0}/gift_card_value_removals", request.MerchantId));
         }
 
-        public string Visit(MerchantCreditQueryRequest request)
-        {
-            return BuildUri(request.ApiVersion, string.Format("locations/{0}/merchant_funded_credit", request.LocationId));
-        }
-
-        public string Visit(OrderRequest request)
-        {
-            return BuildUri(request.ApiVersion, "orders");
-        }
-
         public string Visit(FinalizeRemoteCheckRequest request)
         {
             return BuildUri(request.ApiVersion, string.Format("checks/{0}/orders", request.CheckUuid));

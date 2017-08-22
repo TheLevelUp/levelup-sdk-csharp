@@ -33,8 +33,6 @@ namespace LevelUp.Api.Client.Models.RequestVisitors
         T Visit(FinalizeRemoteCheckRequest request);
         T Visit(GiftCardAddValueRequest request);
         T Visit(GiftCardRemoveValueRequest request);
-        T Visit(MerchantCreditQueryRequest request);
-        T Visit(OrderRequest request);
         T Visit(RefundRequest request);
         T Visit(UpdateRemoteCheckDataRequest request);
         T Visit(UpdateUserRequest request);

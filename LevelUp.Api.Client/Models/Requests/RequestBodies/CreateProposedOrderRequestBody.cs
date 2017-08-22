@@ -35,7 +35,7 @@ namespace LevelUp.Api.Client.Models.Requests
         public CreateProposedOrderRequestBody( int locationId,
                                          string qrPaymentData,
                                          int spendAmountCents,
-                                         int taxAmountCents,
+                                         int? taxAmountCents,
                                          int exemptionAmountCents,
                                          string register,
                                          string cashier,
@@ -64,7 +64,7 @@ namespace LevelUp.Api.Client.Models.Requests
         public int SpendAmountCents { get; private set; }
 
         [JsonProperty(PropertyName = "tax_amount")]
-        public int TaxAmountCents { get; private set; }
+        public int? TaxAmountCents { get; private set; }
 
         [JsonProperty(PropertyName = "cashier")]
         public string Cashier { get; private set; }

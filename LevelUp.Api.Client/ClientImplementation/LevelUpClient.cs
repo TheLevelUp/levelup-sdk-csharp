@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using LevelUp.Api.Client.Models.Requests;
 using LevelUp.Api.Client.Models.RequestVisitors;
 using LevelUp.Api.Client.Models.Responses;
-using LevelUp.Api.Utilities;
+using LevelUp.Pos.ProposedOrders;
 
 namespace LevelUp.Api.Client
 {
@@ -37,7 +37,7 @@ namespace LevelUp.Api.Client
     /// provided to these SDK methods and then provide those objects
     /// with the execution engine visitor.
     /// </remarks>
-    internal class LevelUpClient : ILevelUpClient
+    internal class LevelUpClient : ILevelUpClientSuperset
     {
         private readonly IRequestVisitor<IResponse> _engine;
 
@@ -105,16 +105,6 @@ namespace LevelUp.Api.Client
                 detachedRefund.CreditAmountCents, detachedRefund.Register, detachedRefund.Cashier, 
                 detachedRefund.Identifier, detachedRefund.ManagerConfirmation, detachedRefund.CustomerFacingReason, 
                 detachedRefund.InternalReason);
-        }
-
-        #endregion
-
-        #region ICreateOrder Implementation
-        
-        public OrderResponse PlaceOrder(string accessToken, Order orderData)
-        {
-            OrderRequest request = new OrderRequest(accessToken, orderData);
-            return request.Accept(_engine) as OrderResponse;
         }
 
         #endregion
@@ -250,7 +240,7 @@ namespace LevelUp.Api.Client
         }
 
         public IList<OrderDetailsResponse> ListFilteredOrders(string accessToken, int locationId, int startPageNum, int endPageNum,
-            Utilities.Func<OrderDetailsResponse, bool> filter = null, Utilities.Func<OrderDetailsResponse, OrderDetailsResponse, int> @orderby = null)
+            Func<OrderDetailsResponse, bool> filter = null, Func<OrderDetailsResponse, OrderDetailsResponse, int> @orderby = null)
         {
             var allOrders = new List<OrderDetailsResponse> (ListOrders(accessToken, locationId, startPageNum, endPageNum));
 
@@ -279,22 +269,6 @@ namespace LevelUp.Api.Client
         {
             UserDetailsQueryRequest request = new UserDetailsQueryRequest(accessToken, userId);
             return request.Accept(_engine) as User;
-        }
-
-        #endregion
-
-        #region IRetrieveMerchantFundedCredit Implementation
-        
-        public MerchantFundedCreditResponse GetMerchantFundedCredit(string accessToken, int locationId, string qrData)
-        {
-            MerchantCreditQueryRequest request = new MerchantCreditQueryRequest(accessToken, locationId, qrData, null, null);
-            return request.Accept(_engine) as MerchantFundedCreditResponse;
-        }
-
-        public MerchantFundedCreditResponse GetMerchantFundedCredit(string accessToken, int locationId, string qrData, string identifierFromMerchant, IList<Item> items)
-        {
-            MerchantCreditQueryRequest request = new MerchantCreditQueryRequest(accessToken, locationId, qrData, identifierFromMerchant, items);
-            return request.Accept(_engine) as MerchantFundedCreditResponse;
         }
 
         #endregion
@@ -392,34 +366,46 @@ namespace LevelUp.Api.Client
 
         #endregion
         
-        #region ICreateTwoStageOrder Implementation
+        #region IManageProposedOrders Implementation
         
         public ProposedOrderResponse CreateProposedOrder(string accessToken, int locationId, string qrPaymentData, 
-                                                        int spendAmountCents, int taxAmountCents, int exemptionAmountCents, 
-                                                        string register, string cashier, string identifierFromMerchant,
+                                                        int totalOutstandingAmountCents, int spendAmountCents, 
+                                                        int? taxAmountCents, int exemptionAmountCents, string register, 
+                                                        string cashier, string identifierFromMerchant,
                                                         string receiptMessageHtml, bool partialAuthorizationAllowed, 
                                                         IList<Item> items)
         {
+            // Adjust spend/tax/exemption amounts in situations where there are multiple payments on a single check.
+            var adjustmentsForPartialPayments = ProposedOrderCalculator.CalculateCreateProposedOrderValues(
+                totalOutstandingAmountCents, taxAmountCents ?? 0, exemptionAmountCents, spendAmountCents);
+
             CreateProposedOrderRequest request = new CreateProposedOrderRequest(accessToken, locationId, qrPaymentData, 
-                                                                                spendAmountCents, taxAmountCents, 
-                                                                                exemptionAmountCents, register, cashier, 
-                                                                                identifierFromMerchant, receiptMessageHtml, 
-                                                                                partialAuthorizationAllowed, items);
+                                                                                adjustmentsForPartialPayments.SpendAmount, 
+                                                                                adjustmentsForPartialPayments.TaxAmount, 
+                                                                                adjustmentsForPartialPayments.ExemptionAmount, 
+                                                                                register, cashier, identifierFromMerchant, 
+                                                                                receiptMessageHtml, partialAuthorizationAllowed, items);
 
             return request.Accept(_engine) as ProposedOrderResponse;
         }
 
         public CompletedOrderResponse CompleteProposedOrder(string accessToken, int locationId, string qrPaymentData,
-                                                            string proposedOrderUuid, int spendAmountCents, 
-                                                            int taxAmountCents, int exemptionAmountCents,
-                                                            int appliedDiscountAmountCents, string register, 
+                                                            string proposedOrderUuid, int totalOutstandingAmountCents, 
+                                                            int spendAmountCents, int? taxAmountCents, int exemptionAmountCents,
+                                                            int? appliedDiscountAmountCents, string register, 
                                                             string cashier, string identifierFromMerchant,
                                                             string receiptMessageHtml, bool partialAuthorizationAllowed, 
                                                             IList<Item> items)
         {
+            // Adjust spend/tax/exemption amounts in situations where there are multiple payments on a single check.
+            var adjustmentsForPartialPayments = ProposedOrderCalculator.CalculateCompleteOrderValues(totalOutstandingAmountCents, 
+                taxAmountCents ?? 0, exemptionAmountCents, spendAmountCents, appliedDiscountAmountCents ?? 0);
+
             CompleteProposedOrderRequest request = new CompleteProposedOrderRequest(accessToken, locationId, qrPaymentData, 
-                                                                                    proposedOrderUuid, spendAmountCents, 
-                                                                                    taxAmountCents, exemptionAmountCents,
+                                                                                    proposedOrderUuid, 
+                                                                                    adjustmentsForPartialPayments.SpendAmount, 
+                                                                                    adjustmentsForPartialPayments.TaxAmount, 
+                                                                                    adjustmentsForPartialPayments.ExemptionAmount,
                                                                                     appliedDiscountAmountCents, register,
                                                                                     cashier, identifierFromMerchant, 
                                                                                     receiptMessageHtml, partialAuthorizationAllowed,

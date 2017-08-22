@@ -17,13 +17,12 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-extern alias ThirdParty;
 using System.Collections.Generic;
 using System.Net;
 using LevelUp.Api.Client.ClientInterfaces;
 using LevelUp.Api.Client.Models.Requests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ThirdParty.RestSharp;
+using RestSharp;
 
 namespace LevelUp.Api.Client.Test.Client
 {
@@ -31,7 +30,7 @@ namespace LevelUp.Api.Client.Test.Client
     public class IManageProposedOrdersUnitTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void CreateProposedOrderShouldSucceed()
         {
             string expectedRequestUrl = "https://sandbox.thelevelup.com/v15/proposed_orders";
@@ -63,7 +62,7 @@ namespace LevelUp.Api.Client.Test.Client
             IManageProposedOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CreateProposedOrderRequest>(
                 expectedResponse, expectedRequest, expectedRequestUrl: expectedRequestUrl);
             var proposedOrder = client.CreateProposedOrder("not_checking_this", 19, "LU02000008ZS9OJFUBNEL6ZM030000LU",
-                110, 10, 0, "3", "Bob", "001001", null, true, items);
+                110, 110, 10, 0, "3", "Bob", "001001", null, true, items);
 
             Assert.AreEqual(proposedOrder.ProposedOrderIdentifier, "1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1");
             Assert.AreEqual(proposedOrder.DiscountAmountCents, 2578);
@@ -71,7 +70,46 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        public void CreateProposedOrderShouldSucceedForSplitTender()
+        {
+            string expectedRequestUrl = "https://sandbox.thelevelup.com/v15/proposed_orders";
+
+            string expectedRequest = "{" +
+                                     "\"proposed_order\": {" +
+                                     "\"payment_token_data\": \"LU02000008ZS9OJFUBNEL6ZM030000LU\"," +
+                                     "\"cashier\": \"Bob\"," +
+                                     "\"exemption_amount\": 40," +
+                                     "\"receipt_message_html\": null," +
+                                     "\"register\": \"3\"," +
+                                     "\"tax_amount\": 0," +
+                                     "\"identifier_from_merchant\": \"001001\"," +
+                                     "\"partial_authorization_allowed\": true," +
+                                     "\"location_id\": 19," +
+                                     "\"spend_amount\": 100," +
+                                     GetSampleItems().Item1 +
+                                     "}" +
+                                     "}";
+
+            RestResponse expectedResponse = new RestResponse
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = "{ \"proposed_order\": { \"discount_amount\": 2578, \"uuid\": \"1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1\"}}"
+            };
+
+            var items = GetSampleItems().Item2;
+
+            IManageProposedOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CreateProposedOrderRequest>(
+                expectedResponse, expectedRequest, expectedRequestUrl: expectedRequestUrl);
+            var proposedOrder = client.CreateProposedOrder("not_checking_this", 19, "LU02000008ZS9OJFUBNEL6ZM030000LU",
+                200, 100, 10, 130, "3", "Bob", "001001", null, true, items);
+
+            Assert.AreEqual(proposedOrder.ProposedOrderIdentifier, "1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1");
+            Assert.AreEqual(proposedOrder.DiscountAmountCents, 2578);
+        }
+
+        [TestMethod]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void CompleteProposedOrderShouldSucceed()
         {
             string expectedRequestUrl = "https://sandbox.thelevelup.com/v15/completed_orders";
@@ -114,7 +152,7 @@ namespace LevelUp.Api.Client.Test.Client
             IManageProposedOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CompleteProposedOrderRequest>(
                 expectedResponse, expectedRequest, expectedRequestUrl: expectedRequestUrl);
             var completedOrder = client.CompleteProposedOrder("not_checking_this", 19, "LU02000008ZS9OJFUBNEL6ZM030000LU",
-                "1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1", 110, 10, 0, 100, "3", "Bob", "001001", 
+                "1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1", 110, 110, 10, 0, 100, "3", "Bob", "001001", 
                 "Pick up your order at <strong>counter #4</strong>", false, items);
 
             Assert.AreEqual(completedOrder.GiftCardTotalAmount, 0);
@@ -122,6 +160,116 @@ namespace LevelUp.Api.Client.Test.Client
             Assert.AreEqual(completedOrder.SpendAmount, 500);
             Assert.AreEqual(completedOrder.TipAmount, 0);
             Assert.AreEqual(completedOrder.Total, 500);
+            Assert.AreEqual(completedOrder.OrderIdentifier, "5a1z9x2h31ah7g8a9i9h8g7f6e5d4c4a21o");
+        }
+
+        [TestMethod]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        public void CompleteProposedOrderShouldSucceedForSplitTender()
+        {
+            string expectedRequestUrl = "https://sandbox.thelevelup.com/v15/completed_orders";
+
+            string expectedRequest = "{" +
+                                     "\"completed_order\": {" +
+                                     "\"applied_discount_amount\": 100," +
+                                     "\"cashier\": \"Bob\"," +
+                                     "\"exemption_amount\": 40," +
+                                     "\"identifier_from_merchant\": \"001001\"," +
+                                     "\"location_id\": 19," +
+                                     "\"partial_authorization_allowed\": false," +
+                                     "\"payment_token_data\": \"LU02000008ZS9OJFUBNEL6ZM030000LU\"," +
+                                     "\"proposed_order_uuid\": \"1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1\"," +
+                                     "\"receipt_message_html\": \"Pick up your order at <strong>counter #4</strong>\"," +
+                                     "\"register\": \"3\"," +
+                                     "\"spend_amount\": 200," +
+                                     "\"tax_amount\": 0," +
+                                     GetSampleItems().Item1 +
+                                     "}" +
+                                     "}";
+
+            RestResponse expectedResponse = new RestResponse
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = "{ " +
+                          "\"order\": { " +
+                          "\"gift_card_total_amount\": 0, " +
+                          "\"gift_card_tip_amount\": 0, " +
+                          "\"spend_amount\": 200, " +
+                          "\"tip_amount\": 0, " +
+                          "\"total_amount\": 200, " +
+                          "\"uuid\": \"5a1z9x2h31ah7g8a9i9h8g7f6e5d4c4a21o\"" +
+                          "}" +
+                          "}"
+            };
+
+            var items = GetSampleItems().Item2;
+
+            IManageProposedOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CompleteProposedOrderRequest>(
+                expectedResponse, expectedRequest, expectedRequestUrl: expectedRequestUrl);
+            var completedOrder = client.CompleteProposedOrder("not_checking_this", 19, "LU02000008ZS9OJFUBNEL6ZM030000LU",
+                "1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1", 300, 200, 10, 130, 100, "3", "Bob", "001001",
+                "Pick up your order at <strong>counter #4</strong>", false, items);
+
+            Assert.AreEqual(completedOrder.GiftCardTotalAmount, 0);
+            Assert.AreEqual(completedOrder.GiftCardTipAmount, 0);
+            Assert.AreEqual(completedOrder.SpendAmount, 200);
+            Assert.AreEqual(completedOrder.TipAmount, 0);
+            Assert.AreEqual(completedOrder.Total, 200);
+            Assert.AreEqual(completedOrder.OrderIdentifier, "5a1z9x2h31ah7g8a9i9h8g7f6e5d4c4a21o");
+        }
+
+        [TestMethod]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        public void CompleteProposedOrderShouldSucceedForDiscountsDisabled()
+        {
+            string expectedRequestUrl = "https://sandbox.thelevelup.com/v15/completed_orders";
+
+            string expectedRequest = "{" +
+                                     "\"completed_order\": {" +
+                                     "\"applied_discount_amount\": null," +
+                                     "\"cashier\": \"Bob\"," +
+                                     "\"exemption_amount\": 40," +
+                                     "\"identifier_from_merchant\": \"001001\"," +
+                                     "\"location_id\": 19," +
+                                     "\"partial_authorization_allowed\": false," +
+                                     "\"payment_token_data\": \"LU02000008ZS9OJFUBNEL6ZM030000LU\"," +
+                                     "\"proposed_order_uuid\": \"1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1\"," +
+                                     "\"receipt_message_html\": \"Pick up your order at <strong>counter #4</strong>\"," +
+                                     "\"register\": \"3\"," +
+                                     "\"spend_amount\": 200," +
+                                     "\"tax_amount\": 0," +
+                                     GetSampleItems().Item1 +
+                                     "}" +
+                                     "}";
+
+            RestResponse expectedResponse = new RestResponse
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = "{ " +
+                          "\"order\": { " +
+                          "\"gift_card_total_amount\": 0, " +
+                          "\"gift_card_tip_amount\": 0, " +
+                          "\"spend_amount\": 200, " +
+                          "\"tip_amount\": 0, " +
+                          "\"total_amount\": 200, " +
+                          "\"uuid\": \"5a1z9x2h31ah7g8a9i9h8g7f6e5d4c4a21o\"" +
+                          "}" +
+                          "}"
+            };
+
+            var items = GetSampleItems().Item2;
+
+            IManageProposedOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CompleteProposedOrderRequest>(
+                expectedResponse, expectedRequest, expectedRequestUrl: expectedRequestUrl);
+            var completedOrder = client.CompleteProposedOrder("not_checking_this", 19, "LU02000008ZS9OJFUBNEL6ZM030000LU",
+                "1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1", 300, 200, 10, 130, null, "3", "Bob", "001001",
+                "Pick up your order at <strong>counter #4</strong>", false, items);
+
+            Assert.AreEqual(completedOrder.GiftCardTotalAmount, 0);
+            Assert.AreEqual(completedOrder.GiftCardTipAmount, 0);
+            Assert.AreEqual(completedOrder.SpendAmount, 200);
+            Assert.AreEqual(completedOrder.TipAmount, 0);
+            Assert.AreEqual(completedOrder.Total, 200);
             Assert.AreEqual(completedOrder.OrderIdentifier, "5a1z9x2h31ah7g8a9i9h8g7f6e5d4c4a21o");
         }
 

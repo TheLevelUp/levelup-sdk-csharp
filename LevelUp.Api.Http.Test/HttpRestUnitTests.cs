@@ -17,12 +17,11 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-extern alias ThirdParty;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ThirdParty.RestSharp;
+using RestSharp;
 
 namespace LevelUp.Api.Http.Test
 {
@@ -30,7 +29,7 @@ namespace LevelUp.Api.Http.Test
     public class HttpRestUnitTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void BuildRequestShouldSucceed()
         {
             const string body = "{{\"access_token\": {{\"api_key\": \"my_key\",\"username\": \"my_username\",\"password\": \"my_password\"}}}}";
@@ -51,7 +50,7 @@ namespace LevelUp.Api.Http.Test
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void CreateCombinedUrlShouldSucceed()
         {
             string baseUrlWithTrailingSlash = "http://test.thelevelup.com/";
@@ -68,7 +67,7 @@ namespace LevelUp.Api.Http.Test
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         [ExpectedException(typeof(UriFormatException))]
         public void CreateCombinedUrlShouldFailForInvalidFormat()
         {
@@ -79,7 +78,7 @@ namespace LevelUp.Api.Http.Test
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void CreateCombinedUrlShouldSucceedForFileFormat()
         {
             string baseUrl = "file://levelup";

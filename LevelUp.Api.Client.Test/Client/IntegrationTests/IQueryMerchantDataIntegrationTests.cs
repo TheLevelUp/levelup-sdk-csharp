@@ -19,7 +19,6 @@
 
 using System.Linq;
 using LevelUp.Api.Client.ClientInterfaces;
-using LevelUp.Api.Client.Models.Requests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LevelUp.Api.Client.Test.Client
@@ -28,7 +27,7 @@ namespace LevelUp.Api.Client.Test.Client
     public class IQueryMerchantDataIntegrationTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void GetLocationDetails()
         {
             IQueryMerchantData queryClient = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IQueryMerchantData>();
@@ -39,7 +38,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void ListLocations()
         {
             IQueryMerchantData queryClient = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IQueryMerchantData>();
@@ -51,7 +50,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void ListManagedLocations()
         {
             IQueryMerchantData queryClient = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IQueryMerchantData>();
@@ -62,31 +61,24 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void GetMerchantOrderDetails()
         {
             ClientModuleIntegrationTestingUtilities.RemoveAnyGiftCardCreditOnConsumerUserAccount();
 
             IQueryMerchantData queryClient = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IQueryMerchantData>();
-            ICreateOrders orderClient = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<ICreateOrders>();
 
-            Order toPlace = new Order(  LevelUpTestConfiguration.Current.MerchantLocationId, 
-                                        LevelUpTestConfiguration.Current.ConsumerQrData,
-                                        1000, 
-                                        0, 0, 0, null, null, 
-                                        "GetMerchantOrderDetails_integration_test", 
-                                        true, null);
-            var placed = orderClient.PlaceOrder(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken, toPlace);
+            var ordered = ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer(1000);
 
             var queriedOrderDetails = queryClient.GetMerchantOrderDetails(
                 ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken, 
-                LevelUpTestConfiguration.Current.MerchantId, 
-                placed.OrderIdentifier);
+                LevelUpTestConfiguration.Current.MerchantId,
+                ordered.OrderIdentifier);
 
-            Assert.AreEqual(queriedOrderDetails.OrderIdentifier, placed.OrderIdentifier);
-            Assert.AreEqual(queriedOrderDetails.SpendAmount, placed.SpendAmount);
-            Assert.AreEqual(queriedOrderDetails.TipAmount, placed.TipAmount);
-            Assert.AreEqual(queriedOrderDetails.Total, placed.Total);
+            Assert.AreEqual(queriedOrderDetails.OrderIdentifier, ordered.OrderIdentifier);
+            Assert.AreEqual(queriedOrderDetails.SpendAmount, ordered.SpendAmount);
+            Assert.AreEqual(queriedOrderDetails.TipAmount, ordered.TipAmount);
+            Assert.AreEqual(queriedOrderDetails.Total, ordered.Total);
         }
     }
 }

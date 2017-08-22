@@ -26,7 +26,7 @@ namespace LevelUp.Api.Http.Test
     public class LevelUpUriBuilderTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void DefaultIsSandbox()
         {
             var uriBuilder = new LevelUpUriBuilder();
@@ -34,7 +34,7 @@ namespace LevelUp.Api.Http.Test
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void CanSetEnvironment()
         {
             var uriBuilder = new LevelUpUriBuilder(LevelUpEnvironment.Sandbox);
@@ -46,7 +46,7 @@ namespace LevelUp.Api.Http.Test
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void CanSetApiVersion()
         {
             var uriBuilder = new LevelUpUriBuilder().SetApiVersion(LevelUpApiVersion.v14);
@@ -56,7 +56,7 @@ namespace LevelUp.Api.Http.Test
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void IncludePortNumber()
         {
             const string sslPort = "443";
@@ -68,7 +68,7 @@ namespace LevelUp.Api.Http.Test
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void AppendQuery()
         {
             const string query = "test=yes";

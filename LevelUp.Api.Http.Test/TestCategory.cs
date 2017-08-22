@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="TestCategories.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="TestCategory.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -17,9 +17,9 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-namespace LevelUp.Api.Utilities.Test
+namespace LevelUp.Api.Http.Test
 {
-    public static class TestCategories
+    public class TestCategory
     {
         public const string UnitTests = "Unit Tests";
         public const string IntegrationTests = "Integration Tests";

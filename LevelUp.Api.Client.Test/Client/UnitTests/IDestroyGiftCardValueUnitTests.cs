@@ -17,13 +17,12 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-extern alias ThirdParty;
 using System.Collections.Generic;
 using System.Net;
 using LevelUp.Api.Client.ClientInterfaces;
 using LevelUp.Api.Client.Models.Requests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ThirdParty.RestSharp;
+using RestSharp;
 
 namespace LevelUp.Api.Client.Test.Client
 {
@@ -31,7 +30,7 @@ namespace LevelUp.Api.Client.Test.Client
     public class IDestroyGiftCardValueUnitTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void GiftCardDestroyValueShouldSucceed()
         {
             string paymentTokenData = "LU020000029080KFZ02I9A8V030000LU";
@@ -74,7 +73,7 @@ namespace LevelUp.Api.Client.Test.Client
 
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void GiftCardDestroyValueShouldFailForBadHttpStatusCodes()
         {
             List<RestResponse> possibleErrors = new List<RestResponse>(new RestResponse[]

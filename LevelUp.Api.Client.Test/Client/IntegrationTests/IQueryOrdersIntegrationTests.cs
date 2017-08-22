@@ -20,7 +20,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using LevelUp.Api.Client.ClientInterfaces;
-using LevelUp.Api.Client.Models.Requests;
 using LevelUp.Api.Client.Models.Responses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -30,10 +29,10 @@ namespace LevelUp.Api.Client.Test.Client
     public class IQueryOrdersIntegrationTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void ListOrders()
         {
-            OrderResponse created = PlaceAnOrderAtTestMerchantLocation();
+            CompletedOrderResponse created = ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer();
 
             IQueryOrders queryInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IQueryOrders>();
             var orders = queryInterface.ListOrders(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
@@ -43,12 +42,12 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void ListFilteredOrders_WithFilter()
         {
             IQueryOrders queryInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IQueryOrders>();
-            OrderResponse first = PlaceAnOrderAtTestMerchantLocation(200);
-            PlaceAnOrderAtTestMerchantLocation(300);  // ensure that there is at least one other order that the filter will ignore.
+            CompletedOrderResponse first = ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer(200);
+            ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer(300);  // ensure that there is at least one other order that the filter will ignore.
 
             var orders = queryInterface.ListFilteredOrders(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
                     LevelUpTestConfiguration.Current.MerchantLocationId, 1, 1, (x => x.OrderIdentifier == first.OrderIdentifier));
@@ -58,12 +57,12 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void ListFilteredOrders_WithOrdering()
         {
             IQueryOrders queryInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IQueryOrders>();
-            PlaceAnOrderAtTestMerchantLocation(200);
-            PlaceAnOrderAtTestMerchantLocation(300);
+            ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer(200);
+            ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer(300);
 
             var orders = queryInterface.ListFilteredOrders(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
                     LevelUpTestConfiguration.Current.MerchantLocationId, 1, 1, null, ((x, y) => y.Total - x.Total));
@@ -73,12 +72,12 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void ListFilteredOrders_WithFilterAndOrdering()
         {
             IQueryOrders queryInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IQueryOrders>();
-            OrderResponse first = PlaceAnOrderAtTestMerchantLocation(200);
-            OrderResponse second = PlaceAnOrderAtTestMerchantLocation(300);
+            CompletedOrderResponse first = ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer(200);
+            CompletedOrderResponse second = ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer(300);
 
             var orders = queryInterface.ListFilteredOrders(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
                    LevelUpTestConfiguration.Current.MerchantLocationId, 1, 1, 
@@ -90,7 +89,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void ListAllOrders()
         {
             // Note: the integration test merchant may accrue a lot of orders -- this will 
@@ -98,7 +97,7 @@ namespace LevelUp.Api.Client.Test.Client
             //      integration tests frequently?
             ClientModuleIntegrationTestingUtilities.RemoveAnyGiftCardCreditOnConsumerUserAccount();
             var initialOrders = GetEveryOrderForTestMerchant();
-            PlaceAnOrderAtTestMerchantLocation();
+            ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer();
             var currentOrders = GetEveryOrderForTestMerchant();
 
             Assert.IsTrue(currentOrders.Count == initialOrders.Count + 1);
@@ -121,18 +120,6 @@ namespace LevelUp.Api.Client.Test.Client
                 currentPage++;
             }
             return retval;
-        }
-
-        private OrderResponse PlaceAnOrderAtTestMerchantLocation(int total = 100)
-        {
-            ClientModuleIntegrationTestingUtilities.RemoveAnyGiftCardCreditOnConsumerUserAccount();
-            ICreateOrders createInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<ICreateOrders>();
-
-            return createInterface.PlaceOrder(  ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
-                                                new Order(  LevelUpTestConfiguration.Current.MerchantLocationId, 
-                                                            LevelUpTestConfiguration.Current.ConsumerQrData, 
-                                                            total, 
-                                                            0, 0, 0, null, null, null, true, null));
         }
     }
 }

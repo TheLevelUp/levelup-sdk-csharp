@@ -18,17 +18,7 @@
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug 3.0|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Net30\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug 4.0|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Net40\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -38,39 +28,9 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release 4.0|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Net40\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release 3.0|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Net30\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug 3.5|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug 3.5\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release 3.5|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Release 3.5\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -82,29 +42,23 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentAssertions">
-      <HintPath>..\packages\FluentAssertions.3.3.0\lib\net40\FluentAssertions.dll</HintPath>
+    <Reference Include="FluentAssertions, Version=4.19.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.4.19.2\lib\net40\FluentAssertions.dll</HintPath>
     </Reference>
-    <Reference Include="FluentAssertions.Core">
-      <HintPath>..\packages\FluentAssertions.3.3.0\lib\net40\FluentAssertions.Core.dll</HintPath>
+    <Reference Include="FluentAssertions.Core, Version=4.19.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.4.19.2\lib\net40\FluentAssertions.Core.dll</HintPath>
     </Reference>
-    <Reference Include="KellermanSoftware.Compare-NET-Objects">
-      <HintPath>..\packages\CompareNETObjects.2.01.0.0\lib\net40\KellermanSoftware.Compare-NET-Objects.dll</HintPath>
+    <Reference Include="KellermanSoftware.Compare-NET-Objects, Version=3.8.0.0, Culture=neutral, PublicKeyToken=d970ace04cc85217, processorArchitecture=MSIL">
+      <HintPath>..\packages\CompareNETObjects.3.08.0.0\lib\net40\KellermanSoftware.Compare-NET-Objects.dll</HintPath>
     </Reference>
     <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
-      <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp">
-      <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="RestSharp.Net2">
-      <HintPath>..\packages\RestSharp.Net2.1.1.11\lib\net20\RestSharp.Net2.dll</HintPath>
-      <Private>True</Private>
-      <Aliases>ThirdParty</Aliases>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -112,9 +66,6 @@
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\LevelUp.Api.Utilities.Test\TestCategories.cs">
-      <Link>TestCategories.cs</Link>
-    </Compile>
     <Compile Include="Client\IntegrationTests\ClientModuleIntegrationTestingUtilities.cs" />
     <Compile Include="Client\UnitTests\ClientModuleUnitTestingUtilities.cs" />
     <Compile Include="Client\UnitTests\IAuthenticateUnitTests.cs" />
@@ -124,8 +75,6 @@
     <Compile Include="Client\UnitTests\ICreateDetachedReundsUnitTests.cs" />
     <Compile Include="Client\IntegrationTests\ICreateGiftCardValueIntegrationTests.cs" />
     <Compile Include="Client\UnitTests\ICreateGiftCardValueUnitTests.cs" />
-    <Compile Include="Client\IntegrationTests\ICreateOrdersIntegrationTests.cs" />
-    <Compile Include="Client\UnitTests\ICreateOrdersUnitTests.cs" />
     <Compile Include="Client\IntegrationTests\ICreateRefundIntegrationTests.cs" />
     <Compile Include="Client\UnitTests\ICreateRefundUnitTests.cs" />
     <Compile Include="Client\IntegrationTests\IManageProposedOrdersIntegrationTests.cs" />
@@ -146,8 +95,6 @@
     <Compile Include="Client\UnitTests\IQueryOrdersUnitTests.cs" />
     <Compile Include="Client\IntegrationTests\IQueryUsersIntegrationTests.cs" />
     <Compile Include="Client\UnitTests\IQueryUserUnitTests.cs" />
-    <Compile Include="Client\IntegrationTests\IRetrieveMerchantFundedCreditIntegrationTests.cs" />
-    <Compile Include="Client\UnitTests\IRetrieveMerchantFundedCreditUnitTests.cs" />
     <Compile Include="Client\IntegrationTests\IRetrieveMerchantFundedGiftCardCreditIntegrationTests.cs" />
     <Compile Include="Client\UnitTests\IRetrieveMerchantFundedGiftCardCreditUnitTests.cs" />
     <Compile Include="Client\IntegrationTests\IRetrievePaymentTokenIntegrationTests.cs" />
@@ -183,16 +130,15 @@
       <Project>{12992069-4e54-49b3-a6be-44ac577a76fe}</Project>
       <Name>LevelUp.Api.Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LevelUp.Api.Http.Test\LevelUp.Api.Http.Test.csproj">
+      <Project>{8c34d8e3-2bec-418d-b26f-79fcb4f8a905}</Project>
+      <Name>LevelUp.Api.Http.Test</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LevelUp.Api.Http\LevelUp.Api.Http.csproj">
       <Project>{e3ba93a9-c367-447d-9668-095b46ac607e}</Project>
       <Name>LevelUp.Api.Http</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LevelUp.Api.Utilities\LevelUp.Api.Utilities.csproj">
-      <Project>{E186FA36-867A-4509-8C04-D2330699278D}</Project>
-      <Name>LevelUp.Api.Utilities</Name>
-    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /Y "$(ProjectDir)Config\test_config_settings.xml" "$(TargetDir)"</PostBuildEvent>

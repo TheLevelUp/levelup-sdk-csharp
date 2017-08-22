@@ -22,28 +22,19 @@ using LevelUp.Api.Client.ClientInterfaces;
 namespace LevelUp.Api.Client
 {
     /// <summary>
-    /// A superset of all interfaces provided by the SDK.
+    /// A collection of interfaces promoted for the most recent version of the SDK
     /// </summary>
-    public interface ILevelUpClient :   IComposedInterface, 
-                                        IAuthenticate,
-                                        ICreateCreditCards,
-                                        ICreateDetachedRefund,
-                                        ICreateOrders,
-                                        ICreateRefund,
-                                        IDestroyCreditCards,
-                                        ILookupUserLoyalty,
-                                        IModifyUser,
-                                        IQueryCreditCards,
-                                        IQueryMerchantData,
-                                        IQueryOrders,
-                                        IQueryUser,
-                                        IRetrieveMerchantFundedCredit,
-                                        IRetrievePaymentToken,
-                                        ICreateGiftCardValue,
-                                        IDestroyGiftCardValue,
-                                        IManageRemoteCheckData,
-                                        IRetrieveMerchantFundedGiftCardCredit,
-                                        IManageProposedOrders
+    public interface ILevelUpClient : IComposedInterface,
+                                      IAuthenticate,
+                                      ICreateDetachedRefund,
+                                      ICreateRefund,
+                                      IQueryMerchantData,
+                                      IQueryOrders,
+                                      IRetrievePaymentToken,
+                                      ICreateGiftCardValue,
+                                      IDestroyGiftCardValue,
+                                      IRetrieveMerchantFundedGiftCardCredit,
+                                      IManageProposedOrders
     {
     }
 }

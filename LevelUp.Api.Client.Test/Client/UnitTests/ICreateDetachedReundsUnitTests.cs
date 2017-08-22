@@ -17,14 +17,13 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-extern alias ThirdParty;
 using System;
 using System.Net;
 using LevelUp.Api.Client.ClientInterfaces;
 using LevelUp.Api.Client.Models.Requests;
 using LevelUp.Api.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ThirdParty.RestSharp;
+using RestSharp;
 
 namespace LevelUp.Api.Client.Test.Client
 {
@@ -32,7 +31,7 @@ namespace LevelUp.Api.Client.Test.Client
     public class ICreateDetachedReundsUnitTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void CreateDetachedRefundShouldSucceed()
         {
             const string expectedRequestUrl = "https://sandbox.thelevelup.com/v15/detached_refunds";
@@ -105,7 +104,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         [ExpectedException((typeof(LevelUpApiException)), "No LevelUpAPI exception was thrown an invalid response body.")]
         public void CreateDetachedRefundShouldFailDeserialization()
         {

@@ -17,11 +17,10 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-extern alias ThirdParty;
 using System.Net;
 using LevelUp.Api.Client.ClientInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ThirdParty.RestSharp;
+using RestSharp;
 
 namespace LevelUp.Api.Client.Test.Client
 {
@@ -63,7 +62,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void ListOrdersShouldSucceedWhenAllPagesQueried()
         {
             IQueryOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(successfulResponses, expectedRequestBaseUrl);
@@ -82,7 +81,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void ListOrdersShouldSucceedWhenMorePagesQueriedThanExist()
         {
             IQueryOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(successfulResponses, expectedRequestBaseUrl);
@@ -92,7 +91,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void ListOrdersShouldSucceedAndAreThereMorePagesShouldBeValid()
         {
             IQueryOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(successfulResponses, expectedRequestBaseUrl);
@@ -112,7 +111,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void ListOrdersShouldSucceedDespiteInvalidEndPageNumbers()
         {
             IQueryOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(successfulResponses, expectedRequestBaseUrl);
@@ -125,7 +124,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void ListOrdersShouldFailWith204ForInvalidStartPageNumbers()
         {
             IQueryOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(
@@ -135,7 +134,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void ListFilteredOrdersShouldSucceedWithNoModifierFunctions()
         {
             IQueryOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(
@@ -145,7 +144,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
         
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void ListFilteredOrdersShouldSucceedWithAFilterFunction()
         {
             IQueryOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(
@@ -158,7 +157,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
         public void ListFilteredOrdersShouldSucceedWithAnOrderingFunction()
         {
             IQueryOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(

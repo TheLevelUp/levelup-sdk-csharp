@@ -108,22 +108,6 @@ namespace LevelUp.Api.Client.RequestVisitors
                                                                                                     actions: GetCustomResponseHandlers(request));
         }
 
-        public IResponse Visit(MerchantCreditQueryRequest request)
-        {
-            return _restWrapper.Post<MerchantCreditQueryRequestBody, MerchantFundedCreditResponse>( request.Body, 
-                                                                                                    uri: GetEndpoint(request),
-                                                                                                    accessTokenHeader: GetHeaderToken(request),
-                                                                                                    actions: GetCustomResponseHandlers(request));
-        }
-
-        public IResponse Visit(OrderRequest request)
-        {
-            return _restWrapper.Post<Order, OrderResponse>( request.Body, 
-                                                            uri: GetEndpoint(request),
-                                                            accessTokenHeader: GetHeaderToken(request),
-                                                            actions: GetCustomResponseHandlers(request));
-        }
-
         public IResponse Visit(RefundRequest request)
         {
             return _restWrapper.Post<RefundRequestBody, RefundResponse>(request.Body, 

@@ -36,9 +36,9 @@ namespace LevelUp.Api.Client.Models.Requests
                                                  string qrPaymentData,
                                                  string proposedOrderUuid,
                                                  int spendAmountCents,
-                                                 int taxAmountCents,
+                                                 int? taxAmountCents,
                                                  int exemptionAmountCents,
-                                                 int appliedDiscountAmountCents,
+                                                 int? appliedDiscountAmountCents,
                                                  string register,
                                                  string cashier,
                                                  string identifierFromMerchant,
@@ -68,7 +68,7 @@ namespace LevelUp.Api.Client.Models.Requests
         public int SpendAmountCents { get; private set; }
 
         [JsonProperty(PropertyName = "tax_amount")]
-        public int TaxAmountCents { get; private set; }
+        public int? TaxAmountCents { get; private set; }
 
         [JsonProperty(PropertyName = "cashier")]
         public string Cashier { get; private set; }
@@ -92,7 +92,7 @@ namespace LevelUp.Api.Client.Models.Requests
         public string OrderUuid { get; private set; }
 
         [JsonProperty(PropertyName = "applied_discount_amount")]
-        public int AppliedDiscountAmountCents { get; private set; }
+        public int? AppliedDiscountAmountCents { get; private set; }
 
         [JsonProperty(PropertyName = "identifier_from_merchant")]
         public string Identifier { get; private set; }

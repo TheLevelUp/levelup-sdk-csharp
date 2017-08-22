@@ -18,6 +18,7 @@
 #endregion
 
 using LevelUp.Api.Client.ClientInterfaces;
+using LevelUp.Api.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LevelUp.Api.Client.Test.Client
@@ -26,7 +27,7 @@ namespace LevelUp.Api.Client.Test.Client
     public class IRetrieveMerchantFundedGiftCardCreditIntegrationTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Utilities.Test.TestCategories.IntegrationTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
         public void GetMerchantFundedGiftCardCredit()
         {
             ClientModuleIntegrationTestingUtilities.RemoveAnyGiftCardCreditOnConsumerUserAccount();
@@ -49,6 +50,17 @@ namespace LevelUp.Api.Client.Test.Client
             Assert.AreEqual(creditAmountCents, credit.TotalAmount);
 
             ClientModuleIntegrationTestingUtilities.RemoveAnyGiftCardCreditOnConsumerUserAccount();
+        }
+
+        [TestMethod]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
+        [ExpectedException(typeof(LevelUpApiException))]
+        public void GetMerchantFundedGiftCardCreditWithInvalidQRCode()
+        {
+            IRetrieveMerchantFundedGiftCardCredit creditInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IRetrieveMerchantFundedGiftCardCredit>();
+            creditInterface.GetMerchantFundedGiftCardCredit(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
+                LevelUpTestConfiguration.Current.MerchantLocationId,
+                "LU_invalid_qr_code");
         }
     }
 }
