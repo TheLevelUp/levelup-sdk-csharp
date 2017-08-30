@@ -31,14 +31,12 @@ namespace LevelUp.Api.Client.Models.Responses
     public class Location : IResponse
     {
         /// <summary>
-        /// Private constructor for deserialization
+        /// Constructor for deserialization
         /// </summary>
-        private Location() { }
+        // TODO: Make this private on next major version
+        public Location() { }
 
-        /// <summary>
-        /// Internal constructor for testing
-        /// </summary>
-        internal Location(int locationId, string name, string tipPreference)
+        public Location(int locationId, string name, string tipPreference)
         {
             LocationId = locationId;
             Name = name;

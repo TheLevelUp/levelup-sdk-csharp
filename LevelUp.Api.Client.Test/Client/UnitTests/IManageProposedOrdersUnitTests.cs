@@ -127,7 +127,7 @@ namespace LevelUp.Api.Client.Test.Client
                                         "\"receipt_message_html\": \"Pick up your order at <strong>counter #4</strong>\"," +
                                         "\"register\": \"3\"," +
                                         "\"spend_amount\": 110," +
-                                        "\"tax_amount\": 10," +
+                                        "\"tax_amount\": 0," +
                                         GetSampleItems().Item1 +
                                       "}" +
                                     "}";
@@ -139,9 +139,9 @@ namespace LevelUp.Api.Client.Test.Client
                               "\"order\": { " +
                                   "\"gift_card_total_amount\": 0, " +
                                   "\"gift_card_tip_amount\": 0, " +
-                                  "\"spend_amount\": 500, " +
+                                  "\"spend_amount\": 100, " +
                                   "\"tip_amount\": 0, " +
-                                  "\"total_amount\": 500, " +
+                                  "\"total_amount\": 100, " +
                                   "\"uuid\": \"5a1z9x2h31ah7g8a9i9h8g7f6e5d4c4a21o\"" +
                               "}" +
                           "}"
@@ -157,9 +157,9 @@ namespace LevelUp.Api.Client.Test.Client
 
             Assert.AreEqual(completedOrder.GiftCardTotalAmount, 0);
             Assert.AreEqual(completedOrder.GiftCardTipAmount, 0);
-            Assert.AreEqual(completedOrder.SpendAmount, 500);
+            Assert.AreEqual(completedOrder.SpendAmount, 100);
             Assert.AreEqual(completedOrder.TipAmount, 0);
-            Assert.AreEqual(completedOrder.Total, 500);
+            Assert.AreEqual(completedOrder.Total, 100);
             Assert.AreEqual(completedOrder.OrderIdentifier, "5a1z9x2h31ah7g8a9i9h8g7f6e5d4c4a21o");
         }
 
@@ -173,7 +173,7 @@ namespace LevelUp.Api.Client.Test.Client
                                      "\"completed_order\": {" +
                                      "\"applied_discount_amount\": 100," +
                                      "\"cashier\": \"Bob\"," +
-                                     "\"exemption_amount\": 40," +
+                                     "\"exemption_amount\": 0," +
                                      "\"identifier_from_merchant\": \"001001\"," +
                                      "\"location_id\": 19," +
                                      "\"partial_authorization_allowed\": false," +

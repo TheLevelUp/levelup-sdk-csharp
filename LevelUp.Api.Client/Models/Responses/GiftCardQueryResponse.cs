@@ -31,10 +31,7 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         private GiftCardQueryResponse() { }
 
-        /// <summary>
-        /// Internal constructor for testing
-        /// </summary>
-        internal GiftCardQueryResponse(int totalAmount)
+        public GiftCardQueryResponse(int totalAmount)
         {
             TotalAmount = totalAmount;
         }

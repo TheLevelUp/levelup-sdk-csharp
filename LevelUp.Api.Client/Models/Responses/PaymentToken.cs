@@ -35,10 +35,7 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         private PaymentToken() {}
 
-        /// <summary>
-        /// Internal constructor for testing
-        /// </summary>
-        internal PaymentToken(int id, string data)
+        public PaymentToken(int id, string data)
         {
             Id = id;
             Data = data;

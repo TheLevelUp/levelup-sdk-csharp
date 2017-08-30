@@ -36,10 +36,7 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         private OrderDetailsResponse() { }
 
-        /// <summary>
-        /// Internal constructor for testing
-        /// </summary>
-        internal OrderDetailsResponse(string orderIdentifier, int spendAmount, int tipAmount, int total, string createdAt,
+        public OrderDetailsResponse(string orderIdentifier, int spendAmount, int tipAmount, int total, string createdAt,
             int merchantFundedCredit, int earnAmount, int loyaltyId, string timeOfRefund, string userName,
             string timeOfTransaction, int locationId)
         {

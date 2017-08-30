@@ -32,10 +32,7 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         private FinalizeRemoteCheckResponse() { }
 
-        /// <summary>
-        /// Internal constructor for testing
-        /// </summary>
-        internal FinalizeRemoteCheckResponse(int spendAmount, int tipAmount, int totalAmount, string orderIdentifier,
+        public FinalizeRemoteCheckResponse(int spendAmount, int tipAmount, int totalAmount, string orderIdentifier,
             int giftCardCreditTotalAmount, int giftCardCreditTipAmount)
         {
             SpendAmount = spendAmount;

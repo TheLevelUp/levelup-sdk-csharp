@@ -31,10 +31,7 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         private GiftCardRemoveValueResponse() { }
 
-        /// <summary>
-        /// Internal constructor for testing
-        /// </summary>
-        internal GiftCardRemoveValueResponse(int amountRemovedInCents, int newGiftCardAmountInCents, int previousGiftCardAmountInCents)
+        public GiftCardRemoveValueResponse(int amountRemovedInCents, int newGiftCardAmountInCents, int previousGiftCardAmountInCents)
         {
             AmountRemovedInCents = amountRemovedInCents;
             NewGiftCardAmountInCents = newGiftCardAmountInCents;

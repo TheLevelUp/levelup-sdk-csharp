@@ -36,10 +36,7 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         private ManagedLocation() { }
 
-        /// <summary>
-        /// Internal constructor for testing
-        /// </summary>
-        internal ManagedLocation(int locationId, int merchantId, string name, string merchantName, 
+        public ManagedLocation(int locationId, int merchantId, string name, string merchantName, 
             string address, string tipPreference)
         {
             LocationId = locationId;

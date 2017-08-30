@@ -34,10 +34,7 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         private AccessToken() { }
 
-        /// <summary>
-        /// Internal constructor for testing
-        /// </summary>
-        internal AccessToken(string token, int userId, int? merchantId)
+        public AccessToken(string token, int userId, int? merchantId)
         {
             Token = token;
             UserId = userId;

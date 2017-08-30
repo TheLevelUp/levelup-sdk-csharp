@@ -28,10 +28,7 @@ namespace LevelUp.Api.Client.Models.Responses
     {
         private const char LINE_SEPARATOR = ',';
 
-        /// <summary>
-        /// Private constructor for deserialization
-        /// </summary>
-        private UpdateRemoteCheckDataResponse() { }
+        public UpdateRemoteCheckDataResponse() { }
 
         /// <summary>
         /// Internal constructor for testing

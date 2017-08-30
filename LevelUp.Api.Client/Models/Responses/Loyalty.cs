@@ -36,10 +36,7 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         private Loyalty() { }
 
-        /// <summary>
-        /// Internal constructor for testing
-        /// </summary>
-        internal Loyalty(int merchantEarnAmount, int merchantId, bool merchantloyaltyEnabled, int merchantSpendAmount,
+        public Loyalty(int merchantEarnAmount, int merchantId, bool merchantloyaltyEnabled, int merchantSpendAmount,
             int ordersCount, int potentialCreditAmount, decimal progressPercentage, int savingsAmount,
             int spendRemainingAmount, int totalVolumeAmount)
         {

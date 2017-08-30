@@ -42,10 +42,7 @@ namespace LevelUp.Api.Client.Models.Responses
             CustomAttributesInternal = new Dictionary<string, string>();
         }
 
-        /// <summary>
-        /// Internal constructor for testing
-        /// </summary>
-        internal User(int id, Dictionary<string, string> customAttributes, string email, string firstName, string gender,
+        public User(int id, Dictionary<string, string> customAttributes, string email, string firstName, string gender,
             int globalCreditAmount, string lastName, int merchantsVisitedCount, int ordersCount,
             int totalSavingsAmount, string termsAcceptedAt, string bornAt)
         {

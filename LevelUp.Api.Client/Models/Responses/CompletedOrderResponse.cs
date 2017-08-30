@@ -35,10 +35,7 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         private CompletedOrderResponse() { }
 
-        /// <summary>
-        /// Internal constructor for testing
-        /// </summary>
-        internal CompletedOrderResponse(int spendAmount, int tipAmount, int total, string orderIdentifier,
+        public CompletedOrderResponse(int spendAmount, int tipAmount, int total, string orderIdentifier,
             int giftCardTotalAmount, int giftCardTipAmount)
         {
             SpendAmount = spendAmount;

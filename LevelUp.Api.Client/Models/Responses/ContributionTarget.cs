@@ -36,10 +36,7 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         private ContributionTarget() { }
 
-        /// <summary>
-        /// Internal constructor for testing
-        /// </summary>
-        internal ContributionTarget(string description, bool? employerRequired, string facebookUrl, string id, 
+        public ContributionTarget(string description, bool? employerRequired, string facebookUrl, string id, 
             string name, string partnerSpecificTerms, string twitterUsername, string website, int? minimumAgeRequired, 
             bool? homeAddressRequired, bool? featured)
         {

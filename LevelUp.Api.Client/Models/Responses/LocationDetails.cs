@@ -34,12 +34,9 @@ namespace LevelUp.Api.Client.Models.Responses
         /// <summary>
         /// Private constructor for deserialization
         /// </summary>
-        public LocationDetails() { }
+        private LocationDetails() { }
 
-        /// <summary>
-        /// Internal constructor for testing
-        /// </summary>
-        internal LocationDetails(int locationId, string menuUrl, int merchantId, string merchantName, bool isVisible, 
+        public LocationDetails(int locationId, string menuUrl, int merchantId, string merchantName, bool isVisible, 
             List<int> categories, string extendedAddress, string facebookUrl, string hours, double latitude, 
             double longitude, string locality, string merchantDescription, string postalCode, string region, 
             string streetAddress, string timeOfLastUpdate, string name, string tipPreference)

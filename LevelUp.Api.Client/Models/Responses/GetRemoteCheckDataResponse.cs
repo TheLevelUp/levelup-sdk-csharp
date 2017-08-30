@@ -34,10 +34,7 @@ namespace LevelUp.Api.Client.Models.Responses
             PendingOrderContainer = new PendingOrderResponseContainer(null, null);
         }
 
-        /// <summary>
-        /// Internal constructor for testing
-        /// </summary>
-        internal GetRemoteCheckDataResponse(string orderIdentifier, int? discountToApply)
+        public GetRemoteCheckDataResponse(string orderIdentifier, int? discountToApply)
         {
             PendingOrderContainer = new PendingOrderResponseContainer(orderIdentifier, discountToApply);
         }

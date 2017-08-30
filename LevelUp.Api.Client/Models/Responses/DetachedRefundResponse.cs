@@ -35,10 +35,7 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         private DetachedRefundResponse() { }
 
-        /// <summary>
-        /// Internal constructor for testing
-        /// </summary>
-        internal DetachedRefundResponse(string cashier, int creditAmountCents, string customerFacingReason, string identifier, 
+        public DetachedRefundResponse(string cashier, int creditAmountCents, string customerFacingReason, string identifier, 
             string internalReason, int locationId, string register, DateTime refundedAt, int userId)
         {
             Cashier = cashier;

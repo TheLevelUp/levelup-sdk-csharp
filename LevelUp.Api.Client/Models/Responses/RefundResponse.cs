@@ -36,10 +36,7 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         private RefundResponse() { }
 
-        /// <summary>
-        /// Internal constructor for testing
-        /// </summary>
-        internal RefundResponse(string createdAt, int merchantFundedCreditAmount, int earnAmount, string orderIdentifier,
+        public RefundResponse(string createdAt, int merchantFundedCreditAmount, int earnAmount, string orderIdentifier,
             int loyaltyId, int spendAmount, string timeOfRefund, int tipAmount, int totalAmount, int locationId,
             string userName, string timeOfTransaction)
         {

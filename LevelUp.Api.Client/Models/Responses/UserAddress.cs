@@ -36,10 +36,7 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         private UserAddress() { }
 
-        /// <summary>
-        /// Internal constructor for testing
-        /// </summary>
-        internal UserAddress(string addressType, string extendedAddress, string locality, string postalCode,
+        public UserAddress(string addressType, string extendedAddress, string locality, string postalCode,
             string region, string streetAddress)
         {
             AddressType = addressType;

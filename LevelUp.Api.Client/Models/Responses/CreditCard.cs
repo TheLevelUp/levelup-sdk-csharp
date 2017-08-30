@@ -32,10 +32,7 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         public CreditCard() { }
 
-        /// <summary>
-        /// Internal constructor for testing
-        /// </summary>
-        internal CreditCard(string bin, string description, int expirationMonth, int expirationYear, int id,
+        public CreditCard(string bin, string description, int expirationMonth, int expirationYear, int id,
             string last4Numbers, bool promoted, string state, string type)
         {
             Bin = bin;

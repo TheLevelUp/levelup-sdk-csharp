@@ -31,10 +31,7 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         private ProposedOrderResponse() { }
 
-        /// <summary>
-        /// Internal constructor for testing
-        /// </summary>
-        internal ProposedOrderResponse(string proposedOrderIdentifier, int discountAmountCents)
+        public ProposedOrderResponse(string proposedOrderIdentifier, int discountAmountCents)
         {
             ProposedOrderIdentifier = proposedOrderIdentifier;
             DiscountAmountCents = discountAmountCents;
