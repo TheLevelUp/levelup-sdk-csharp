@@ -90,20 +90,20 @@ namespace LevelUp.Api.Client.Test.Client
 
         [TestMethod]
         [TestCategory(LevelUp.Api.Http.Test.TestCategory.IntegrationTests)]
-        public void ListAllOrders()
+        public void ListOrdersWithPaging()
         {
-            // Note: the integration test merchant may accrue a lot of orders -- this will 
-            //      retrieve all of them, which may become a problem if we are running the 
-            //      integration tests frequently?
             ClientModuleIntegrationTestingUtilities.RemoveAnyGiftCardCreditOnConsumerUserAccount();
-            var initialOrders = GetEveryOrderForTestMerchant();
-            ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer();
-            var currentOrders = GetEveryOrderForTestMerchant();
 
-            Assert.IsTrue(currentOrders.Count == initialOrders.Count + 1);
+            ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer();
+            var initialOrders = GetFirstThreePagesOfOrdersForTestMerchant();
+            ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer();
+            var currentOrders = GetFirstThreePagesOfOrdersForTestMerchant();
+            
+            Assert.IsTrue(currentOrders.ElementAt(0).OrderIdentifier != initialOrders.ElementAt(0).OrderIdentifier);
+            Assert.IsTrue(currentOrders.ElementAt(1).OrderIdentifier == initialOrders.ElementAt(0).OrderIdentifier);
         }
 
-        private List<OrderDetailsResponse> GetEveryOrderForTestMerchant()
+        private List<OrderDetailsResponse> GetFirstThreePagesOfOrdersForTestMerchant()
         {
             IQueryOrders queryInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IQueryOrders>();
 
@@ -112,7 +112,7 @@ namespace LevelUp.Api.Client.Test.Client
             int currentPage = 1;
             bool areThereMorePages = true;
 
-            while (areThereMorePages)
+            while (areThereMorePages && currentPage < 4)
             {
                 var orders = queryInterface.ListOrders(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken, 
                     LevelUpTestConfiguration.Current.MerchantLocationId, currentPage, currentPage, out areThereMorePages);

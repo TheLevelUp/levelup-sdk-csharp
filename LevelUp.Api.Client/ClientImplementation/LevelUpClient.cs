@@ -37,7 +37,7 @@ namespace LevelUp.Api.Client
     /// provided to these SDK methods and then provide those objects
     /// with the execution engine visitor.
     /// </remarks>
-    internal class LevelUpClient : ILevelUpClientSuperset
+    internal class LevelUpClient : ILevelUpClientSuperset, ILevelUpClient
     {
         private readonly IRequestVisitor<IResponse> _engine;
 

@@ -78,6 +78,7 @@ namespace LevelUp.Api.Client
         /// LevelUp backend.</param>
         /// <param name="enviornment">The target enviornment (sandbox, production, etc.)</param>
         /// <returns>The LevelUp client interface of the specified type T.</returns>
+        [System.Obsolete("CreateComposedInterface<T>(...) is deprecated; please use Create<T>(...) instead.")]
         public static T CreateComposedInterface<T>(AgentIdentifier identifier, LevelUpEnvironment enviornment)
             where T : IComposedInterface
         {

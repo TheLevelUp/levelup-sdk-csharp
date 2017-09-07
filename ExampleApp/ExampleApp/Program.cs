@@ -71,6 +71,8 @@ namespace ExampleApp
             RefundOrder(accessToken, completedOrder.OrderIdentifier);
 
             Console.WriteLine("Order Complete!  Check out the code to see how it's done.");
+
+            Console.ReadLine();
         }
 
 
