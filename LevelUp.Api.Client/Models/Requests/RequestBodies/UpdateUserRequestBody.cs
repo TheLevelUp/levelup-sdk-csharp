@@ -20,7 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using LevelUp.Api.Utilities;
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -34,8 +34,8 @@ namespace LevelUp.Api.Client.Models.Requests
     /// [JsonProperty(NullValueHandling = NullValueHandling.Ignore)] attribute.
     /// </remarks>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("user")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
+    [ObjectEnvelope("user")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
     public class UpdateUserRequestBody
     {
         public UpdateUserRequestBody(int id)

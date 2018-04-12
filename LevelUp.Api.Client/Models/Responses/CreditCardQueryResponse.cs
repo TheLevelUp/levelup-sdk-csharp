@@ -21,7 +21,7 @@ using System.Collections.Generic;
 
 namespace LevelUp.Api.Client.Models.Responses
 {
-    public class CreditCardQueryResponse : IResponse
+    public class CreditCardQueryResponse : Response
     {
         public List<CreditCard> CreditCards { get; private set; }
 

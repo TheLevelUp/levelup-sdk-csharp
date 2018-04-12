@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="ILookupUserLoyaltyUnitTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="ILookupUserLoyaltyFunctionalTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -22,13 +22,13 @@ using LevelUp.Api.Client.ClientInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
 
-namespace LevelUp.Api.Client.Test.Client
+namespace LevelUp.Api.Client.Test.Client.FunctionalTests
 {
     [TestClass]
-    public class ILookupUserLoyaltyUnitTests
+    public class ILookupUserLoyaltyFunctionalTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void GetLoyaltyShouldSucceed()
         {
             const int merchant_Id = 456;
@@ -66,7 +66,7 @@ namespace LevelUp.Api.Client.Test.Client
                                           potential_credit_amount, progress_percentage, savings_amount, spend_remaining_amount, total_volume_amount, user_id)
             };
 
-            ILookupUserLoyalty client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<ILookupUserLoyalty>(
+            ILookupUserLoyalty client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<ILookupUserLoyalty>(
                 expectedResponse, expectedRequestUrl: expectedRequestUrl);
 
             var loyalty = client.GetLoyalty("not_checking_this", merchant_Id);
@@ -85,7 +85,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         [ExpectedException(typeof(Http.LevelUpApiException), "GetLoyalty failed to throw an exception for an invalid returned http status code.")]
         public void GetLoyaltyShouldFailForBadStatusCode()
         {
@@ -97,7 +97,7 @@ namespace LevelUp.Api.Client.Test.Client
                 StatusCode = HttpStatusCode.NotFound,
             };
 
-            ILookupUserLoyalty client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<ILookupUserLoyalty>(
+            ILookupUserLoyalty client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<ILookupUserLoyalty>(
                 expectedResponse, expectedRequestUrl: expectedRequestUrl);
 
             client.GetLoyalty("not_checking_this", merchant_Id);

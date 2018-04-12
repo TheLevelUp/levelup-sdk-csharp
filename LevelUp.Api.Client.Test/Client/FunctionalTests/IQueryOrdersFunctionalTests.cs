@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="IQueryOrdersUnitTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="IQueryOrdersFunctionalTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -22,10 +22,10 @@ using LevelUp.Api.Client.ClientInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
 
-namespace LevelUp.Api.Client.Test.Client
+namespace LevelUp.Api.Client.Test.Client.FunctionalTests
 {
     [TestClass]
-    public class IQueryOrdersUnitTests
+    public class IQueryOrdersFunctionalTests
     {
         private const int locationId = 19;
         private string expectedRequestBaseUrl = string.Format("https://sandbox.thelevelup.com/v14/locations/{0}/orders", locationId);
@@ -62,10 +62,10 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void ListOrdersShouldSucceedWhenAllPagesQueried()
         {
-            IQueryOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(successfulResponses, expectedRequestBaseUrl);
+            IQueryOrders client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(successfulResponses, expectedRequestBaseUrl);
             var orders = client.ListOrders("not_checking_this", locationId, 1, 3);
 
             Assert.AreEqual(orders.Count, 9);
@@ -81,20 +81,20 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void ListOrdersShouldSucceedWhenMorePagesQueriedThanExist()
         {
-            IQueryOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(successfulResponses, expectedRequestBaseUrl);
+            IQueryOrders client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(successfulResponses, expectedRequestBaseUrl);
             var orders = client.ListOrders("not_checking_this", locationId, 1, 10);     // Note that we specify pages 1-10 when only 3 pages exist
 
             Assert.AreEqual(orders.Count, 9);
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void ListOrdersShouldSucceedAndAreThereMorePagesShouldBeValid()
         {
-            IQueryOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(successfulResponses, expectedRequestBaseUrl);
+            IQueryOrders client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(successfulResponses, expectedRequestBaseUrl);
             bool areThereMorePages;
             
             var orders = client.ListOrders("not_checking_this", locationId, 1, 1, out areThereMorePages);
@@ -111,10 +111,10 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void ListOrdersShouldSucceedDespiteInvalidEndPageNumbers()
         {
-            IQueryOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(successfulResponses, expectedRequestBaseUrl);
+            IQueryOrders client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(successfulResponses, expectedRequestBaseUrl);
             
             var orders = client.ListOrders("not_checking_this", locationId, 1, 10);
             Assert.AreEqual(orders.Count, 9);
@@ -124,30 +124,30 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void ListOrdersShouldFailWith204ForInvalidStartPageNumbers()
         {
-            IQueryOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(
+            IQueryOrders client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(
                 successfulResponses, expectedRequestBaseUrl);
             var orders = client.ListOrders("not_checking_this", locationId, 5, 10);
             Assert.AreEqual(orders.Count, 0);
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void ListFilteredOrdersShouldSucceedWithNoModifierFunctions()
         {
-            IQueryOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(
+            IQueryOrders client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(
                 successfulResponses, expectedRequestBaseUrl);
             var orders = client.ListFilteredOrders("not_checking_this", locationId, 1, 3);
             Assert.AreEqual(orders.Count, 9);
         }
         
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void ListFilteredOrdersShouldSucceedWithAFilterFunction()
         {
-            IQueryOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(
+            IQueryOrders client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(
                 successfulResponses, expectedRequestBaseUrl);
             var orders = client.ListFilteredOrders("not_checking_this", locationId, 1, 3, 
                 (x => (x.OrderIdentifier == "c" || x.OrderIdentifier == "i")), null);
@@ -157,10 +157,10 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void ListFilteredOrdersShouldSucceedWithAnOrderingFunction()
         {
-            IQueryOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(
+            IQueryOrders client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModuleWithPaging<IQueryOrders>(
                 successfulResponses, expectedRequestBaseUrl);
             var orders = client.ListFilteredOrders("not_checking_this", locationId, 1, 3, null,
                 ((x, y) => ( 0 - string.Compare(x.OrderIdentifier, y.OrderIdentifier) ))); // i.e. orderbydecending

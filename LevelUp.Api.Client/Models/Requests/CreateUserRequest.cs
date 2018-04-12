@@ -17,7 +17,6 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using LevelUp.Api.Client.Models.RequestVisitors;
 using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -32,8 +31,7 @@ namespace LevelUp.Api.Client.Models.Requests
         /// <summary>
         /// A Serializable http body for the CreateUserRequest
         /// </summary>
-        public CreateUserRequestBody Body { get { return _body; } }
-        private readonly CreateUserRequestBody _body;
+        public CreateUserRequestBody Body { get; }
 
         /// <summary>
         /// Instantiates a CreateUserRequest object
@@ -46,15 +44,7 @@ namespace LevelUp.Api.Client.Models.Requests
         public CreateUserRequest(string apiKey, string firstName, string lastName, string email, string password)
             : base(null)
         {
-            _body = new CreateUserRequestBody(apiKey, firstName, lastName, email, password); 
-        }
-
-        /// <summary>
-        /// Acceptance method for Request visitors.
-        /// </summary>
-        public override T Accept<T>(IRequestVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
+            Body = new CreateUserRequestBody(apiKey, firstName, lastName, email, password); 
         }
     }
 }

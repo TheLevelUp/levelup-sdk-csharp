@@ -23,7 +23,7 @@ using LevelUp.Api.Client.ClientInterfaces;
 using LevelUp.Api.Client.Models.Responses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LevelUp.Api.Client.Test.Client
+namespace LevelUp.Api.Client.Test.Client.IntegrationTests
 {
     [TestClass]
     public class IQueryOrdersIntegrationTests

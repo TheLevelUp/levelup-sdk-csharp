@@ -20,10 +20,10 @@
 namespace LevelUp.Api.Client.Models.Responses
 {
     /// <summary>
-    /// Enables using an IResponse return value in some operations 
+    /// Enables using an Response return value in some operations 
     /// that return void (ex. some delete operations return no data)
     /// </summary>
-    public class EmptyResponse : IResponse
+    public class EmptyResponse : Response
     {
     }
 }

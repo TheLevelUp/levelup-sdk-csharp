@@ -17,7 +17,6 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using LevelUp.Api.Client.Models.RequestVisitors;
 using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -32,20 +31,11 @@ namespace LevelUp.Api.Client.Models.Requests
             get { return LevelUpApiVersion.v15; }
         }
 
-        public string CheckUuid {get { return _checkUuid; }}
-        private readonly string _checkUuid;
+        public string CheckUuid { get; }
 
         public GetRemoteCheckDataRequest(string accessToken, string checkUuid) : base (accessToken)
         {
-            _checkUuid = checkUuid;
-        }
-
-        /// <summary>
-        /// Acceptance method for Request visitors.
-        /// </summary>
-        public override T Accept<T>(IRequestVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
+            CheckUuid = checkUuid;
         }
     }
 }

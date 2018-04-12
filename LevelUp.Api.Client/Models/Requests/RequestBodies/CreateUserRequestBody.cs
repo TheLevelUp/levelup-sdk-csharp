@@ -17,6 +17,7 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -25,8 +26,8 @@ namespace LevelUp.Api.Client.Models.Requests
     /// Class representing a request to create a new user
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel(null)]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
+    [ObjectEnvelope(null)]
+    [JsonConverter(typeof(EnvelopeSerializer))]
     public class CreateUserRequestBody
     {
         private CreateUserRequestBody()

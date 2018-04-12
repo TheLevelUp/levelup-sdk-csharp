@@ -13,8 +13,9 @@
 
     <dependencies>
       <group targetFramework="net40">
-        <dependency id="Newtonsoft.Json" version="[10.0,11.0)" />
+        <dependency id="Newtonsoft.Json" version="[10.0,12.0)" />
         <dependency id="RestSharp" version="[105.2.3]" />
+        <dependency id="JsonEnvelopeSerializer" version="[1.0, 2.0)" />
         <dependency id="LevelUp.Pos.ProposedOrderCalculator" version="[1.0, 2.0)" />
         <dependency id="LevelUp.Api.Http" version="$version$" />
       </group>

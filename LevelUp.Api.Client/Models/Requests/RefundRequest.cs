@@ -17,7 +17,6 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using LevelUp.Api.Client.Models.RequestVisitors;
 using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -29,14 +28,12 @@ namespace LevelUp.Api.Client.Models.Requests
             get { return LevelUpApiVersion.v14 | LevelUpApiVersion.v15; }
         }
 
-        public string OrderIdentifier { get { return _orderIdentifier; } }
-        private readonly string _orderIdentifier;
+        public string OrderIdentifier { get; }
 
         /// <summary>
         /// A Serializable http body for the RefundRequest
         /// </summary>
-        public RefundRequestBody Body { get { return _body; } }
-        private readonly RefundRequestBody _body;
+        public RefundRequestBody Body { get; }
 
         /// <summary>
         /// Creates a add value request for a LevelUp gift card
@@ -47,16 +44,8 @@ namespace LevelUp.Api.Client.Models.Requests
         public RefundRequest(string accessToken, string orderIdentifier, string managerConfirmation = null)
             : base(accessToken)
         {
-            _orderIdentifier = orderIdentifier;
-            _body = new RefundRequestBody(managerConfirmation);
-        }
-
-        /// <summary>
-        /// Acceptance method for Request visitors.
-        /// </summary>
-        public override T Accept<T>(IRequestVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
+            OrderIdentifier = orderIdentifier;
+            Body = new RefundRequestBody(managerConfirmation);
         }
     }
 }

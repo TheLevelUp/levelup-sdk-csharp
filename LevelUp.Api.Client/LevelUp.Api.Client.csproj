@@ -41,11 +41,14 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LevelUp.Pos.ProposedOrders.ProposedOrderCalculator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\LevelUp.Pos.ProposedOrderCalculator.1.1.0\lib\net30\LevelUp.Pos.ProposedOrders.ProposedOrderCalculator.dll\Release\LevelUp.Pos.ProposedOrders.ProposedOrderCalculator.dll</HintPath>
+    <Reference Include="JsonEnvelopeSerializer, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\JsonEnvelopeSerializer.0.1.0\lib\net40\JsonEnvelopeSerializer.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="LevelUp.Pos.ProposedOrders.ProposedOrderCalculator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LevelUp.Pos.ProposedOrderCalculator.1.2.0\lib\net40\LevelUp.Pos.ProposedOrders.ProposedOrderCalculator.dll\Release\LevelUp.Pos.ProposedOrders.ProposedOrderCalculator.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.105.2.3\lib\net4\RestSharp.dll</HintPath>
@@ -75,14 +78,13 @@
     <Compile Include="ClientInterfaces\IQueryOrders.cs" />
     <Compile Include="ClientInterfaces\IQueryUser.cs" />
     <Compile Include="ClientInterfaces\IRetrievePaymentToken.cs" />
-    <Compile Include="ClientImplementation\LevelUpClient.cs" />
+    <Compile Include="LevelUpClient.cs" />
     <Compile Include="ComposedClientInterfaces\ILevelUpClientSuperset.cs" />
     <Compile Include="ComposedClientInterfaces\ILevelUpClient.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="LevelUpClientFactory.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\GeographicLocation.cs" />
-    <Compile Include="Models\LevelUpModelSerializer.cs" />
     <Compile Include="Models\Requests\AccessTokenRequest.cs" />
     <Compile Include="Models\Requests\CompleteProposedOrderRequest.cs" />
     <Compile Include="Models\Requests\ManagedLocationQueryRequest.cs" />
@@ -132,7 +134,7 @@
     <Compile Include="Models\Responses\CompletedOrderResponse.cs" />
     <Compile Include="Models\Responses\CreditCardQueryResponse.cs" />
     <Compile Include="Models\Responses\GiftCardQueryResponse.cs" />
-    <Compile Include="Models\Responses\IResponse.cs" />
+    <Compile Include="Models\Responses\Response.cs" />
     <Compile Include="Models\Responses\LocationQueryResponse.cs" />
     <Compile Include="Models\Responses\ManagedLocation.cs" />
     <Compile Include="Models\Responses\ManagedLocationQueryResponse.cs" />
@@ -140,9 +142,6 @@
     <Compile Include="Models\Responses\ProposedOrderResponse.cs" />
     <Compile Include="Models\Responses\UserAddressQueryResponse.cs" />
     <Compile Include="Models\Responses\EmptyResponse.cs" />
-    <Compile Include="Models\LevelUpSerializableModel.cs" />
-    <Compile Include="RequestVisitors\AdditionalHttpStatusCodeHandlers.cs" />
-    <Compile Include="RequestVisitors\IRequestVisitor.cs" />
     <Compile Include="Models\Responses\AccessToken.cs" />
     <Compile Include="Models\Responses\ContributionTarget.cs" />
     <Compile Include="Models\Responses\CreditCard.cs" />
@@ -161,10 +160,6 @@
     <Compile Include="Models\Responses\User.cs" />
     <Compile Include="Models\Responses\UserAddress.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RequestVisitors\RequestVisitorWithDefault.cs" />
-    <Compile Include="RequestVisitors\RequestEndpointCreator.cs" />
-    <Compile Include="RequestVisitors\RequestExecutionEngine.cs" />
-    <Compile Include="RequestVisitors\RequestHeaderTokenCreator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LevelUp.Api.Client.licenseheader" />

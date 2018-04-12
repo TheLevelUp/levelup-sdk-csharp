@@ -39,7 +39,7 @@ namespace LevelUp.Api.Http.Test
             headers.Add("Authorization", "auth_value");
             headers.Add("Accept", bodyType);
 
-            IRestRequest request = HttpRest.BuildRequest(Method.GET, headers, null, body, HttpRest.ContentType.Json);
+            IRestRequest request = RestSharpUtils.BuildRequest(Method.GET, headers, null, body, RestSharpUtils.ContentType.Json);
 
             foreach (var pair in headers)
             {
@@ -60,10 +60,10 @@ namespace LevelUp.Api.Http.Test
 
             string expectedCombination = "http://test.thelevelup.com/blah";
 
-            Assert.AreEqual(HttpRest.CreateCombinedUrl(baseUrlWithTrailingSlash, addendumWithLeadingSlash), expectedCombination);
-            Assert.AreEqual(HttpRest.CreateCombinedUrl(baseUrlWithTrailingSlash, addendumWithoutLeadingSlash), expectedCombination);
-            Assert.AreEqual(HttpRest.CreateCombinedUrl(baseUrlWithOutTrailingSlash, addendumWithLeadingSlash), expectedCombination);
-            Assert.AreEqual(HttpRest.CreateCombinedUrl(baseUrlWithOutTrailingSlash, addendumWithoutLeadingSlash), expectedCombination);
+            Assert.AreEqual(RestSharpUtils.CreateCombinedUrl(baseUrlWithTrailingSlash, addendumWithLeadingSlash), expectedCombination);
+            Assert.AreEqual(RestSharpUtils.CreateCombinedUrl(baseUrlWithTrailingSlash, addendumWithoutLeadingSlash), expectedCombination);
+            Assert.AreEqual(RestSharpUtils.CreateCombinedUrl(baseUrlWithOutTrailingSlash, addendumWithLeadingSlash), expectedCombination);
+            Assert.AreEqual(RestSharpUtils.CreateCombinedUrl(baseUrlWithOutTrailingSlash, addendumWithoutLeadingSlash), expectedCombination);
         }
 
         [TestMethod]
@@ -74,7 +74,7 @@ namespace LevelUp.Api.Http.Test
             string baseUrl = "levelup";
             string addendum = "\blah";
 
-            HttpRest.CreateCombinedUrl(baseUrl, addendum);
+            RestSharpUtils.CreateCombinedUrl(baseUrl, addendum);
         }
 
         [TestMethod]
@@ -85,7 +85,7 @@ namespace LevelUp.Api.Http.Test
             string addendum = "blah.txt";
             string expectedCombination = "file://levelup/blah.txt";
 
-            Assert.AreEqual(HttpRest.CreateCombinedUrl(baseUrl, addendum), expectedCombination);
+            Assert.AreEqual(RestSharpUtils.CreateCombinedUrl(baseUrl, addendum), expectedCombination);
         }
     }
 }

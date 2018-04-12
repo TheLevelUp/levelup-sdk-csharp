@@ -1,6 +1,6 @@
 #region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="HttpRest.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="RestSharpUtils.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -23,7 +23,7 @@ using RestSharp;
 
 namespace LevelUp.Api.Http
 {
-    public static class HttpRest
+    public static class RestSharpUtils
     {
         public enum ContentType
         {

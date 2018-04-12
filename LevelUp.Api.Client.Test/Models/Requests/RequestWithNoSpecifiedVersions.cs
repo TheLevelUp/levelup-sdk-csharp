@@ -17,9 +17,7 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using System;
 using LevelUp.Api.Client.Models.Requests;
-using LevelUp.Api.Client.Models.RequestVisitors;
 using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.Test.Models.Requests
@@ -27,11 +25,6 @@ namespace LevelUp.Api.Client.Test.Models.Requests
     public class RequestWithNoSpecifiedVersions : Request
     {
         public RequestWithNoSpecifiedVersions(string accessToken) : base(accessToken) { }
-
-        public override T Accept<T>(IRequestVisitor<T> visitor)
-        {
-            throw new NotImplementedException();
-        }
 
         protected override LevelUpApiVersion _applicableAPIVersionsBitmask
         {

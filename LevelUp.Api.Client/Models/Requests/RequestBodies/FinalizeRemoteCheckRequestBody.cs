@@ -17,13 +17,14 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Requests
 {
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("order")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
+    [ObjectEnvelope("order")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
     public class FinalizeRemoteCheckRequestBody
     {
         private FinalizeRemoteCheckRequestBody()

@@ -17,8 +17,8 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using System;
 using System.Collections.Generic;
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Responses
@@ -27,9 +27,9 @@ namespace LevelUp.Api.Client.Models.Responses
     /// Class representing a LevelUp merchant location details
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("location")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
-    public class LocationDetails : IResponse
+    [ObjectEnvelope("location")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
+    public class LocationDetails : Response
     {
         /// <summary>
         /// Private constructor for deserialization
@@ -161,25 +161,5 @@ namespace LevelUp.Api.Client.Models.Responses
 
         [JsonProperty(PropertyName = "merchant_tip_preference")]
         private string TipPreference { get; set; }
-
-        public override string ToString()
-        {
-            if (!IsVisible)
-            {
-                return string.Format("Location with id {0} is not visible{1}", LocationId, Environment.NewLine);
-            }
-
-            return string.Format("Location Id: {0}{1}{2}{1}",
-                                 LocationId,
-                                 Environment.NewLine,
-                                 new Address(MerchantName,
-                                             streetAddress: StreetAddress,
-                                             extendedAddress: ExtendedAddress,
-                                             city: Locality,
-                                             region: Region,
-                                             postalCode: PostalCode,
-                                             country: "U.S.A.",
-                                             coordinates: new GeographicLocation(Latitude, Longitude)));
-        }
     }
 }

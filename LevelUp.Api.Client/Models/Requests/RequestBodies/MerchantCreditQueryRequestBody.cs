@@ -18,13 +18,14 @@
 #endregion
 
 using System.Collections.Generic;
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Requests
 {
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("credit_query")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
+    [ObjectEnvelope("credit_query")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
     public class MerchantCreditQueryRequestBody
     {
         private MerchantCreditQueryRequestBody()

@@ -17,14 +17,15 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Responses
 {
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("check")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
-    public class UpdateRemoteCheckDataResponse : IResponse
+    [ObjectEnvelope("check")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
+    public class UpdateRemoteCheckDataResponse : Response
     {
         private const char LINE_SEPARATOR = ',';
 
@@ -87,10 +88,5 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         [JsonProperty(PropertyName = "qr_code_character_art")]
         public string QrCodeAsUnicodeCharacters { get; private set; }
-
-        public override string ToString()
-        {
-            return string.Format("Record locator: {0}, Uuid from LevelUp: {1}", CheckLocator, CheckIdentifier);
-        }
     }
 }

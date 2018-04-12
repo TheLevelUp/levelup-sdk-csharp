@@ -21,7 +21,7 @@ using LevelUp.Api.Client.ClientInterfaces;
 using LevelUp.Api.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LevelUp.Api.Client.Test.Client
+namespace LevelUp.Api.Client.Test.Client.IntegrationTests
 {
     [TestClass]
     public class IDestroyGiftCardValueIntegrationTests

@@ -17,6 +17,7 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -25,8 +26,8 @@ namespace LevelUp.Api.Client.Models.Requests
     /// Class representing a request for a LevelUp refund
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("refund")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
+    [ObjectEnvelope("refund")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
     public class RefundRequestBody
     {
         private RefundRequestBody()

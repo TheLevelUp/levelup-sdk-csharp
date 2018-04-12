@@ -18,13 +18,14 @@
 #endregion
 
 using System.Collections.Generic;
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Requests
 {
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("proposed_order")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
+    [ObjectEnvelope("proposed_order")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
     public class CreateProposedOrderRequestBody
     {
         private CreateProposedOrderRequestBody()

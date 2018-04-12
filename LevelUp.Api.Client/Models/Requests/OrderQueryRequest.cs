@@ -17,7 +17,6 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using LevelUp.Api.Client.Models.RequestVisitors;
 using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -32,24 +31,14 @@ namespace LevelUp.Api.Client.Models.Requests
             get { return LevelUpApiVersion.v14; }
         }
 
-        public int LocationId { get { return _locationId; } }
-        private readonly int _locationId;
+        public int LocationId { get; }
 
-        public int PageNumber { get { return _pageNumber; } }
-        private readonly int _pageNumber;
+        public int PageNumber { get; }
 
         public OrderQueryRequest(string accessToken, int locationId, int pageNumber) : base(accessToken)
         {
-            _locationId = locationId;
-            _pageNumber = pageNumber;
-        }
-
-        /// <summary>
-        /// Acceptance method for Request visitors.
-        /// </summary>
-        public override T Accept<T>(IRequestVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
+            LocationId = locationId;
+            PageNumber = pageNumber;
         }
     }
 }

@@ -17,7 +17,6 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using LevelUp.Api.Client.Models.RequestVisitors;
 using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -32,20 +31,11 @@ namespace LevelUp.Api.Client.Models.Requests
             get { return LevelUpApiVersion.v14; }
         }
 
-        public int UserId { get { return _userId; } }
-        private readonly int _userId;
+        public int UserId { get; }
 
         public UserDetailsQueryRequest(string accessToken, int userId) : base(accessToken)
         {
-            _userId = userId;
-        }
-
-        /// <summary>
-        /// Acceptance method for Request visitors.
-        /// </summary>
-        public override T Accept<T>(IRequestVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
+            UserId = userId;
         }
     }
 }

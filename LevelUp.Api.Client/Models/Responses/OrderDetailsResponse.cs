@@ -17,8 +17,7 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using System;
-using System.Globalization;
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Responses
@@ -27,9 +26,9 @@ namespace LevelUp.Api.Client.Models.Responses
     /// Class representing a detailed response to a LevelUp order request
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("order")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
-    public class OrderDetailsResponse : IResponse
+    [ObjectEnvelope("order")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
+    public class OrderDetailsResponse : Response
     {
         /// <summary>
         /// Private constructor for deserialization
@@ -129,36 +128,5 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         [JsonProperty(PropertyName = "location_id")]
         public int LocationId { get; private set; }
-
-
-        public override string ToString()
-        {
-            return string.Format(new CultureInfo("en-Us"),
-                                 "Id: {0}{1}" +
-                                 "Spent: {2}¢{1}" +
-                                 "Tip: {3}¢{1}" +
-                                 "Total: {4}¢{1}" +
-                                 "User name: {5}{1}" +
-                                 "Created at: {6}{1}" +
-                                 "Time of transaction: {7}{1}" +
-                                 "Time of refund: {8}{1}" +
-                                 "Merchant funded credit amount: {9}{1}" +
-                                 "Amount earned: {10}{1}" +
-                                 "Loyalty id: {11}{1}" +
-                                 "Location of transaction: {12}{1}",
-                                 OrderIdentifier,
-                                 Environment.NewLine,
-                                 SpendAmount,
-                                 TipAmount,
-                                 Total,
-                                 UserName,
-                                 CreatedAt,
-                                 TimeOfTransaction ?? "NULL",
-                                 TimeOfRefund ?? "NULL",
-                                 MerchantFundedCredit,
-                                 EarnAmount,
-                                 LoyaltyId,
-                                 LocationId);
-        }
     }
 }

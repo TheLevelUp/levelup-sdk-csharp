@@ -17,14 +17,15 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Responses
 {
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("check")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
-    public class GetRemoteCheckDataResponse : IResponse
+    [ObjectEnvelope("check")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
+    public class GetRemoteCheckDataResponse : Response
     {
         /// <summary>
         /// Private constructor for deserialization
@@ -63,11 +64,5 @@ namespace LevelUp.Api.Client.Models.Responses
 
         [JsonProperty(PropertyName = "pending_order")]
         private PendingOrderResponseContainer PendingOrderContainer { get; set; }
-
-        public override string ToString()
-        {
-            return string.Format("Discount to apply: {0}¢, Order Identifier: {1}", DiscountToApply, OrderIdentifier);
-        }
-
     }
 }

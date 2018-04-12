@@ -143,14 +143,11 @@ namespace LevelUp.Api.Http
             {
                 osVersion = Environment.OSVersion.VersionString;
             }
-            catch(InvalidOperationException)
+            catch (InvalidOperationException)
             {
-                //No-op to prevent exceptions from crashing application
             }
 
-            return string.IsNullOrEmpty(osName)
-                       ? osVersion
-                       : string.Format("{0} | {1}", osName, osVersion);
+            return string.IsNullOrEmpty(osName) ? osVersion : $"{osName} | {osVersion}";
         }
     }
 }

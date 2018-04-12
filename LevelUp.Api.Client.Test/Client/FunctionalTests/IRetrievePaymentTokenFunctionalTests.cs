@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="IRetrievePaymentTokenUnitTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="IRetrievePaymentTokenFunctionalTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -22,14 +22,13 @@ using LevelUp.Api.Client.ClientInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
 
-
-namespace LevelUp.Api.Client.Test.Client
+namespace LevelUp.Api.Client.Test.Client.FunctionalTests
 {
     [TestClass]
-    public class IRetrievePaymentTokenUnitTests
+    public class IRetrievePaymentTokenFunctionalTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void GetPaymentTokenShouldSucceed()
         {
             const string expectedRequestUrl = "https://sandbox.thelevelup.com/v15/payment_token";
@@ -46,7 +45,7 @@ namespace LevelUp.Api.Client.Test.Client
                 "}"
             };
 
-            IRetrievePaymentToken client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IRetrievePaymentToken>(
+            IRetrievePaymentToken client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IRetrievePaymentToken>(
                 expectedResponse, expectedRequestUrl: expectedRequestUrl);
             var paymentToken = client.GetPaymentToken("not_checking_this");
             Assert.AreEqual(paymentToken.Id, 323);

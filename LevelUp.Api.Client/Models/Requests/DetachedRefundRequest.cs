@@ -17,7 +17,6 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using LevelUp.Api.Client.Models.RequestVisitors;
 using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -32,8 +31,7 @@ namespace LevelUp.Api.Client.Models.Requests
         /// <summary>
         /// A Serializable http body for the DetachedRefundRequest
         /// </summary>
-        public DetachedRefundRequestBody Body { get { return _body; } }
-        private readonly DetachedRefundRequestBody _body;
+        public DetachedRefundRequestBody Body { get; }
 
         /// <summary>
         /// Constructor a detached refund
@@ -67,16 +65,8 @@ namespace LevelUp.Api.Client.Models.Requests
                               string internalReason = null)
             : base(accessToken)
         {
-            _body = new DetachedRefundRequestBody(locationId, qrPaymentData, creditAmountCents, register,
+            Body = new DetachedRefundRequestBody(locationId, qrPaymentData, creditAmountCents, register,
                 cashier, identifierFromMerchant, managerConfirmation, customerFacingReason, internalReason);
-        }
-
-        /// <summary>
-        /// Acceptance method for Request visitors.
-        /// </summary>
-        public override T Accept<T>(IRequestVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
         }
     }
 }

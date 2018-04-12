@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="IQueryCreditCardsUnitTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="IQueryCreditCardsFunctionalTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -22,13 +22,13 @@ using LevelUp.Api.Client.ClientInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
 
-namespace LevelUp.Api.Client.Test.Client
+namespace LevelUp.Api.Client.Test.Client.FunctionalTests
 {
     [TestClass]
-    public class IQueryCreditCardsUnitTests
+    public class IQueryCreditCardsFunctionalTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void ListCreditCardsShouldSucceed()
         {
             string expectedRequestUrl = "https://sandbox.thelevelup.com/v15/credit_cards";
@@ -67,7 +67,7 @@ namespace LevelUp.Api.Client.Test.Client
                     "]"
             };
 
-            IQueryCreditCards client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IQueryCreditCards>(
+            IQueryCreditCards client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IQueryCreditCards>(
                 expectedResponse, expectedAccessToken: "access_token", expectedRequestUrl: expectedRequestUrl);
             var cards = client.ListCreditCards("access_token");
 

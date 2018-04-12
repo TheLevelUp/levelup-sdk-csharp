@@ -17,12 +17,7 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using System.Collections.Generic;
-using System.Net;
 using LevelUp.Api.Client.ClientInterfaces;
-using LevelUp.Api.Client.Models.RequestVisitors;
-using LevelUp.Api.Client.Models.Responses;
-using LevelUp.Api.Client.RequestVisitors;
 using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client
@@ -44,27 +39,7 @@ namespace LevelUp.Api.Client
             where T : ILevelUpClientModule
         {
             IRestfulService httpRestService = new LevelUpHttpRestfulService();
-            var client = new LevelUpClient(GetDefaultLevelUpRequestEngine(identifier, enviornment, httpRestService));
-            return (T)(object)client;
-        }
-
-        /// <summary>
-        /// Create a LevelUp client interface with a custom request engine
-        /// </summary>
-        /// <remarks>
-        /// Use this only if you need to override certain behaviors in the way that 
-        /// the SDK makes calls into the levelup platform.  Otherwise, use the 
-        /// standard Create<T> overload, which will use the default LevelUp 
-        /// implementation classes.
-        /// </remarks>
-        /// <typeparam name="T">The type of LevelUp client interface to generate.</typeparam>
-        /// <param name="engine">An IRequestVisitor that can make calls to the 
-        /// LevelUp API for each type of request object.</param>
-        /// <returns>The LevelUp client interface of the specified type T.</returns>
-        public static T Create<T>(IRequestVisitor<IResponse> engine)
-            where T : ILevelUpClientModule
-        {
-            var client = new LevelUpClient(engine);
+            var client = new LevelUpClient(httpRestService, identifier, enviornment);
             return (T)(object)client;
         }
 
@@ -83,7 +58,7 @@ namespace LevelUp.Api.Client
             where T : IComposedInterface
         {
             IRestfulService httpRestService = new LevelUpHttpRestfulService();
-            var client = new LevelUpClient(GetDefaultLevelUpRequestEngine(identifier, enviornment, httpRestService));
+            var client = new LevelUpClient(httpRestService, identifier, enviornment);
             return (T)(object)client;
         }
 
@@ -95,32 +70,8 @@ namespace LevelUp.Api.Client
         internal static T Create<T>(AgentIdentifier identifier, LevelUpEnvironment enviornment, IRestfulService restService)
             where T : ILevelUpClientModule
         {
-            var client = new LevelUpClient(GetDefaultLevelUpRequestEngine(identifier, enviornment, restService));
+            var client = new LevelUpClient(restService, identifier, enviornment);
             return (T) (object) client;
         }
-
-        /// <summary>
-        /// Creates an IRequestVisitor<IResponse> (i.e. the "request execution engine") using the default
-        /// implementation for each of the requisite visitors.  Unless a 3rd-party client wants to override 
-        /// a particular visitor (in order to modify the way that the SDK creates and interperates calls
-        /// to the LevelUp api) for some reason, these defaults are what should be used in the creation of
-        /// the LevelUpClient implementation class.
-        /// </summary>
-        private static IRequestVisitor<IResponse> GetDefaultLevelUpRequestEngine(AgentIdentifier identifier,
-            LevelUpEnvironment enviornment, IRestfulService httpRestService)
-        {
-            IRequestVisitor<string> endpointCreator = new RequestEndpointCreator(enviornment);
-
-            IRequestVisitor<string> headerAuthorizationTokenCreator = new RequestHeaderTokenCreator();
-
-            IRequestVisitor<Dictionary<HttpStatusCode, LevelUpRestWrapper.ResponseAction>> customHttpStatusCodeHandlers
-                = new AdditionalHttpStatusCodeHandlers();
-
-            IRequestVisitor<IResponse> requestExecutionEngine = new RequestExecutionEngine(httpRestService, identifier,
-                endpointCreator, headerAuthorizationTokenCreator, customHttpStatusCodeHandlers);
-
-            return requestExecutionEngine;
-        }
-
     }
 }

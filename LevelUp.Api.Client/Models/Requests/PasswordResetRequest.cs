@@ -17,7 +17,6 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using LevelUp.Api.Client.Models.RequestVisitors;
 using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -32,20 +31,11 @@ namespace LevelUp.Api.Client.Models.Requests
             get { return LevelUpApiVersion.v14; }
         }
 
-        public PasswordResetRequestBody Body { get { return _body; } }
-        private readonly PasswordResetRequestBody _body;
+        public PasswordResetRequestBody Body { get; }
 
         public PasswordResetRequest(string emailAddress) : base (null)
         {
-            _body = new PasswordResetRequestBody(emailAddress);
-        }
-
-        /// <summary>
-        /// Acceptance method for Request visitors.
-        /// </summary>
-        public override T Accept<T>(IRequestVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
+            Body = new PasswordResetRequestBody(emailAddress);
         }
     }
 }

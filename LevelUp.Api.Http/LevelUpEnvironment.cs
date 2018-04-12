@@ -36,26 +36,17 @@ namespace LevelUp.Api.Http
         /// <summary>
         /// The LevelUp Production API ("https://api.thelevelup.com")
         /// </summary>
-        public static LevelUpEnvironment Production
-        {
-            get { return new LevelUpEnvironment(@"https://api.thelevelup.com"); }
-        }
+        public static LevelUpEnvironment Production => new LevelUpEnvironment(@"https://api.thelevelup.com");
 
         /// <summary>
         /// The LevelUp Sandbox (i.e. Testing) API ("https://sandbox.thelevelup.com")
         /// </summary>
-        public static LevelUpEnvironment Sandbox
-        {
-            get { return new LevelUpEnvironment(@"https://sandbox.thelevelup.com"); }
-        }
+        public static LevelUpEnvironment Sandbox => new LevelUpEnvironment(@"https://sandbox.thelevelup.com");
 
         /// <summary>
         /// The LevelUp Staging (i.e. Pre-Production) API ("https://staging.thelevelup.com")
         /// </summary>
-        public static LevelUpEnvironment Staging
-        {
-            get { return new LevelUpEnvironment(@"https://staging.thelevelup.com"); }
-        }
+        public static LevelUpEnvironment Staging => new LevelUpEnvironment(@"https://staging.thelevelup.com");
 
         public override bool Equals(object obj)
         {

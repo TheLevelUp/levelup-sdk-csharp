@@ -17,7 +17,6 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using LevelUp.Api.Client.Models.RequestVisitors;
 using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -32,8 +31,7 @@ namespace LevelUp.Api.Client.Models.Requests
         /// <summary>
         /// A Serializable http body for the AccessTokenRequest
         /// </summary>
-        public AccessTokenRequestBody Body { get { return _body; } }
-        private readonly AccessTokenRequestBody _body;
+        public AccessTokenRequestBody Body { get; }
 
         /// <summary>
         /// Constructor for a LevelUp access token request
@@ -44,15 +42,7 @@ namespace LevelUp.Api.Client.Models.Requests
         public AccessTokenRequest(string apiKey, string username, string password)
             : base(null)
         {
-            _body = new AccessTokenRequestBody(apiKey, username, password);
-        }
-
-        /// <summary>
-        /// Acceptance method for Request visitors.
-        /// </summary>
-        public override T Accept<T>(IRequestVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
+            Body = new AccessTokenRequestBody(apiKey, username, password);
         }
     }
 }

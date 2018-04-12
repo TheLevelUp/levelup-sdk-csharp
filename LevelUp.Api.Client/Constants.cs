@@ -19,9 +19,9 @@
 
 using System.Globalization;
 
-namespace LevelUp.Api.Utilities
+namespace LevelUp.Api.Client
 {
-    public static class Constants
+    internal static class Constants
     {
         public static readonly CultureInfo EnUsCulture = new CultureInfo("en-US");
 

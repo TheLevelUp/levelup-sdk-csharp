@@ -25,13 +25,13 @@ namespace LevelUp.Api.Http
     public class LevelUpHttpRestfulService : IRestfulService
     {
         // To enable unit testing, the creator of the object can specify a mock method to use in place of
-        // HttpRest.MakeRequest to use as part of the various REST methods.
+        // RestSharpUtils.MakeRequest to use as part of the various REST methods.
         internal delegate IRestResponse ExecuteRequest(string url, IRestRequest request, string userAgent);
         private ExecuteRequest _executeFunc;
 
         public LevelUpHttpRestfulService()
         {
-            _executeFunc = HttpRest.MakeRequest;
+            _executeFunc = RestSharpUtils.MakeRequest;
         }
 
         /// <summary>
@@ -100,26 +100,21 @@ namespace LevelUp.Api.Http
 
             AddAccessTokenHeader(headers, accessTokenHeader);
 
-            return HttpRest.BuildRequest(requestMethod, headers, null, body);
+            return RestSharpUtils.BuildRequest(requestMethod, headers, null, body);
         }
 
         private static void AddAccessTokenHeader(Dictionary<string, string> headers, string accessTokenString)
         {
-            const string authorizationHeaderString = "Authorization";
-
             if (!string.IsNullOrEmpty(accessTokenString))
             {
-                headers[authorizationHeaderString] = accessTokenString;
+                headers["Authorization"] = accessTokenString;
             }
         }
 
         private static void AddJsonHeaders(Dictionary<string, string> headers)
         {
-            const string ACCEPT_HEADER_STRING = "Accept";
-            const string CONTENT_TYPE_HEADER_STRING = "Content-Type";
-
-            headers[ACCEPT_HEADER_STRING] = HttpRest.ContentTypeStrings[HttpRest.ContentType.Json];
-            headers[CONTENT_TYPE_HEADER_STRING] = HttpRest.ContentTypeStrings[HttpRest.ContentType.Json];
+            headers["Accept"] = RestSharpUtils.ContentTypeStrings[RestSharpUtils.ContentType.Json];
+            headers["Content-Type"] = RestSharpUtils.ContentTypeStrings[RestSharpUtils.ContentType.Json];
         }
 
         #endregion Helper Methods

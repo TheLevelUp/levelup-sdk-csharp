@@ -17,13 +17,14 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Requests
 {
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel(null)]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
+    [ObjectEnvelope(null)]
+    [JsonConverter(typeof(EnvelopeSerializer))]
     public class PasswordResetRequestBody
     {
         private PasswordResetRequestBody()

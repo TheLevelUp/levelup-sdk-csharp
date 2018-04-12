@@ -26,7 +26,7 @@ namespace LevelUp.Api.Client.Test.Models
     public class RequestVersionUnitTest
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         [ExpectedException(typeof(InvalidOperationException), "Failed to throw InvalidOperationException for a request object with unspecified applicable versions")]
         public void ModelWithUnspecifiedRequestVersion_ShouldThrow()
         {

@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="ICreateDetachedReundsUnitTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="ICreateDetachedReundsFunctionalTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -25,13 +25,13 @@ using LevelUp.Api.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
 
-namespace LevelUp.Api.Client.Test.Client
+namespace LevelUp.Api.Client.Test.Client.FunctionalTests
 {
     [TestClass]
-    public class ICreateDetachedReundsUnitTests
+    public class ICreateDetachedReundsFunctionalTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void CreateDetachedRefundShouldSucceed()
         {
             const string expectedRequestUrl = "https://sandbox.thelevelup.com/v15/detached_refunds";
@@ -87,7 +87,7 @@ namespace LevelUp.Api.Client.Test.Client
                     loyalty_id, refunded_at, register)
             };
 
-            ICreateDetachedRefund client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<ICreateDetachedRefund, DetachedRefundRequest>(
+            ICreateDetachedRefund client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<ICreateDetachedRefund, DetachedRefundRequest>(
                 expectedResponse, expectedRequestBody, expectedAccessToken: accessToken, expectedRequestUrl: expectedRequestUrl);
             var resp = client.CreateDetachedRefund(accessToken, location_id, payment_token_data, credit_amount, register,
                 cashier, identifier_from_merchant, manager_confirmation, customer_facing_reason, internal_reason);
@@ -104,7 +104,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         [ExpectedException((typeof(LevelUpApiException)), "No LevelUpAPI exception was thrown an invalid response body.")]
         public void CreateDetachedRefundShouldFailDeserialization()
         {
@@ -119,7 +119,7 @@ namespace LevelUp.Api.Client.Test.Client
                           "}}"
             };
 
-            ICreateDetachedRefund client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<ICreateDetachedRefund>(expectedResponse);
+            ICreateDetachedRefund client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<ICreateDetachedRefund>(expectedResponse);
             var resp = client.CreateDetachedRefund("we", 0, "are", 0, "not", "checking", "any", "of", "these", "strings");
         }
     }

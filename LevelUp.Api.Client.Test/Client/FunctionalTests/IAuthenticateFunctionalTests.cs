@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="IAuthenticateUnitTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="IAuthenticateFunctionalTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -24,13 +24,13 @@ using LevelUp.Api.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
 
-namespace LevelUp.Api.Client.Test.Client
+namespace LevelUp.Api.Client.Test.Client.FunctionalTests
 {
     [TestClass]
-    public class IAuthenticateUnitTests
+    public class IAuthenticateFunctionalTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void AuthenticationShouldSucceed()
         {
             const string testBaseUri = "https://127.0.0.1";
@@ -56,7 +56,7 @@ namespace LevelUp.Api.Client.Test.Client
                 };
 
             IAuthenticate auth =
-                ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IAuthenticate, AccessTokenRequest>(
+                ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IAuthenticate, AccessTokenRequest>(
                     expectedResponse,
                     expectedRequestbody,
                     expectedAccessToken: null,
@@ -67,7 +67,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void AuthenticationShouldSucceedForCode200OK()
         {
             const int expectedUserId = 54321;
@@ -83,7 +83,7 @@ namespace LevelUp.Api.Client.Test.Client
             };
 
             IAuthenticate iAuth =
-                ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IAuthenticate>(expectedResponse);
+                ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IAuthenticate>(expectedResponse);
 
             var token = iAuth.Authenticate("This doesn't matter", "This has no bearing", "This can be whatever you want");
 
@@ -93,7 +93,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         [ExpectedException((typeof(LevelUpApiException)), "No LevelUpAPI exception was thrown for a response with a return code of 404.")]
         public void AuthenticationShouldFailForErrorCode404NotFound()
         {
@@ -102,7 +102,7 @@ namespace LevelUp.Api.Client.Test.Client
             const string testMerchantPassword = "MyP@ssw0rdIsS3cr3t";
 
             RestResponse expected = new RestResponse{StatusCode = HttpStatusCode.NotFound};
-            IAuthenticate auth = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IAuthenticate>(expected);
+            IAuthenticate auth = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IAuthenticate>(expected);
 
             // Should throw exception for non-200 [OK] response
             auth.Authenticate(testClientId, testMerchantUsername, testMerchantPassword);

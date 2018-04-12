@@ -28,7 +28,7 @@ namespace LevelUp.Api.Client.Test.Models.Requests
     public class FinalizeRemoteCheckRequestTests : ModelTestsBase
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void Serialize()
         {
             const int spend = 987;
@@ -46,7 +46,7 @@ namespace LevelUp.Api.Client.Test.Models.Requests
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void Serialize_Defaults()
         {
             const int spend = 8765;
@@ -62,7 +62,7 @@ namespace LevelUp.Api.Client.Test.Models.Requests
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void Serialize_NullDiscount()
         {
             const int spend = 8765;
@@ -79,7 +79,7 @@ namespace LevelUp.Api.Client.Test.Models.Requests
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void Serialize_NoTax()
         {
             const int spend = 8765;

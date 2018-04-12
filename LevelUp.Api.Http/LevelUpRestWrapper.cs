@@ -31,10 +31,7 @@ namespace LevelUp.Api.Http
         public delegate void ResponseAction(IRestResponse response);
         private readonly IRestfulService RestService;
 
-        /// <summary>
-        /// Identifying information for the group or individual developing this software
-        /// </summary>
-        public AgentIdentifier Identifier { get; private set; }
+        public AgentIdentifier Identifier { get; }
 
         public LevelUpRestWrapper(IRestfulService restService, AgentIdentifier identifier)
         {
@@ -42,28 +39,26 @@ namespace LevelUp.Api.Http
             Identifier = identifier;
         }
 
-        public TResponse Get<TResponse>(string uri,
-                                           string accessTokenHeader = null,
-                                           IDictionary<HttpStatusCode, ResponseAction> actions = null)
+        public TResponse Get<TResponse>(
+            string uri,
+            string accessTokenHeader = null,
+            IDictionary<HttpStatusCode, ResponseAction> actions = null)
         {
-            IRestResponse response = RestService.Get(uri,
-                                                     accessTokenHeader,
-                                                     Identifier.ToString());
+            IRestResponse response = RestService.Get(uri,accessTokenHeader, Identifier.ToString());
 
             return DeserializeResponse<TResponse>(HandleResponse(response, actions));
         }
 
-        public PagedList<TResponse> GetWithPaging<TResponse>(string uri,
-                                                                int currentPageNumber,
-                                                                string accessTokenHeader = null)
+        public PagedList<TResponse> GetWithPaging<TResponse>(
+            string uri,
+            int currentPageNumber,
+            string accessTokenHeader = null)
         {
             string nextPageUrl = uri;
 
             PagedList<TResponse>.EndpointInvoker endpointInvoker = (url) =>
             {
-                IRestResponse response = RestService.Get(url,
-                                                         accessTokenHeader,
-                                                         Identifier.ToString());
+                IRestResponse response = RestService.Get(url, accessTokenHeader, Identifier.ToString());
 
                 ThrowExceptionOnBadResponseCode(response);
 
@@ -75,102 +70,91 @@ namespace LevelUp.Api.Http
                                             pageUrl: nextPageUrl);
         }
 
-        public void Post<TRequest>(TRequest request,
-                                      string uri,
-                                      string accessTokenHeader = null,
-                                      IDictionary<HttpStatusCode, ResponseAction> actions = null)
+        public void Post<TRequest>(
+            TRequest request,
+            string uri,
+            string accessTokenHeader = null,
+            IDictionary<HttpStatusCode, ResponseAction> actions = null)
         {
-            Post(JsonConvert.SerializeObject(request),
-                 uri,
-                 accessTokenHeader,
-                 actions);
+            Post(JsonConvert.SerializeObject(request), uri, accessTokenHeader, actions);
         }
 
-        public TResponse Post<TResponse>(string uri,
-                                            string accessTokenHeader = null,
-                                            IDictionary<HttpStatusCode, ResponseAction> actions = null)
+        public TResponse Post<TResponse>(
+            string uri,
+            string accessTokenHeader = null,
+            IDictionary<HttpStatusCode, ResponseAction> actions = null)
         {
             string body = string.Empty;
 
-            return DeserializeResponse<TResponse>(Post(body,
-                                                            uri,
-                                                            accessTokenHeader,
-                                                            actions));
+            return DeserializeResponse<TResponse>(Post(body, uri, accessTokenHeader, actions));
         }
 
-        public TResponse Post<TRequest, TResponse>(TRequest request,
-                                                      string uri,
-                                                      string accessTokenHeader = null,
-                                                      IDictionary<HttpStatusCode, ResponseAction> actions = null)
+        public TResponse Post<TRequest, TResponse>(
+            TRequest request,
+            string uri,
+            string accessTokenHeader = null,
+            IDictionary<HttpStatusCode, ResponseAction> actions = null)
         {
-            return DeserializeResponse<TResponse>(Post(JsonConvert.SerializeObject(request),
-                                                            uri,
-                                                            accessTokenHeader,
-                                                            actions));
+            return DeserializeResponse<TResponse>(
+                Post(JsonConvert.SerializeObject(request), uri, accessTokenHeader, actions));
         }
 
-        public TResponse Put<TRequest, TResponse>(TRequest request,
-                                                      string uri,
-                                                      string accessTokenHeader = null,
-                                                      IDictionary<HttpStatusCode, ResponseAction> actions = null)
+        public TResponse Put<TRequest, TResponse>(
+            TRequest request,
+            string uri,
+            string accessTokenHeader = null,
+            IDictionary<HttpStatusCode, ResponseAction> actions = null)
         {
-            return DeserializeResponse<TResponse>(Put(JsonConvert.SerializeObject(request),
-                                                            uri,
-                                                            accessTokenHeader,
-                                                            actions));
+            return DeserializeResponse<TResponse>(
+                Put(JsonConvert.SerializeObject(request), uri, accessTokenHeader, actions));
         }
 
         #region Helper Methods
 
-        private string Post(string body,
-                            string uri,
-                            string accessTokenHeader = null,
-                            IDictionary<HttpStatusCode, ResponseAction> actions = null)
+        private string Post(
+            string body,
+            string uri,
+            string accessTokenHeader = null,
+            IDictionary<HttpStatusCode, ResponseAction> actions = null)
         {
-            IRestResponse response = RestService.Post(uri,
-                                                      body,
-                                                      accessTokenHeader,
-                                                      Identifier.ToString());
+            IRestResponse response = RestService.Post(uri, body, accessTokenHeader, Identifier.ToString());
 
             return HandleResponse(response, actions);
         }
 
-        private string Put(string body,
-                    string uri,
-                    string accessTokenHeader = null,
-                    IDictionary<HttpStatusCode, ResponseAction> actions = null)
+        private string Put(
+            string body,
+            string uri,
+            string accessTokenHeader = null,
+            IDictionary<HttpStatusCode, ResponseAction> actions = null)
         {
-            IRestResponse response = RestService.Put( uri,
-                                                      body,
-                                                      accessTokenHeader,
-                                                      Identifier.ToString());
+            IRestResponse response = RestService.Put( uri, body, accessTokenHeader, Identifier.ToString());
 
             return HandleResponse(response, actions);
         }
 
-        public TResponse Delete<TResponse>(string uri,
-                                   string accessTokenHeader = null,
-                                   IDictionary<HttpStatusCode, ResponseAction> actions = null)
+        public TResponse Delete<TResponse>(
+            string uri,
+            string accessTokenHeader = null,
+            IDictionary<HttpStatusCode, ResponseAction> actions = null)
         {
-            IRestResponse response = RestService.Delete(uri,
-                                                     accessTokenHeader,
-                                                     Identifier.ToString());
+            IRestResponse response = RestService.Delete(uri, accessTokenHeader, Identifier.ToString());
 
             return DeserializeResponse<TResponse>(HandleResponse(response, actions));
         }
 
-        public void Delete(string uri,
-                           string accessTokenHeader = null,
-                           IDictionary<HttpStatusCode, ResponseAction> actions = null)
+        public void Delete(
+            string uri,
+            string accessTokenHeader = null,
+            IDictionary<HttpStatusCode, ResponseAction> actions = null)
         {
-            IRestResponse response = RestService.Delete(uri,
-                                                     accessTokenHeader,
-                                                     Identifier.ToString());
+            IRestResponse response = RestService.Delete(uri, accessTokenHeader, Identifier.ToString());
             HandleResponse(response, actions);
         }
 
-        private string HandleResponse(IRestResponse response,
-                                      IDictionary<HttpStatusCode, ResponseAction> actions = null)
+        private string HandleResponse(
+            IRestResponse response,
+            IDictionary<HttpStatusCode, ResponseAction> actions = null)
         {
             if (actions != null && actions.ContainsKey(response.StatusCode))
             {
@@ -198,14 +182,12 @@ namespace LevelUp.Api.Http
 
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                throw new LevelUpApiException(string.Format("Error {0} ({1}). Endpoint \"{2}\" not found!",
-                                                            (int)response.StatusCode,
-                                                            response.StatusCode,
-                                                            response.ResponseUri));
+                throw new LevelUpApiException($"Error {(int) response.StatusCode} ({response.StatusCode}). " +
+                    $"Endpoint \"{response.ResponseUri}\" not found!");
             }
 
             List<ErrorResponse> errors = DeserializeResponse<List<ErrorResponse>>(response.Content);
-            throw LevelUpApiException.Initialize(errors, response.StatusCode, response.ErrorException);
+            throw new LevelUpApiException(errors, response.StatusCode, response.ErrorException);
         }
 
         internal static TResponse DeserializeResponse<TResponse>(string value)
@@ -216,9 +198,9 @@ namespace LevelUp.Api.Http
             }
             catch (JsonReaderException ex)
             {
-                throw new LevelUpApiException(string.Format("Failed to parse the content returned from platform into the " +
-                                                            "specified response object of type {0}{1}Response Body:{1}{2}", 
-                                                            typeof(TResponse).ToString(), Environment.NewLine, value), ex);
+                throw new LevelUpApiException("Failed to parse the content returned from platform into the " +
+                    $"specified response object of type {typeof(TResponse)}{Environment.NewLine}Response Body:" +
+                    $"{Environment.NewLine}{value}", ex);
             }
         }
 

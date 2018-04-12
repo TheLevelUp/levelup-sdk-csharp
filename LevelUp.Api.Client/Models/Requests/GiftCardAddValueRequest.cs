@@ -18,7 +18,6 @@
 #endregion
 
 using System.Collections.Generic;
-using LevelUp.Api.Client.Models.RequestVisitors;
 using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -36,8 +35,7 @@ namespace LevelUp.Api.Client.Models.Requests
         /// <summary>
         /// A Serializable http body for the FinalizeRemoteCheckRequest
         /// </summary>
-        public GiftCardAddValueRequestBody Body { get { return _body; } }
-        private readonly GiftCardAddValueRequestBody _body;
+        public GiftCardAddValueRequestBody Body { get; }
 
         /// <summary>
         /// Creates a add value request for a LevelUp gift card
@@ -64,16 +62,8 @@ namespace LevelUp.Api.Client.Models.Requests
             : base(accessToken)
         {
             _merchantId = merchantId;
-            _body = new GiftCardAddValueRequestBody(giftCardQrData, amountInCents, locationId, identifierFromMerchant,
+            Body = new GiftCardAddValueRequestBody(giftCardQrData, amountInCents, locationId, identifierFromMerchant,
                 tenderTypes, levelUpOrderId);
-        }
-
-        /// <summary>
-        /// Acceptance method for Request visitors.
-        /// </summary>
-        public override T Accept<T>(IRequestVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
         }
     }
 }

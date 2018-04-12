@@ -24,7 +24,7 @@ namespace LevelUp.Api.Client.Models.Responses
     /// <summary>
     /// Class representing a LevelUp response to a MangedLocationQuery request
     /// </summary>
-    public class ManagedLocationQueryResponse : IResponse
+    public class ManagedLocationQueryResponse : Response
     {
         public readonly List<ManagedLocation> Details;
 

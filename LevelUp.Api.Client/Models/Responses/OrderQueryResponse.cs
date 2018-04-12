@@ -19,7 +19,7 @@
 
 namespace LevelUp.Api.Client.Models.Responses
 {
-    public class OrderQueryResponse : IResponse
+    public class OrderQueryResponse : Response
     {
         public readonly PagedList<OrderDetailsResponse> Orders;
 

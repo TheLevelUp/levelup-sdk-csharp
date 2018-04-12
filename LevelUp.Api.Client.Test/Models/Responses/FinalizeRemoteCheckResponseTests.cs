@@ -29,7 +29,7 @@ namespace LevelUp.Api.Client.Test.Models.Responses
     public class FinalizeRemoteCheckResponseTests : ModelTestsBase
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void Deserialize()
         {
             string levelUpOrderId = Guid.NewGuid().ToString("N");
@@ -52,7 +52,7 @@ namespace LevelUp.Api.Client.Test.Models.Responses
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void Deserialize_NoGiftTip()
         {
             string levelUpOrderId = Guid.NewGuid().ToString("N");
@@ -75,7 +75,7 @@ namespace LevelUp.Api.Client.Test.Models.Responses
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void Deserialize_NoGift()
         {
             string levelUpOrderId = Guid.NewGuid().ToString("N");

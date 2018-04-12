@@ -17,7 +17,6 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using LevelUp.Api.Client.Models.RequestVisitors;
 using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -32,20 +31,11 @@ namespace LevelUp.Api.Client.Models.Requests
             get { return LevelUpApiVersion.v14; }
         }
 
-        public int CardId { get { return _cardId; } }
-        private readonly int _cardId;
+        public int CardId { get; }
 
         public DeleteCreditCardRequest(string accessToken, int cardId) : base(accessToken)
         {
-            _cardId = cardId;
-        }
-
-        /// <summary>
-        /// Acceptance method for Request visitors.
-        /// </summary>
-        public override T Accept<T>(IRequestVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
+            CardId = cardId;
         }
     }
 }

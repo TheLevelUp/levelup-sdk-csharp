@@ -18,7 +18,6 @@
 #endregion
 
 using System.Collections.Generic;
-using LevelUp.Api.Client.Models.RequestVisitors;
 using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -33,8 +32,7 @@ namespace LevelUp.Api.Client.Models.Requests
         /// <summary>
         /// A Serializable http body for the CreateProposedOrderRequest
         /// </summary>
-        public CreateProposedOrderRequestBody Body { get { return _body; } }
-        private readonly CreateProposedOrderRequestBody _body;
+        public CreateProposedOrderRequestBody Body { get; }
 
         /// <summary>
         /// A request that creates a proposed order as part of a two-step order workflow (create 
@@ -72,18 +70,9 @@ namespace LevelUp.Api.Client.Models.Requests
                                     IList<Item> items)
             : base(accessToken)
         {
-            _body = new CreateProposedOrderRequestBody(locationId, qrPaymentData, spendAmountCents, taxAmountCents, 
+            Body = new CreateProposedOrderRequestBody(locationId, qrPaymentData, spendAmountCents, taxAmountCents, 
                 exemptionAmountCents, register, cashier, identifierFromMerchant, receiptMessageHtml, 
                 partialAuthorizationAllowed, items);
-        }
-
-
-        /// <summary>
-        /// Acceptance method for Request visitors.
-        /// </summary>
-        public override T Accept<T>(IRequestVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="IResponse.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="Response.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -17,13 +17,15 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using Newtonsoft.Json;
+
 namespace LevelUp.Api.Client.Models.Responses
 {
-    /// <summary>
-    /// Marker interface representing rest responses.
-    /// </summary>
-    public interface IResponse
+    public class Response
     {
-
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

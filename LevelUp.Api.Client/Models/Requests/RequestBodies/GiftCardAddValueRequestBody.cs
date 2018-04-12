@@ -18,6 +18,7 @@
 #endregion
 
 using System.Collections.Generic;
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -26,8 +27,8 @@ namespace LevelUp.Api.Client.Models.Requests
     /// Class representing a LevelUp gift card add value request
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("gift_card_value_addition")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
+    [ObjectEnvelope("gift_card_value_addition")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
     public class GiftCardAddValueRequestBody
     {
         private GiftCardAddValueRequestBody()

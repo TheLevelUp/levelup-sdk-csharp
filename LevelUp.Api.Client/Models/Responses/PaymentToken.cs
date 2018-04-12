@@ -17,7 +17,7 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using System;
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Responses
@@ -26,9 +26,9 @@ namespace LevelUp.Api.Client.Models.Responses
     /// LevelUp Payment Token
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("payment_token")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
-    public class PaymentToken : IResponse
+    [ObjectEnvelope("payment_token")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
+    public class PaymentToken : Response
     {
         /// <summary>
         /// Private constructor for deserialization
@@ -52,10 +52,5 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         [JsonProperty(PropertyName = "data")]
         public string Data { get; private set; }
-
-        public override string ToString()
-        {
-            return string.Format("Id: {0}{1}Data: {2}{1}", Id, Environment.NewLine, Data);
-        }
     }
 }

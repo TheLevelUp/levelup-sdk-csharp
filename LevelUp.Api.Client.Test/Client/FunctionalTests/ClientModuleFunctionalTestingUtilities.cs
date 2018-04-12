@@ -1,6 +1,6 @@
 #region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="ClientModuleUnitTestingUtilities.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="ClientModuleFunctionalTestingUtilities.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -27,9 +27,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RestSharp;
 
-namespace LevelUp.Api.Client.Test.Client
+namespace LevelUp.Api.Client.Test.Client.FunctionalTests
 {
-    internal static class ClientModuleUnitTestingUtilities
+    internal static class ClientModuleFunctionalTestingUtilities
     {
         /// <summary>
         /// Gets a LevelUpClient Module interface that will mimic, for any rest call, the provided 

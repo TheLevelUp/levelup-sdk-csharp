@@ -17,7 +17,7 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using System;
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Responses
@@ -26,9 +26,9 @@ namespace LevelUp.Api.Client.Models.Responses
     /// Class representing a basic LevelUp merchant location
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("location")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
-    public class Location : IResponse
+    [ObjectEnvelope("location")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
+    public class Location : Response
     {
         /// <summary>
         /// Constructor for deserialization
@@ -60,13 +60,5 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         [JsonProperty(PropertyName = "merchant_tip_preference")]
         public string TipPreference { get; private set; }
-
-        public override string ToString()
-        {
-            return string.Format("Name: {0}{1}Location Id: {2}{1}",
-                                 Name,
-                                 Environment.NewLine,
-                                 LocationId);
-        }
     }
 }

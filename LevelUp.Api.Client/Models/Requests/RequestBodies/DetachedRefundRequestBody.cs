@@ -17,6 +17,7 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -25,8 +26,8 @@ namespace LevelUp.Api.Client.Models.Requests
     /// Request to create a detached refund
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("detached_refund")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
+    [ObjectEnvelope("detached_refund")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
     public class DetachedRefundRequestBody
     {
         private DetachedRefundRequestBody()

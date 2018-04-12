@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="IDestroyGiftCardValueUnitTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="IDestroyGiftCardValueFunctionalTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -24,13 +24,13 @@ using LevelUp.Api.Client.Models.Requests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
 
-namespace LevelUp.Api.Client.Test.Client
+namespace LevelUp.Api.Client.Test.Client.FunctionalTests
 {
     [TestClass]
-    public class IDestroyGiftCardValueUnitTests
+    public class IDestroyGiftCardValueFunctionalTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void GiftCardDestroyValueShouldSucceed()
         {
             string paymentTokenData = "LU020000029080KFZ02I9A8V030000LU";
@@ -62,7 +62,7 @@ namespace LevelUp.Api.Client.Test.Client
                                         valueAmountCents, (initialTotalValueAtMerchantCents - valueAmountCents), initialTotalValueAtMerchantCents)
             };
 
-            IDestroyGiftCardValue client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IDestroyGiftCardValue, GiftCardRemoveValueRequest>(
+            IDestroyGiftCardValue client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IDestroyGiftCardValue, GiftCardRemoveValueRequest>(
                 expectedResponse, expectedRequestBody, expectedRequestUrl: expectedRequestUrl);
 
             var destroyed = client.GiftCardDestroyValue("not_checking_this", merchantId, paymentTokenData, valueAmountCents);
@@ -73,7 +73,7 @@ namespace LevelUp.Api.Client.Test.Client
 
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void GiftCardDestroyValueShouldFailForBadHttpStatusCodes()
         {
             List<RestResponse> possibleErrors = new List<RestResponse>(new RestResponse[]
@@ -103,7 +103,7 @@ namespace LevelUp.Api.Client.Test.Client
 
             foreach (var response in possibleErrors)
             {
-                IDestroyGiftCardValue client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IDestroyGiftCardValue>(response);
+                IDestroyGiftCardValue client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IDestroyGiftCardValue>(response);
 
                 try
                 {

@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="IModifyUserUnitTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="IModifyUserFunctionalTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -24,10 +24,10 @@ using LevelUp.Api.Client.Models.Requests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
 
-namespace LevelUp.Api.Client.Test.Client
+namespace LevelUp.Api.Client.Test.Client.FunctionalTests
 {
     [TestClass]
-    public class IModifyUserUnitTests
+    public class IModifyUserFunctionalTests
     {
         private const string email = "ryanp@thelevelup.com";
         private const string firstName = "Ryan";
@@ -62,7 +62,7 @@ namespace LevelUp.Api.Client.Test.Client
         };
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void CreateUserShouldSucceed()
         {
             string expectedRequestUrl = "https://sandbox.thelevelup.com/v14/users";
@@ -77,7 +77,7 @@ namespace LevelUp.Api.Client.Test.Client
                                                         "}}," +
                                                     "}}", apiKey, email, firstName, lastName, password);
 
-            IModifyUser client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IModifyUser, CreateUserRequest>(
+            IModifyUser client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IModifyUser, CreateUserRequest>(
                 expectedCreateOrUpdateUserResponse, expectedRequestBody, expectedRequestUrl: expectedRequestUrl);
             var user = client.CreateUser(apiKey, firstName, lastName, email, password);
 
@@ -87,12 +87,12 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void UpdateUserShouldSucceed()
         {
             string expectedRequestUrl = "https://sandbox.thelevelup.com/v14/users/123";
 
-            IModifyUser client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IModifyUser>(
+            IModifyUser client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IModifyUser>(
                 expectedCreateOrUpdateUserResponse, expectedRequestUrl: expectedRequestUrl);
             var user = client.UpdateUser("not_checking_this", new UpdateUserRequestBody(123));
 
@@ -103,7 +103,7 @@ namespace LevelUp.Api.Client.Test.Client
 
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void PasswordResetRequestShouldSucceed()
         {
             const string expectedRequestUrl = "https://sandbox.thelevelup.com/v14/passwords";
@@ -114,7 +114,7 @@ namespace LevelUp.Api.Client.Test.Client
                 StatusCode = HttpStatusCode.NoContent
             };
 
-            IModifyUser client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IModifyUser, PasswordResetRequest>(
+            IModifyUser client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IModifyUser, PasswordResetRequest>(
                 expectedResponse, expectedRequestBody, expectedRequestUrl);
             client.PasswordResetRequest("foo@example.com");
         }

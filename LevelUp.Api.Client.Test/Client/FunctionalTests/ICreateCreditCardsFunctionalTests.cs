@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="ICreateCreditCardsUnitTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="ICreateCreditCardsFunctionalTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -24,13 +24,13 @@ using LevelUp.Api.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
 
-namespace LevelUp.Api.Client.Test.Client
+namespace LevelUp.Api.Client.Test.Client.FunctionalTests
 {
     [TestClass]
-    public class ICreateCreditCardsUnitTests
+    public class ICreateCreditCardsFunctionalTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void CreateCreditCardShouldSucceed()
         {
             const string expectedRequestUrl = "https://sandbox.thelevelup.com/v15/credit_cards";
@@ -73,7 +73,7 @@ namespace LevelUp.Api.Client.Test.Client
 
             const string accessToken = "abc";
 
-            ICreateCreditCards client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<ICreateCreditCards, CreateCreditCardRequest>(
+            ICreateCreditCards client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<ICreateCreditCards, CreateCreditCardRequest>(
                 expectedResponse, expectedRequestbody, expectedAccessToken: accessToken, expectedRequestUrl: expectedRequestUrl);
             var card = client.CreateCreditCard(accessToken, encrypted_number, encrypted_expiration_month, encrypted_expiration_year, encrypted_cvv, postal_code);
 
@@ -89,7 +89,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void CreateCreditCardShouldFailForInvalidCardDetails()
         {
             RestResponse expectedResponse = new RestResponse
@@ -100,7 +100,7 @@ namespace LevelUp.Api.Client.Test.Client
 
             try
             {
-                ICreateCreditCards client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<ICreateCreditCards>(expectedResponse);
+                ICreateCreditCards client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<ICreateCreditCards>(expectedResponse);
                 var card = client.CreateCreditCard("abc", new CreateCreditCardRequestBody("we", "aren't", "checking", "these", "params"));
                 Assert.IsTrue(false, "Failed to throw a LevelUpApiException for invalid card data (422 response code)");
             }

@@ -18,13 +18,14 @@
 #endregion
 
 using System.Collections.Generic;
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Requests
 {
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("check")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
+    [ObjectEnvelope("check")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
     public class RemoteCheckDataRequestBody
     {
         private RemoteCheckDataRequestBody()

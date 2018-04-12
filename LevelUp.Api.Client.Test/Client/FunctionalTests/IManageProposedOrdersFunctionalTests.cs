@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="IManageProposedOrdersUnitTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="IManageProposedOrdersFunctionalTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -24,13 +24,13 @@ using LevelUp.Api.Client.Models.Requests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
 
-namespace LevelUp.Api.Client.Test.Client
+namespace LevelUp.Api.Client.Test.Client.FunctionalTests
 {
     [TestClass]
-    public class IManageProposedOrdersUnitTests
+    public class IManageProposedOrdersFunctionalTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void CreateProposedOrderShouldSucceed()
         {
             string expectedRequestUrl = "https://sandbox.thelevelup.com/v15/proposed_orders";
@@ -59,7 +59,7 @@ namespace LevelUp.Api.Client.Test.Client
 
             var items = GetSampleItems().Item2;
             
-            IManageProposedOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CreateProposedOrderRequest>(
+            IManageProposedOrders client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CreateProposedOrderRequest>(
                 expectedResponse, expectedRequest, expectedRequestUrl: expectedRequestUrl);
             var proposedOrder = client.CreateProposedOrder("not_checking_this", 19, "LU02000008ZS9OJFUBNEL6ZM030000LU",
                 110, 110, 10, 0, "3", "Bob", "001001", null, true, items);
@@ -70,7 +70,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void CreateProposedOrderShouldSucceedForSplitTender()
         {
             string expectedRequestUrl = "https://sandbox.thelevelup.com/v15/proposed_orders";
@@ -99,7 +99,7 @@ namespace LevelUp.Api.Client.Test.Client
 
             var items = GetSampleItems().Item2;
 
-            IManageProposedOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CreateProposedOrderRequest>(
+            IManageProposedOrders client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CreateProposedOrderRequest>(
                 expectedResponse, expectedRequest, expectedRequestUrl: expectedRequestUrl);
             var proposedOrder = client.CreateProposedOrder("not_checking_this", 19, "LU02000008ZS9OJFUBNEL6ZM030000LU",
                 200, 100, 10, 130, "3", "Bob", "001001", null, true, items);
@@ -109,7 +109,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void CompleteProposedOrderShouldSucceed()
         {
             string expectedRequestUrl = "https://sandbox.thelevelup.com/v15/completed_orders";
@@ -149,7 +149,7 @@ namespace LevelUp.Api.Client.Test.Client
 
             var items = GetSampleItems().Item2;
 
-            IManageProposedOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CompleteProposedOrderRequest>(
+            IManageProposedOrders client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CompleteProposedOrderRequest>(
                 expectedResponse, expectedRequest, expectedRequestUrl: expectedRequestUrl);
             var completedOrder = client.CompleteProposedOrder("not_checking_this", 19, "LU02000008ZS9OJFUBNEL6ZM030000LU",
                 "1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1", 110, 110, 10, 0, 100, "3", "Bob", "001001", 
@@ -164,7 +164,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void CompleteProposedOrderShouldSucceedForSplitTender()
         {
             string expectedRequestUrl = "https://sandbox.thelevelup.com/v15/completed_orders";
@@ -204,7 +204,7 @@ namespace LevelUp.Api.Client.Test.Client
 
             var items = GetSampleItems().Item2;
 
-            IManageProposedOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CompleteProposedOrderRequest>(
+            IManageProposedOrders client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CompleteProposedOrderRequest>(
                 expectedResponse, expectedRequest, expectedRequestUrl: expectedRequestUrl);
             var completedOrder = client.CompleteProposedOrder("not_checking_this", 19, "LU02000008ZS9OJFUBNEL6ZM030000LU",
                 "1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1", 300, 200, 10, 130, 100, "3", "Bob", "001001",
@@ -219,7 +219,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void CompleteProposedOrderShouldSucceedForDiscountsDisabled()
         {
             string expectedRequestUrl = "https://sandbox.thelevelup.com/v15/completed_orders";
@@ -259,7 +259,7 @@ namespace LevelUp.Api.Client.Test.Client
 
             var items = GetSampleItems().Item2;
 
-            IManageProposedOrders client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CompleteProposedOrderRequest>(
+            IManageProposedOrders client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CompleteProposedOrderRequest>(
                 expectedResponse, expectedRequest, expectedRequestUrl: expectedRequestUrl);
             var completedOrder = client.CompleteProposedOrder("not_checking_this", 19, "LU02000008ZS9OJFUBNEL6ZM030000LU",
                 "1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1", 300, 200, 10, 130, null, "3", "Bob", "001001",

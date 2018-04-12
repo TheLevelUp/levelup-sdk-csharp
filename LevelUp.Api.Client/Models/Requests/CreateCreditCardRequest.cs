@@ -17,7 +17,6 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using LevelUp.Api.Client.Models.RequestVisitors;
 using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -36,8 +35,7 @@ namespace LevelUp.Api.Client.Models.Requests
         /// <summary>
         /// A Serializable http body for the CreateCreditCardRequest
         /// </summary>
-        public CreateCreditCardRequestBody Body { get { return _body; } }
-        private readonly CreateCreditCardRequestBody _body;
+        public CreateCreditCardRequestBody Body { get; }
 
         /// <summary>
         /// Constructor
@@ -54,15 +52,7 @@ namespace LevelUp.Api.Client.Models.Requests
             string encryptedExpirationYear, string encryptedCvv, string postalCode)
             : base(accessToken)
         {
-            _body = new CreateCreditCardRequestBody(encryptedNumber, encryptedExpirationMonth, encryptedExpirationYear, encryptedCvv, postalCode);
-        }
-
-        /// <summary>
-        /// Acceptance method for Request visitors.
-        /// </summary>
-        public override T Accept<T>(IRequestVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
+            Body = new CreateCreditCardRequestBody(encryptedNumber, encryptedExpirationMonth, encryptedExpirationYear, encryptedCvv, postalCode);
         }
     }
 }

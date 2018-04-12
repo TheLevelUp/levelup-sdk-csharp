@@ -59,7 +59,7 @@ namespace LevelUp.Api.Client.Test.Models.Requests
             "\"upc\":\"34254\"}}]";
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void Serialize()
         {
             const int spendAmount = 4567;
@@ -96,7 +96,7 @@ namespace LevelUp.Api.Client.Test.Models.Requests
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void Serialize_Defaults()
         {
             const int spendAmount = 2132;

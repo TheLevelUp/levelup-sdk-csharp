@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="ICreateGiftCardValueUnitTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="ICreateGiftCardValueFunctionalTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -24,13 +24,13 @@ using LevelUp.Api.Client.Models.Requests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
 
-namespace LevelUp.Api.Client.Test.Client
+namespace LevelUp.Api.Client.Test.Client.FunctionalTests
 {
     [TestClass]
-    public class ICreateGiftCardValueUnitTests
+    public class ICreateGiftCardValueFunctionalTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void GiftCardAddValueShouldSucceed()
         {
             const string accessToken = "abc";
@@ -68,7 +68,7 @@ namespace LevelUp.Api.Client.Test.Client
                           "}"
             };
 
-            ICreateGiftCardValue client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<ICreateGiftCardValue, GiftCardAddValueRequest>(
+            ICreateGiftCardValue client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<ICreateGiftCardValue, GiftCardAddValueRequest>(
                 expectedResponse, expectedRequestbody, expectedAccessToken: accessToken, expectedRequestUrl: expectedRequestUrl);
             
             var valueAddition = client.GiftCardAddValue(accessToken, 

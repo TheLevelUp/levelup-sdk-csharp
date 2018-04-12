@@ -17,8 +17,7 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using System;
-using System.Globalization;
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Responses
@@ -27,9 +26,9 @@ namespace LevelUp.Api.Client.Models.Responses
     /// Class representing a LevelUp contribution target
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("contribution_target")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
-    public class ContributionTarget : IResponse
+    [ObjectEnvelope("contribution_target")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
+    public class ContributionTarget : Response
     {
         /// <summary>
         /// Private constructor for deserialization
@@ -127,33 +126,5 @@ namespace LevelUp.Api.Client.Models.Responses
 
         [JsonProperty(PropertyName = "FeaturedInternal")]
         private bool? FeaturedInternal { get; set; }
-
-        public override string ToString()
-        {
-            return string.Format(new CultureInfo("en-US"),
-                                 "Id: {0}{1}" +
-                                 "Description: {2}{1}" +
-                                 "EmployerRequired: {3}{1}" +
-                                 "Facebook Url: {4}{1}" +
-                                 "Featured: {5}{1}" +
-                                 "HomeAddressRequired: {6}{1}" +
-                                 "MinimumAgeRequired: {7}{1}" +
-                                 "Name: {8}{1}" +
-                                 "PartnerSpecificTerms: {9}{1}" +
-                                 "TwitterUsername: {10}{1}" +
-                                 "Website: {11}{1}",
-                                 Id,
-                                 Environment.NewLine,
-                                 Description,
-                                 EmployerRequired == true ? "Y" : "N",
-                                 FacebookUrl,
-                                 Featured == true ? "Y" : "N",
-                                 HomeAddressRequired == true ? "Y" : "N",
-                                 MinimumAgeRequired,
-                                 Name,
-                                 PartnerSpecificTerms,
-                                 TwitterUsername,
-                                 Website);
-        }
     }
 }

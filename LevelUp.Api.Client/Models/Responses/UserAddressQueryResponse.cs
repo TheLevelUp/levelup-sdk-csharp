@@ -21,7 +21,7 @@ using System.Collections.Generic;
 
 namespace LevelUp.Api.Client.Models.Responses
 {
-    public class UserAddressQueryResponse : IResponse
+    public class UserAddressQueryResponse : Response
     {
         public readonly List<UserAddress> Addresses;
 

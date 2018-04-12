@@ -17,14 +17,15 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Responses
 {
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("proposed_order")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
-    public class ProposedOrderResponse : IResponse
+    [ObjectEnvelope("proposed_order")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
+    public class ProposedOrderResponse : Response
     {
         /// <summary>
         /// Private constructor for deserialization
@@ -42,10 +43,5 @@ namespace LevelUp.Api.Client.Models.Responses
 
         [JsonProperty(PropertyName = "discount_amount")]
         public int DiscountAmountCents { get; private set; }
-
-        public override string ToString()
-        {
-            return string.Format("ProposedOrderIdentifier: {0}{1}Discount Amount: {2}¢", ProposedOrderIdentifier, System.Environment.NewLine, DiscountAmountCents);
-        }
     }
 }

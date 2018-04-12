@@ -65,29 +65,17 @@ namespace LevelUp.Api.Client.Models.Responses
         /// <summary>
         /// The count of items in the the current page of the list.
         /// </summary>
-        public int Count
-        {
-            get
-            {
-                return (null == _items) ? 0 : _items.Count;
-            }
-        }
+        public int Count => _items?.Count ?? 0;
 
         /// <summary>
         /// The current page number of the list.
         /// </summary>
-        public int CurrentPage { get; private set; }
+        public int CurrentPage { get; }
 
         /// <summary>
         /// Returns true if there are more results in the next page of the list.
         /// </summary>
-        public bool HasNextPage
-        {
-            get
-            {
-                return !string.IsNullOrEmpty(_nextPageUrl);
-            }
-        }
+        public bool HasNextPage => !string.IsNullOrEmpty(_nextPageUrl);
 
         /// <summary>
         /// Gets the next page of results in the list.  Throws an InvalidOperationException if there are no more pages.

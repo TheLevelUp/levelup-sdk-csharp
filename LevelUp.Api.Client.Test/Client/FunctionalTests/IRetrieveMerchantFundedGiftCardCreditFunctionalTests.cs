@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="IRetrieveMerchantFundedGiftCardCreditUnitTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="IRetrieveMerchantFundedGiftCardCreditFunctionalTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -23,13 +23,13 @@ using LevelUp.Api.Client.Models.Requests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
 
-namespace LevelUp.Api.Client.Test.Client
+namespace LevelUp.Api.Client.Test.Client.FunctionalTests
 {
     [TestClass]
-    public class IRetrieveMerchantFundedGiftCardCreditUnitTests
+    public class IRetrieveMerchantFundedGiftCardCreditFunctionalTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void RetrieveMerchantFundedGiftCardCreditShouldPass()
         {
             const int locationId = 19;
@@ -48,7 +48,7 @@ namespace LevelUp.Api.Client.Test.Client
                 Content = string.Format("{{\"merchant_funded_gift_card_credit\": {{\"total_amount\": {0} }} }}", gift_card_total)
             };
 
-            IRetrieveMerchantFundedGiftCardCredit client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule
+            IRetrieveMerchantFundedGiftCardCredit client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule
                 <IRetrieveMerchantFundedGiftCardCredit, GiftCardCreditQueryRequest>(expectedResponse, expectedRequestbody, 
                 expectedAccessToken: auth_Token, expectedRequestUrl: expectedRequestUrl);
 

@@ -20,8 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
-using LevelUp.Api.Utilities;
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Responses
@@ -30,9 +29,9 @@ namespace LevelUp.Api.Client.Models.Responses
     /// Class representing a LevelUp user
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("user")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
-    public class User : IResponse
+    [ObjectEnvelope("user")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
+    public class User : Response
     {
         /// <summary>
         /// Private constructor for deserialization
@@ -129,10 +128,7 @@ namespace LevelUp.Api.Client.Models.Responses
         /// The date & time the user accepted the LevelUp terms at
         /// </summary>
         [JsonIgnore]
-        public virtual DateTime? TermsAcceptedAt
-        {
-            get { return ParseDate(TermsAcceptedAtInternal); }
-        }
+        public virtual DateTime? TermsAcceptedAt => ParseDate(TermsAcceptedAtInternal);
 
         [JsonProperty(PropertyName = "terms_accepted_at")]
         private string TermsAcceptedAtInternal { get; set; }
@@ -141,68 +137,21 @@ namespace LevelUp.Api.Client.Models.Responses
         /// The user's birthday
         /// </summary>
         [JsonIgnore]
-        public virtual DateTime? BornAt
-        {
-            get { return ParseDate(BornAtInternal); }
-        }
+        public virtual DateTime? BornAt => ParseDate(BornAtInternal);
 
         [JsonProperty(PropertyName = "born_at")]
         private string BornAtInternal { get; set; }
 
-        public override string ToString()
-        {
-            StringBuilder customAttributesDetails = new StringBuilder();
-
-            if (CustomAttributes == null || CustomAttributes.Count == 0)
-            {
-                customAttributesDetails.Append("NONE");
-            }
-            else
-            {
-                foreach (KeyValuePair<string, string> pair in CustomAttributes)
-                {
-                    customAttributesDetails.AppendFormat("{{{0}:{1}}}", pair.Key, pair.Value);
-                }
-            }
-
-            return string.Format(Constants.EnUsCulture,
-                                 "Id: {0}{1}" +
-                                 "BornAt: {2}{1}" +
-                                 "CustomAttributes: {3}{1}" +
-                                 "Email: {4}{1}" +
-                                 "FirstName: {5}{1}" +
-                                 "Gender: {6}{1}" +
-                                 "GlobalCreditAmount: {7}{1}" +
-                                 "MerchantsVisitedCount: {8}{1}" +
-                                 "OrdersCount: {9}{1}" +
-                                 "TermsAcceptedAt: {10}{1}" +
-                                 "TotalSavingsAmount: {11}{1}",
-                                 Id,
-                                 Environment.NewLine,
-                                 BornAt,
-                                 customAttributesDetails,
-                                 Email,
-                                 FirstName,
-                                 Gender,
-                                 GlobalCreditAmount,
-                                 MerchantsVisitedCount,
-                                 OrdersCount,
-                                 TermsAcceptedAt,
-                                 TotalSavingsAmount);
-        }
-
         private static DateTime? ParseDate(string dateStr)
         {
-            DateTime parseDate;
             if (DateTime.TryParseExact(dateStr, Constants.Iso8601DateTimeFormat, Constants.EnUsCulture, 
-                DateTimeStyles.AssumeLocal, out parseDate))
+                DateTimeStyles.AssumeLocal, out var parseDate))
             {
                 return parseDate;
             }
 
-            DateTimeOffset offsetParseDate;
             if (DateTimeOffset.TryParseExact(dateStr, Constants.Iso8601DateTimeOffsetFormat, Constants.EnUsCulture, 
-                DateTimeStyles.AssumeLocal, out offsetParseDate))
+                DateTimeStyles.AssumeLocal, out var offsetParseDate))
             {
                 return offsetParseDate.DateTime;
             }

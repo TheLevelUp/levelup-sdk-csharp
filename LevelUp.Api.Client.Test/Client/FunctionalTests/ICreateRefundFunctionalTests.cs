@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="ICreateRefundUnitTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="ICreateRefundFunctionalTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -23,13 +23,13 @@ using LevelUp.Api.Client.Models.Requests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
 
-namespace LevelUp.Api.Client.Test.Client
+namespace LevelUp.Api.Client.Test.Client.FunctionalTests
 {
     [TestClass]
-    public class ICreateRefundUnitTests
+    public class ICreateRefundFunctionalTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void RefundOrderShouldSucceedSansManagerConfirmation()
         {
             const string uuid = "bf143c9084810132faf95a123bd6cde9";
@@ -70,7 +70,7 @@ namespace LevelUp.Api.Client.Test.Client
 
             string expectedRequest = string.Empty;
 
-            ICreateRefund client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<ICreateRefund, RefundRequest>(
+            ICreateRefund client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<ICreateRefund, RefundRequest>(
                 expectedResponse, expectedRequest, expectedRequestUrl: expectedRequestUrl);
             var order = client.RefundOrder("not_checking_this", uuid);
 

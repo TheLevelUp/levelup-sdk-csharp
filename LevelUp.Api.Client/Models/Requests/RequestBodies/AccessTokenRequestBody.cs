@@ -18,6 +18,7 @@
 #endregion
 
 using System;
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -26,8 +27,8 @@ namespace LevelUp.Api.Client.Models.Requests
     /// Class representing a LevelUp access token request object
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("access_token")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
+    [ObjectEnvelope("access_token")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
     public class AccessTokenRequestBody
     {
         private AccessTokenRequestBody()

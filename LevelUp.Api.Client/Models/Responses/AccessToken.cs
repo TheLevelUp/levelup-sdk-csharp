@@ -17,6 +17,7 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Responses
@@ -25,9 +26,9 @@ namespace LevelUp.Api.Client.Models.Responses
     /// Class representing a LevelUp access token response
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("access_token")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
-    public class AccessToken : IResponse
+    [ObjectEnvelope("access_token")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
+    public class AccessToken : Response
     {
         /// <summary>
         /// Private constructor for deserialization
@@ -64,20 +65,5 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         [JsonIgnore]
         public bool IsMerchant { get { return MerchantId.HasValue && MerchantId.Value > 0; } }
-
-        public override string ToString()
-        {
-            System.Text.StringBuilder output = new System.Text.StringBuilder();
-
-            output.AppendLine("Access Token: " + Token);
-            output.AppendLine("User Id: " + UserId);
-
-            if (IsMerchant)
-            {
-                output.AppendLine("Merchant Id: " + MerchantId.Value);
-            }
-
-            return output.ToString();
-        }
     }
 }

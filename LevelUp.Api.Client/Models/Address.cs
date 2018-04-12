@@ -17,8 +17,6 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using System;
-using System.Text;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models
@@ -55,14 +53,14 @@ namespace LevelUp.Api.Client.Models
                        string country = "U.S.A.", 
                        GeographicLocation coordinates = null)
         {
-            this.Name = name;
-            this.StreetAddress = streetAddress;
-            this.ExtendedAddress = extendedAddress;
-            this.City = city;
-            this.Region = region;
-            this.PostalCode = postalCode;
-            this.Country = country;
-            this.GeographicCoordinates = coordinates;
+            Name = name;
+            StreetAddress = streetAddress;
+            ExtendedAddress = extendedAddress;
+            City = city;
+            Region = region;
+            PostalCode = postalCode;
+            Country = country;
+            GeographicCoordinates = coordinates;
         }
 
         /// <summary>
@@ -85,9 +83,6 @@ namespace LevelUp.Api.Client.Models
         /// </summary>
         public string City { get; set; }
 
-        [Obsolete("Use Region Property Instead")]
-        public string State { get; set; }
-
         /// <summary>
         /// The state/province of the address
         /// </summary>
@@ -107,44 +102,5 @@ namespace LevelUp.Api.Client.Models
         /// Geographic coordinates of the addressee if appropriate. May be set to null.
         /// </summary>
         public GeographicLocation GeographicCoordinates { get; set; }
-
-        public override string ToString()
-        {
-            return ToString(false);
-        }
-
-        public string ToString(bool includeValueDescriptors)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            AppendLineIfNotNullOrEmpty(ref sb, Name, "Name", includeValueDescriptors);
-            AppendLineIfNotNullOrEmpty(ref sb, StreetAddress, "Address 1", includeValueDescriptors);
-            AppendLineIfNotNullOrEmpty(ref sb, ExtendedAddress, "Address 2", includeValueDescriptors);
-
-            AppendLineIfNotNullOrEmpty(ref sb,
-                                       string.Format("{0}, {1} {2}",
-                                                     City,
-                                                     Region,
-                                                     PostalCode),
-                                       "Locale",
-                                       includeValueDescriptors);
-
-            AppendLineIfNotNullOrEmpty(ref sb, Country, "Country", includeValueDescriptors);
-
-            return sb.ToString();
-        }
-
-        private void AppendLineIfNotNullOrEmpty(ref StringBuilder builder,
-                                                string value,
-                                                string valueDescriptor,
-                                                bool includeValueDescriptor)
-        {
-            if (!string.IsNullOrEmpty(value))
-            {
-                builder.AppendLine(includeValueDescriptor
-                                       ? string.Format("{0}: {1}", valueDescriptor, value)
-                                       : value);
-            }
-        }
     }
 }

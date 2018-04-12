@@ -22,6 +22,7 @@ namespace LevelUp.Api.Http.Test
     public class TestCategory
     {
         public const string UnitTests = "Unit Tests";
+        public const string FunctionalTests = "Functional Tests";
         public const string IntegrationTests = "Integration Tests";
     }
 }

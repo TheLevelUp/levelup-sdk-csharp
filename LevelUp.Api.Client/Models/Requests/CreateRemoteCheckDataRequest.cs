@@ -18,7 +18,6 @@
 #endregion
 
 using System.Collections.Generic;
-using LevelUp.Api.Client.Models.RequestVisitors;
 using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -33,8 +32,7 @@ namespace LevelUp.Api.Client.Models.Requests
         /// <summary>
         /// A Serializable http body for the CreateRemoteCheckDataRequest
         /// </summary>
-        public RemoteCheckDataRequestBody Body { get { return _body; } }
-        private readonly RemoteCheckDataRequestBody _body;
+        public RemoteCheckDataRequestBody Body { get; }
 
         /// <summary>
         /// A model of a request to update the check data in the remote datastore
@@ -66,17 +64,8 @@ namespace LevelUp.Api.Client.Models.Requests
                                             IList<Item> items = null)
             : base(accessToken)
         {
-            _body = new RemoteCheckDataRequestBody(locationId, spendAmountCents, taxAmountCents,
+            Body = new RemoteCheckDataRequestBody(locationId, spendAmountCents, taxAmountCents,
                 exemptionAmountCents, identifierFromMerchant, register, cashier, partialAuthorizationAllowed, items);
-        }
-
-
-        /// <summary>
-        /// Acceptance method for Request visitors.
-        /// </summary>
-        public override T Accept<T>(IRequestVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
         }
     }
 }

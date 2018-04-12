@@ -19,9 +19,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net;
 using LevelUp.Api.Client.Models.Requests;
-using LevelUp.Api.Client.Models.RequestVisitors;
 using LevelUp.Api.Client.Models.Responses;
+using LevelUp.Api.Http;
 using LevelUp.Pos.ProposedOrders;
 
 namespace LevelUp.Api.Client
@@ -29,27 +30,15 @@ namespace LevelUp.Api.Client
     /// <summary>
     /// A unified implementation for all of the various client interfaces.  
     /// </summary>
-    /// <remarks>
-    /// The meat-and-potatoes of making calls to the LevelUp platform 
-    /// resides in the RequestExecutionEngine visitor that gets passed
-    /// into this class in the constructor.  The role of this class is
-    /// really only to create/populate IRequest objects using the data
-    /// provided to these SDK methods and then provide those objects
-    /// with the execution engine visitor.
-    /// </remarks>
     internal class LevelUpClient : ILevelUpClientSuperset, ILevelUpClient
     {
-        private readonly IRequestVisitor<IResponse> _engine;
+        private readonly LevelUpRestWrapper _restWrapper;
+        private readonly LevelUpEnvironment _targetEnviornment;
 
-        internal LevelUpClient(IRequestVisitor<IResponse> requestExecutionEngine)
+        internal LevelUpClient(IRestfulService restService, AgentIdentifier identifier, LevelUpEnvironment targetEnviornment)
         {
-            if (requestExecutionEngine == null)
-            {
-                throw new ArgumentNullException("The LevelUpClient constructor requires a "+ 
-                    "non-null IRequestVisitor<Response>");
-            }
-
-            _engine = requestExecutionEngine;
+            _restWrapper = new LevelUpRestWrapper(restService, identifier);
+            _targetEnviornment = targetEnviornment;
         }
 
         #region IAuthenticate Implementation
@@ -57,7 +46,11 @@ namespace LevelUp.Api.Client
         public AccessToken Authenticate(string apiKey, string username, string password)
         {
             AccessTokenRequest request = new AccessTokenRequest(apiKey, username, password);
-            return request.Accept(_engine) as AccessToken;
+
+            return _restWrapper.Post<AccessTokenRequestBody, AccessToken>(
+                request.Body,
+                BuildUri(request.ApiVersion, "access_tokens"),
+                actions: null);
         }
 
         #endregion
@@ -69,7 +62,12 @@ namespace LevelUp.Api.Client
         {
             CreateCreditCardRequest request = new CreateCreditCardRequest(accessToken, encryptedNumber,
                 encryptedExpirationMonth, encryptedExpirationYear, encryptedCvv, postalCode);
-            return request.Accept(_engine) as CreditCard;
+
+            return _restWrapper.Post<CreateCreditCardRequestBody, CreditCard>(
+                request.Body,
+                uri: BuildUri(request.ApiVersion, "credit_cards"),
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
+                actions: null);
         }
         
         public CreditCard CreateCreditCard(string accessToken, CreateCreditCardRequestBody createCreditCard)
@@ -96,7 +94,12 @@ namespace LevelUp.Api.Client
         {
             DetachedRefundRequest request = new DetachedRefundRequest(accessToken, locationId, qrPaymentData, creditAmountCents, 
                 register, cashier, identifierFromMerchant, managerConfirmation, customerFacingReason, internalReason);
-            return request.Accept(_engine) as DetachedRefundResponse;
+
+            return _restWrapper.Post<DetachedRefundRequestBody, DetachedRefundResponse>(
+                request.Body,
+                uri: BuildUri(request.ApiVersion, "detached_refunds"),
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         public DetachedRefundResponse CreateDetachedRefund(string accessToken, DetachedRefundRequestBody detachedRefund)
@@ -114,7 +117,15 @@ namespace LevelUp.Api.Client
         public RefundResponse RefundOrder(string accessToken, string orderIdentifier, string managerConfirmation = null)
         {
             RefundRequest request = new RefundRequest(accessToken, orderIdentifier, managerConfirmation);
-            return request.Accept(_engine) as RefundResponse;
+            var accessTokenHeader = (request.ApiVersion == Http.LevelUpApiVersion.v14) ? 
+                FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken) :
+                FormatAccessTokenString(merchantUserAccessToken: request.AccessToken);
+
+            return _restWrapper.Post<RefundRequestBody, RefundResponse>(
+                request.Body,
+                uri: BuildUri(request.ApiVersion, $"orders/{request.OrderIdentifier}/refund"),
+                accessTokenHeader: accessTokenHeader,
+                actions: null);
         }
 
         #endregion
@@ -124,7 +135,11 @@ namespace LevelUp.Api.Client
         public void DeleteCreditCard(string accessToken, int creditCardId)
         {
             DeleteCreditCardRequest request = new DeleteCreditCardRequest(accessToken, creditCardId);
-            request.Accept(_engine);
+
+            _restWrapper.Delete(
+                uri: BuildUri(request.ApiVersion, $"credit_cards/{request.CardId}"),
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         #endregion
@@ -134,7 +149,11 @@ namespace LevelUp.Api.Client
         public Loyalty GetLoyalty(string accessToken, int merchantId)
         {
             UserLoyaltyQueryRequest request = new UserLoyaltyQueryRequest(accessToken, merchantId);
-            return request.Accept(_engine) as Loyalty;
+
+            return _restWrapper.Get<Loyalty>(
+                uri: BuildUri(request.ApiVersion, $"merchants/{request.MerchantId}/loyalty"),
+                accessTokenHeader: FormatAccessTokenString(consumerUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         #endregion
@@ -144,7 +163,12 @@ namespace LevelUp.Api.Client
         public User CreateUser(string apiKey, string firstName, string lastName, string email, string password)
         {
             CreateUserRequest request = new CreateUserRequest(apiKey, firstName, lastName, email, password);
-            return request.Accept(_engine) as User;
+
+            return _restWrapper.Post<CreateUserRequestBody, User>(
+                request.Body,
+                uri: BuildUri(request.ApiVersion, "users"),
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         public User CreateUser(string apiKey, CreateUserRequestBodyUserSection requestBody)
@@ -155,13 +179,21 @@ namespace LevelUp.Api.Client
         public User UpdateUser(string accessToken, UpdateUserRequestBody requestBody)
         {
             UpdateUserRequest request = new UpdateUserRequest(accessToken, requestBody);
-            return request.Accept(_engine) as User;
+
+            return _restWrapper.Put<UpdateUserRequestBody, User>(
+                request.Body,
+                uri: BuildUri(request.ApiVersion, $"users/{request.Body.Id}"),
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         public void PasswordResetRequest(string email)
         {
             PasswordResetRequest request = new PasswordResetRequest(email);
-            request.Accept(_engine);
+            _restWrapper.Post<PasswordResetRequestBody>(
+                request.Body, 
+                uri: BuildUri(request.ApiVersion, "passwords"), 
+                actions: null);
         }
 
         #endregion
@@ -171,8 +203,11 @@ namespace LevelUp.Api.Client
         public IList<CreditCard> ListCreditCards(string accessToken)
         {
             CreditCardQueryRequest request = new CreditCardQueryRequest(accessToken);
-            CreditCardQueryResponse response = request.Accept(_engine) as CreditCardQueryResponse;
-            return response.CreditCards;
+
+            return _restWrapper.Get<List<CreditCard>>(
+                uri: BuildUri(request.ApiVersion, "credit_cards"),
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         #endregion
@@ -181,26 +216,61 @@ namespace LevelUp.Api.Client
         
         public LocationDetails GetLocationDetails(string accessToken, int locationId)
         {
+            // Special case 404 error since this means the location does not exist, is not visible, 
+            // or the merchant owner of the location is not live
+            var custom_response = new Dictionary<HttpStatusCode, LevelUpRestWrapper.ResponseAction>
+            {
+                {
+                    HttpStatusCode.NotFound,
+                    response =>
+                    {
+                        if (response.StatusCode == HttpStatusCode.NotFound)
+                        {
+                            throw new LevelUpApiException($"Cannot get location details for location {locationId}." +
+                                " This location may not exist, not be visible, or the merchant owner may not be live.",
+                                response.StatusCode,
+                                response.ErrorException);
+                        }
+                    }
+                }
+            };
+
             LocationDetailsQueryRequest request = new LocationDetailsQueryRequest(accessToken, locationId);
-            return request.Accept(_engine) as LocationDetails;
+
+            return _restWrapper.Get<LocationDetails>(
+                uri: BuildUri(request.ApiVersion, $"locations/{request.LocationId}"),
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
+                actions: custom_response);
         }
 
         public OrderDetailsResponse GetMerchantOrderDetails(string accessToken, int merchantId, string orderIdentifier)
         {
             MerchantOrderDetailsRequest request = new MerchantOrderDetailsRequest(accessToken, merchantId, orderIdentifier);
-            return request.Accept(_engine) as OrderDetailsResponse;
+
+            return _restWrapper.Get<OrderDetailsResponse>(
+                uri: BuildUri(request.ApiVersion, $"merchants/{request.MerchantId}/orders/{request.OrderIdentifier}"),
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         public IList<Location> ListLocations(string accessToken, int merchantId)
         {
             LocationQueryRequest request = new LocationQueryRequest(accessToken, merchantId);
-            return (request.Accept(_engine) as LocationQueryResponse).Details;
+
+            return _restWrapper.Get<List<Location>>(
+                uri: BuildUri(request.ApiVersion, $"merchants/{request.MerchantId}/locations"),
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         public IList<ManagedLocation> ListManagedLocations(string accessToken)
         {
             ManagedLocationQueryRequest request = new ManagedLocationQueryRequest(accessToken);
-            return (request.Accept(_engine) as ManagedLocationQueryResponse).Details;
+
+            return _restWrapper.Get<List<ManagedLocation>>(
+                uri: BuildUri(request.ApiVersion, "managed_locations"),
+                accessTokenHeader: FormatAccessTokenString(merchantUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         #endregion
@@ -209,8 +279,7 @@ namespace LevelUp.Api.Client
 
         public IList<OrderDetailsResponse> ListOrders(string accessToken, int locationId, int startPageNum = 1, int endPageNum = 1)
         {
-            bool areThereMorePages = false;
-            return ListOrders(accessToken, locationId, startPageNum, endPageNum, out areThereMorePages);
+            return ListOrders(accessToken, locationId, startPageNum, endPageNum, out _);
         }
 
         public IList<OrderDetailsResponse> ListOrders(string accessToken, int locationId, int startPageNum, int endPageNum, out bool areThereMorePages)
@@ -221,8 +290,12 @@ namespace LevelUp.Api.Client
             }
 
             OrderQueryRequest request = new OrderQueryRequest(accessToken, locationId, startPageNum);
-            PagedList<OrderDetailsResponse> orders = (request.Accept(_engine) as OrderQueryResponse).Orders;
 
+            PagedList<OrderDetailsResponse> orders = _restWrapper.GetWithPaging<OrderDetailsResponse>(
+                uri: GetOrderQueryRequestEndpoint(request),
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken), 
+                currentPageNumber: request.PageNumber);
+            
             // Repackage the returned PagedList as an IList<OrderDetailsResponse>
             List<OrderDetailsResponse> retval = new List<OrderDetailsResponse>();
 
@@ -254,21 +327,42 @@ namespace LevelUp.Api.Client
             return filtered;
         }
 
+        public string GetOrderQueryRequestEndpoint(OrderQueryRequest request)
+        {
+            string path = $"locations/{request.LocationId}/orders";
+            LevelUpUriBuilder builder = new LevelUpUriBuilder(_targetEnviornment);
+            builder.SetApiVersion(request.ApiVersion).SetPath(path);
+
+            if (request.PageNumber > 1)
+            {
+                builder.AppendQuery("page", request.PageNumber.ToString());
+            }
+
+            return builder.Build();
+        }
+
         #endregion
 
         #region IQueryUser Implementation
-        
+
         public IList<UserAddress> ListUserAddresses(string accessToken)
         {
             UserAddressesQueryRequest request = new UserAddressesQueryRequest(accessToken);
-            var response = (request.Accept(_engine) as UserAddressQueryResponse);
-            return (response != null) ? response.Addresses : null;
+
+            return _restWrapper.Get<List<UserAddress>>(
+                uri: BuildUri(request.ApiVersion, "user_addresses"),
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         public User GetUser(string accessToken, int userId)
         {
             UserDetailsQueryRequest request = new UserDetailsQueryRequest(accessToken, userId);
-            return request.Accept(_engine) as User;
+
+            return _restWrapper.Get<User>(
+                uri: BuildUri(request.ApiVersion, $"users/{request.UserId}"),
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         #endregion
@@ -278,7 +372,10 @@ namespace LevelUp.Api.Client
         public Models.Responses.PaymentToken GetPaymentToken(string accessToken)
         {
             PaymentTokenQueryRequest request = new PaymentTokenQueryRequest(accessToken);
-            return request.Accept(_engine) as Models.Responses.PaymentToken;
+
+            return _restWrapper.Get<PaymentToken>(uri: BuildUri(request.ApiVersion, "payment_token"),
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         #endregion
@@ -301,7 +398,12 @@ namespace LevelUp.Api.Client
         {
             GiftCardAddValueRequest request = new GiftCardAddValueRequest(accessToken, merchantId, giftCardQrData, valueToAddInCents, locationId, 
                 identifierFromMerchant, tenderTypes, levelUpOrderId);
-            return request.Accept(_engine) as GiftCardAddValueResponse;
+
+            return _restWrapper.Post<GiftCardAddValueRequestBody, GiftCardAddValueResponse>(
+                request.Body,
+                uri: BuildUri(request.ApiVersion, $"merchants/{request.MerchantId}/gift_card_value_additions"),
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         #endregion
@@ -316,7 +418,12 @@ namespace LevelUp.Api.Client
         public GiftCardRemoveValueResponse GiftCardDestroyValue(string accessToken, int merchantId, string giftCardQrData, int valueToRemoveInCents)
         {
             GiftCardRemoveValueRequest request = new GiftCardRemoveValueRequest(accessToken, merchantId, giftCardQrData, valueToRemoveInCents);
-            return request.Accept(_engine) as GiftCardRemoveValueResponse;
+
+            return _restWrapper.Post<GiftCardRemoveValueRequestBody, GiftCardRemoveValueResponse>(
+                request.Body,
+                uri: BuildUri(request.ApiVersion, $"merchants/{request.MerchantId}/gift_card_value_removals"),
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         #endregion
@@ -329,20 +436,35 @@ namespace LevelUp.Api.Client
                 createRequest.SpendAmountCents, createRequest.TaxAmountCents, createRequest.ExemptionAmountCents, 
                 createRequest.IdentifierFromMerchant, createRequest.Register, createRequest.Cashier, 
                 createRequest.PartialAuthorizationAllowed, createRequest.Items);
-            return request.Accept(_engine) as UpdateRemoteCheckDataResponse;
+
+
+            return _restWrapper.Put<RemoteCheckDataRequestBody, UpdateRemoteCheckDataResponse>(
+                request.Body,
+                uri: BuildUri(request.ApiVersion, "checks"),
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         public FinalizeRemoteCheckResponse FinalizeRemoteCheck(string accessToken, string checkUuid, FinalizeRemoteCheckRequestBody finalizeRequest)
         {
             FinalizeRemoteCheckRequest request = new FinalizeRemoteCheckRequest(accessToken, checkUuid, finalizeRequest.SpendAmountCents, 
                 finalizeRequest.TaxAmountCents, finalizeRequest.AppliedDiscountAmountCents);
-            return request.Accept(_engine) as FinalizeRemoteCheckResponse;
+
+            return _restWrapper.Post<FinalizeRemoteCheckRequestBody, FinalizeRemoteCheckResponse>(
+                request.Body,
+                uri: BuildUri(request.ApiVersion, $"checks/{request.CheckUuid}/orders"),
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         public GetRemoteCheckDataResponse GetRemoteCheckData(string accessToken, string checkUuid)
         {
             GetRemoteCheckDataRequest request = new GetRemoteCheckDataRequest(accessToken, checkUuid);
-            return request.Accept(_engine) as GetRemoteCheckDataResponse;
+
+            return _restWrapper.Get<GetRemoteCheckDataResponse>(
+                uri: BuildUri(request.ApiVersion, $"checks/{request.CheckUuid}"),
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         public UpdateRemoteCheckDataResponse UpdateRemoteCheckData(string accessToken, string checkUuid, RemoteCheckDataRequestBody checkDataRequest)
@@ -351,7 +473,15 @@ namespace LevelUp.Api.Client
                 checkDataRequest.SpendAmountCents, checkDataRequest.TaxAmountCents, checkDataRequest.ExemptionAmountCents, 
                 checkDataRequest.IdentifierFromMerchant, checkDataRequest.Register, checkDataRequest.Cashier, 
                 checkDataRequest.PartialAuthorizationAllowed, checkDataRequest.Items);
-            return request.Accept(_engine) as UpdateRemoteCheckDataResponse;
+
+            var uri = BuildUri(request.ApiVersion,
+                $"checks{(!string.IsNullOrEmpty(request.CheckUuid) ? "/" + request.CheckUuid : string.Empty)}");
+
+            return _restWrapper.Put<RemoteCheckDataRequestBody, UpdateRemoteCheckDataResponse>(
+                request.Body,
+                uri: uri,
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         #endregion
@@ -361,7 +491,12 @@ namespace LevelUp.Api.Client
         public GiftCardQueryResponse GetMerchantFundedGiftCardCredit(string accessToken, int locationId, string qrData)
         {
             GiftCardCreditQueryRequest request = new GiftCardCreditQueryRequest(accessToken, locationId, qrData);
-            return request.Accept(_engine) as GiftCardQueryResponse;
+
+            return _restWrapper.Post<GiftCardCreditQueryRequestBody, GiftCardQueryResponse>(
+                request.Body,
+                uri: BuildUri(request.ApiVersion, $"locations/{request.LocationId}/get_merchant_funded_gift_card_credit"),
+                accessTokenHeader: FormatAccessTokenString(merchantUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         #endregion
@@ -386,7 +521,11 @@ namespace LevelUp.Api.Client
                                                                                 register, cashier, identifierFromMerchant, 
                                                                                 receiptMessageHtml, partialAuthorizationAllowed, items);
 
-            return request.Accept(_engine) as ProposedOrderResponse;
+            return _restWrapper.Post<CreateProposedOrderRequestBody, ProposedOrderResponse>(
+                request.Body,
+                uri: BuildUri(request.ApiVersion, "proposed_orders"),
+                accessTokenHeader: FormatAccessTokenString(merchantUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         public CompletedOrderResponse CompleteProposedOrder(string accessToken, int locationId, string qrPaymentData,
@@ -411,9 +550,61 @@ namespace LevelUp.Api.Client
                                                                                     receiptMessageHtml, partialAuthorizationAllowed,
                                                                                     items);
 
-            return request.Accept(_engine) as CompletedOrderResponse;
+            return _restWrapper.Post<CompleteProposedOrderRequestBody, CompletedOrderResponse>(
+                request.Body,
+                uri: BuildUri(request.ApiVersion, "completed_orders"),
+                accessTokenHeader: FormatAccessTokenString(merchantUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         #endregion
+
+        private string BuildUri(LevelUpApiVersion version, string path)
+        {
+            LevelUpUriBuilder builder = new LevelUpUriBuilder(_targetEnviornment);
+            return builder.SetApiVersion(version).SetPath(path).Build();
+        }
+
+        private static string FormatAccessTokenString(string merchantUserAccessToken = null,
+            string consumerUserAccessToken = null,
+            string unspecifiedUserAccessToken = null)
+        {
+            if (null != unspecifiedUserAccessToken && (null != merchantUserAccessToken || null != consumerUserAccessToken))
+            {
+                throw new InvalidOperationException("It is invalid to specify both an untagged access token and " +
+                                                    "an explicitly tagged merchant/user access token.");
+            }
+
+            string levelUpAccessToken = FormatInnerTokenString(merchantUserAccessToken, consumerUserAccessToken, unspecifiedUserAccessToken);
+            if (!string.IsNullOrEmpty(levelUpAccessToken))
+            {
+                return $"token {levelUpAccessToken}";
+            }
+            return string.Empty;
+        }
+
+        private static string FormatInnerTokenString(string merchantUserAccessToken = null,
+            string consumerUserAccessToken = null,
+            string unspecifiedUserAccessToken = null)
+        {
+            List<string> tokenStrings = new List<string>();
+
+            if (!string.IsNullOrEmpty(merchantUserAccessToken))
+            {
+                tokenStrings.Add($"merchant=\"{merchantUserAccessToken}\"");
+            }
+
+            if (!string.IsNullOrEmpty(consumerUserAccessToken))
+            {
+                tokenStrings.Add($"user=\"{consumerUserAccessToken}\"");
+            }
+
+            if (!string.IsNullOrEmpty(unspecifiedUserAccessToken))
+            {
+                tokenStrings.Add(unspecifiedUserAccessToken);
+            }
+
+            return string.Join(",", tokenStrings.ToArray());
+        }
     }
 }

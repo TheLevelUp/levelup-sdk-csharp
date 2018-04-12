@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections.Generic;
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -27,8 +28,8 @@ namespace LevelUp.Api.Client.Models.Requests
     /// Class representing a LevelUp order request object
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("order")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
+    [ObjectEnvelope("order")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
     public class Order
     {
         private Order()

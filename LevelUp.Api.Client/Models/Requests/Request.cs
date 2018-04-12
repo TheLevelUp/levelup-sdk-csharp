@@ -18,7 +18,6 @@
 #endregion
 
 using System;
-using LevelUp.Api.Client.Models.RequestVisitors;
 using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -29,11 +28,6 @@ namespace LevelUp.Api.Client.Models.Requests
         {
             AccessToken = accessToken;
         }
-
-        /// <summary>
-        /// Accept method required for visitor pattern.
-        /// </summary>
-        public abstract T Accept<T>(IRequestVisitor<T> visitor);
 
         /// <summary>
         /// AccessToken object containing any header token data required to 
@@ -50,10 +44,7 @@ namespace LevelUp.Api.Client.Models.Requests
         /// <summary>
         /// The latest (highest) LevelUp platform API version for which this request is valid.
         /// </summary>
-        public virtual LevelUpApiVersion ApiVersion
-        {
-            get { return LatestApplicableVersion; }
-        }
+        public virtual LevelUpApiVersion ApiVersion => LatestApplicableVersion;
 
         /// <summary>
         /// Will retrieve the highest LevelUpApiVersion that is specified in the derived

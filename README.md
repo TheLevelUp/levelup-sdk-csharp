@@ -13,6 +13,7 @@ Table of Contents
     * [Sandbox Environment](#levelup-sandbox-environment)
     * [Production Environment](#levelup-production-environment)
   * [Requirements For Building The SDK](#requirements-for-building-the-sdk)
+  * [TLS Requirements For The LevelUp API](#tls-requirements-for-the-levelup-api)
   * [Building the SDK](#building-the-sdk)
   * [Running the Tests](#running-the-tests)
     * [Unit Tests](#unit-tests)
@@ -61,7 +62,7 @@ Once you are ready to move to production, you will need to obtain another LevelU
 
 Requirements For Building The SDK
 ---
-The LevelUp SDK is designed to work with .NET 4.0 and later and was built using Visual Studio’s MSBuild system. The SDK depends on the following libraries, which are managed in the solution via [NuGet](https://www.nuget.org/):
+The LevelUp SDK is designed to work with .NET 4.6+ and later and was built using Visual Studio’s MSBuild system. The SDK depends on the following libraries, which are managed in the solution via [NuGet](https://www.nuget.org/):
 - [RestSharp](http://restsharp.org/)
 - [NewtonSoft Json.NET](http://james.newtonking.com/projects/json-net.aspx)
 - [Moq](https://github.com/Moq/moq4/wiki/Quickstart)
@@ -69,6 +70,14 @@ The LevelUp SDK is designed to work with .NET 4.0 and later and was built using 
 - [Compare-NET-Objects](https://github.com/GregFinzer/Compare-Net-Objects)
 
 Note that Moq, FluentAssertions, and Compare-Net-Objects are only required to build the tests and are not part of the production dependency chain.
+
+TLS Requirements For The LevelUp API
+---
+As part of compliance with PCI security standards, LevelUp requires that all HTTPS connections to LevelUp (```www.thelevelup.com``` and ```api.thelevelup.com```) are using TLS 1.2.  Clients using this SDK must make sure that they are configured to do so.
+
+Beginning with .NET 4.6, TLS 1.2 is enabled as a communication protocol by default.  As a result, we suggest targeting .NET 4.6+ in client code.
+
+For more information related to ensuring client systems are configured for TLS 1.2, please see [this article](http://blog.thelevelup.com/pci-security-is-your-restaurant-ready/).  LevelUp provides a [TLS Patcher Utility](https://github.com/TheLevelUp/pos-tls-patcher) to facilitate the process of updating.
 
 Building The SDK
 ---
@@ -82,10 +91,10 @@ Running the Tests
 ---
 Several automated tests have been written to ensure the continued quality of the LevelUp C# Integration SDK. We have included the source code and projects for these tests so that you may inspect, augment, and run them if you like.
 
-These tests are written against the MSTest framework, and are categorized (via the MSTest "TestCategory" attribute) as either **Unit Tests** or **Integration Tests**.  Those labeled as "unit tests" are designed to run near-instantaneously and without external dependencies.  Those tests which have been labeled as "integration tests" hit API endpoints in the LevelUp Sandbox environment at sandbox.thelevelup.com.
+These tests are written against the MSTest framework, and are categorized (via the MSTest "TestCategory" attribute) as either **Unit Tests**, **Functional Tests** or **Integration Tests**.  Those labeled as "unit tests" or "functional tests" are designed to run near-instantaneously and without external dependencies.  Those tests which have been labeled as "integration tests" hit API endpoints in the LevelUp Sandbox environment at sandbox.thelevelup.com.
 
-### Unit Tests
-The unit tests can be run without any additional configuration.  Within the Visual Studio test explorer window (Test >> Windows >> Test Explorer), group tests by "trait".  You can then select and run all tests under the "Unit Test" category.  You can also configure these tests to run automatically following project compilation (left as an exercise for the reader!)
+### Unit/Functional Tests
+The unit/functional tests can be run without any additional configuration.  Within the Visual Studio test explorer window (Test >> Windows >> Test Explorer), group tests by "trait".  You can then select and run all tests under the "Unit Test" or "Functional Test" category.  You can also configure these tests to run automatically following project compilation (left as an exercise for the reader!)
 
 ### Integration Tests
 Tests marked as "integration tests" tend to hit endpoints in our sandbox testing environment.  Therefore, in order to be able to run the tests, there are several additional steps you must take to set up and configure data related to the remote environment.

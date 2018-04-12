@@ -17,7 +17,7 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using System;
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Responses
@@ -26,9 +26,9 @@ namespace LevelUp.Api.Client.Models.Responses
     /// Class representing a response to an order request made to LevelUp
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("order")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
-    public class CompletedOrderResponse : IResponse
+    [ObjectEnvelope("order")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
+    public class CompletedOrderResponse : Response
     {
         /// <summary>
         /// Private constructor for deserialization
@@ -81,22 +81,5 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         [JsonProperty(PropertyName = "gift_card_tip_amount")]
         public int GiftCardTipAmount { get; private set; }
-        
-        public override string ToString()
-        {
-            return string.Format("Id: {0}{1}" +
-                                 "Spent: {2}¢{1}" +
-                                 "Tip: {3}¢{1}" +
-                                 "Total: {4}¢{1}" +
-                                 "Gift Card Total: {5}¢{1}" +
-                                 "Gift Card Tip: {6}¢{1}",
-                                 OrderIdentifier,
-                                 Environment.NewLine,
-                                 SpendAmount,
-                                 TipAmount,
-                                 Total,
-                                 GiftCardTotalAmount,
-                                 GiftCardTipAmount);
-        }
     }
 }

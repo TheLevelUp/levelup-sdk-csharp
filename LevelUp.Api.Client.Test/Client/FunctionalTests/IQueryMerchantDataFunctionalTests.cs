@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="IQueryMerchantDataUnitTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="IQueryMerchantDataFunctionalTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -22,13 +22,13 @@ using LevelUp.Api.Client.ClientInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
 
-namespace LevelUp.Api.Client.Test.Client
+namespace LevelUp.Api.Client.Test.Client.FunctionalTests
 {
     [TestClass]
-    public class IQueryMerchantDataUnitTests
+    public class IQueryMerchantDataFunctionalTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void GetLocationDetailsShouldSucceed()
         {
             const int locationId = 17;
@@ -71,7 +71,7 @@ namespace LevelUp.Api.Client.Test.Client
                                         "}}", locationId)
             };
 
-            IQueryMerchantData client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IQueryMerchantData>(
+            IQueryMerchantData client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IQueryMerchantData>(
                 expectedResponse, expectedRequestUrl: expectedRequestUrl);
             var details = client.GetLocationDetails("not_checking_this", locationId);
 
@@ -80,7 +80,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void GetMerchantOrderDetailsShouldSucceed()
         {
             const int merchantId = 34;
@@ -139,7 +139,7 @@ namespace LevelUp.Api.Client.Test.Client
                                         "}}")
             };
 
-            IQueryMerchantData client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IQueryMerchantData>(
+            IQueryMerchantData client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IQueryMerchantData>(
                 expectedResponse, expectedRequestUrl: expectedRequestUrl);
             var details = client.GetMerchantOrderDetails("not_checking_this", merchantId, uuid);
 
@@ -147,7 +147,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void ListLocationsShouldSucceed()
         {
             const int merchantId = 34;
@@ -215,7 +215,7 @@ namespace LevelUp.Api.Client.Test.Client
                     "}]"
             };
 
-            IQueryMerchantData client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IQueryMerchantData>(
+            IQueryMerchantData client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IQueryMerchantData>(
                 expectedResponse, expectedRequestUrl: expectedRequestUrl);
             var locations = client.ListLocations("not_checking_this", merchantId);
 
@@ -226,7 +226,7 @@ namespace LevelUp.Api.Client.Test.Client
         }
 
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void ListManagedLocationsShouldSucceed()
         {
             string expectedRequestUrl = "https://sandbox.thelevelup.com/v15/managed_locations";
@@ -259,7 +259,7 @@ namespace LevelUp.Api.Client.Test.Client
 
             string expectedAccessToken = "token merchant=\"my_access_token\"";
 
-            IQueryMerchantData client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IQueryMerchantData>(
+            IQueryMerchantData client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IQueryMerchantData>(
                 expectedResponse, expectedRequestUrl: expectedRequestUrl, expectedAccessToken: expectedAccessToken);
             var locations = client.ListManagedLocations("my_access_token");
 

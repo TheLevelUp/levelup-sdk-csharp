@@ -18,14 +18,15 @@
 #endregion
 
 using System;
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Responses
 {
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("credit_card")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
-    public class CreditCard : IResponse
+    [ObjectEnvelope("credit_card")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
+    public class CreditCard : Response
     {
         /// <summary>
         /// Private constructor for deserialization
@@ -105,28 +106,5 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         [JsonProperty(PropertyName = "type")]
         public string Type { get; private set; }
-
-        public override string ToString()
-        {
-            return string.Format("Id: {1}{0}" +
-                                 "Bin: {2}{0}" +
-                                 "Description: {3}{0}" +
-                                 "Expiration Month: {4}{0}" +
-                                 "Expiration Year: {5}{0}" +
-                                 "Last 4 Numbers: {6}{0}" +
-                                 "Promoted: {7}{0}" +
-                                 "State: {8}{0}" +
-                                 "Type: {9}{0}",
-                                 Environment.NewLine,
-                                 Id,
-                                 Bin,
-                                 Description,
-                                 ExpirationMonth,
-                                 ExpirationYear,
-                                 Last4Numbers,
-                                 Promoted ? "Yes" : "No",
-                                 State,
-                                 Type);
-        }
     }
 }

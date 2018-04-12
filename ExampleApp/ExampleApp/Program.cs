@@ -184,7 +184,8 @@ namespace ExampleApp
                     accessToken: accessToken, 
                     locationId: locationId,                 // The location id associated with the store in which the order was made.
                     qrPaymentData: qrCode,                  // The QR code scanned from a customer's phone
-                    spendAmountCents: GetSpendAmountInCents(itemsToOrder), 
+                    totalOutstandingAmountCents: GetSpendAmountInCents(itemsToOrder),
+                    spendAmountCents: GetSpendAmountInCents(itemsToOrder), // User is paying the check in full
                     taxAmountCents: CalculateTaxInCents(GetSpendAmountInCents(itemsToOrder)), 
                     exemptionAmountCents: GetExemptAmountInCents(itemsToOrder), 
                     register: "Register 2", 
@@ -235,7 +236,8 @@ namespace ExampleApp
                     accessToken: accessToken, 
                     locationId: locationId, 
                     qrPaymentData: qrCode, 
-                    proposedOrderUuid: proposedOrderUUID, 
+                    proposedOrderUuid: proposedOrderUUID,
+                    totalOutstandingAmountCents: GetSpendAmountInCents(itemsToOrder),
                     spendAmountCents: GetSpendAmountInCents(itemsToOrder), 
                     taxAmountCents: taxAmountInCents, 
                     exemptionAmountCents: GetExemptAmountInCents(itemsToOrder), 

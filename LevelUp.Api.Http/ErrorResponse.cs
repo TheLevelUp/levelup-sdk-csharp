@@ -17,6 +17,7 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Http
@@ -25,37 +26,22 @@ namespace LevelUp.Api.Http
     /// An object representing an error returned from LevelUp
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
+    [ObjectEnvelope("error")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
     public class ErrorResponse
     {
-        public ErrorResponse()
-        {
-            ErrorContainer = new ErrorContainer();
-        }
+        [JsonProperty(PropertyName = "object")]
+        public string Object { get; set; }
 
-        /// <summary>
-        /// LevelUp object that is invalid as a result of the error
-        /// </summary>
-        public virtual string Object { get { return ErrorContainer.Object; } }
+        [JsonProperty(PropertyName = "property")]
+        public string Property { get; set; }
 
-        /// <summary>
-        /// Specific attribute or property that is in error
-        /// </summary>
-        public virtual string Property { get { return ErrorContainer.Property; } }
-
-        /// <summary>
-        /// Friendly error message returned from LevelUp
-        /// </summary>
-        public virtual string Message { get { return ErrorContainer.Message; } }
-
-        /// <summary>
-        /// This container is used to aid in correct JSON serialization
-        /// </summary>
-        [JsonProperty(PropertyName = "error")]
-        private ErrorContainer ErrorContainer { get; set; }
+        [JsonProperty(PropertyName = "message")]
+        public string Message { get; set; }
 
         public override string ToString()
         {
-            return ErrorContainer.ToString();
+            return Message;
         }
     }
 }

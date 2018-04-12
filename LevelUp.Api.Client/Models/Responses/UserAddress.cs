@@ -17,8 +17,7 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using System;
-using LevelUp.Api.Utilities;
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Responses
@@ -27,9 +26,9 @@ namespace LevelUp.Api.Client.Models.Responses
     /// Class representing a LevelUp user's address
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("user_address")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
-    public class UserAddress : IResponse
+    [ObjectEnvelope("user_address")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
+    public class UserAddress : Response
     {
         /// <summary>
         /// Private constructor for deserialization
@@ -88,26 +87,5 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         [JsonProperty(PropertyName = "street_address")]
         public virtual string StreetAddress { get; private set; }
-
-
-        public override string ToString()
-        {
-            return string.Format(Constants.EnUsCulture,
-                                 "Id: {0}{1}" +
-                                 "AddressType: {2}{1}" +
-                                 "ExtendedAddress: {3}{1}" +
-                                 "Locality: {4}{1}" +
-                                 "PostalCode: {5}{1}" +
-                                 "Region: {6}{1}" +
-                                 "StreetAddress: {7}{1}",
-                                 Id,
-                                 Environment.NewLine,
-                                 AddressType,
-                                 ExtendedAddress,
-                                 Locality,
-                                 PostalCode,
-                                 Region,
-                                 StreetAddress);
-        }
     }
 }

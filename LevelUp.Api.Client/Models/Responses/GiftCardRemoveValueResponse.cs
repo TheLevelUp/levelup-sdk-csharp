@@ -17,14 +17,15 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Responses
 {
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("gift_card_value_removal")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
-    public class GiftCardRemoveValueResponse : IResponse
+    [ObjectEnvelope("gift_card_value_removal")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
+    public class GiftCardRemoveValueResponse : Response
     {
         /// <summary>
         /// Private constructor for deserialization
@@ -46,12 +47,5 @@ namespace LevelUp.Api.Client.Models.Responses
 
         [JsonProperty(PropertyName = "old_value_at_merchant_amount")]
         public int PreviousGiftCardAmountInCents { get; private set; }
-
-        public override string ToString()
-        {
-            return string.Format("Old Value: {0}¢. New Value {1}¢. Value removed: {2}¢.",
-                PreviousGiftCardAmountInCents, NewGiftCardAmountInCents, AmountRemovedInCents);
-        }
-
     }
 }

@@ -23,85 +23,29 @@ namespace LevelUp.Api.Http
 {
     public class LevelUpUriBuilder
     {
-        private const string HTTP_PREFIX = "http://";
-        private const string HTTPS_PREFIX = "https://";
-        private const char PORT_SEPARATOR_CHAR = ':';
-
-        private UriBuilder _uriBuilder;
-
-        public LevelUpUriBuilder() : this(LevelUpEnvironment.Sandbox) { }
+        private readonly UriBuilder _uriBuilder;
 
         public LevelUpUriBuilder(LevelUpEnvironment environment)
         {
-            this.SetEnvironment(environment);
+            Environment = environment;
+            _uriBuilder = new UriBuilder(environment.ToString());
         }
 
-        public LevelUpUriBuilder(string baseUri)
-        {
-            Uri uri;
-            int? portNum = null;
+        public LevelUpApiVersion ApiVersion { get; private set; }
 
-            //If the base URI passed does not include either an HTTP or HTTPS prefix, add it in
-            if (!(baseUri.StartsWith(HTTP_PREFIX) || baseUri.StartsWith(HTTPS_PREFIX)))
-            {
-                baseUri = string.Concat(HTTPS_PREFIX, baseUri);
-            }
+        public LevelUpEnvironment Environment { get; }
 
-            //Search the portion of the base URI that comes after the HTTP or HTTPS prefix for a colon which 
-            //should indicate a port number was specified
-            if (baseUri.Substring(HTTPS_PREFIX.Length).Contains(PORT_SEPARATOR_CHAR.ToString()))
-            {
-                string portNumStr = baseUri.Substring(baseUri.LastIndexOf(PORT_SEPARATOR_CHAR) + 1);
-
-                try
-                {
-                    portNum = int.Parse(portNumStr);
-                }
-                catch (Exception ex)
-                {
-                    throw new ArgumentException(string.Format("Unexpected base URI format: {0}!", baseUri), ex);
-                }
-            }
-
-            if (!Uri.TryCreate(baseUri, UriKind.Absolute, out uri))
-            {
-                throw new ArgumentException(string.Format("\"{0}\" is not a valid URI.", baseUri));
-            }
-
-            _uriBuilder = new UriBuilder(uri);
-
-            if (portNum.HasValue)
-            {
-                _uriBuilder.Port = portNum.Value;
-            }
-        }
+        public string Path { get; private set; }
 
         public LevelUpUriBuilder AppendQuery(string key, string value)
         {
-            string queryToAppend = string.Format("{0}={1}", key, value);
-
-            if (_uriBuilder.Query != null &&
-                _uriBuilder.Query.Length > 1 && 
-                !_uriBuilder.Query.Contains(queryToAppend))
-            {
-                //Append the query string to the end of the query. See https://msdn.microsoft.com/query/dev11.query?appId=Dev11IDEF1&l=EN-US&k=k(System.UriBuilder.Query);k(TargetFrameworkMoniker-.NETFramework,Version%3Dv3.0);k(DevLang-csharp)&rd=true
-                _uriBuilder.Query = string.Format("{0}&{1}", _uriBuilder.Query.Substring(1), queryToAppend);
-            }
-            else
-            {
-                _uriBuilder.Query = queryToAppend;
-            }
-
+            string queryToAppend = $"{key}={value}";
+            _uriBuilder.Query = ConcatUriQueries(_uriBuilder.Query, queryToAppend);
             return this;
         }
 
         public string Build(bool includePortNumber = false)
         {
-            if (null == _uriBuilder)
-            {
-                throw new InvalidOperationException("Invalid Object State! _uriBuilder is null.");
-            }
-
             if (string.IsNullOrEmpty(Path))
             {
                 throw new InvalidOperationException("Path must be set!");
@@ -124,33 +68,26 @@ namespace LevelUp.Api.Http
             return this;
         }
 
-        public LevelUpUriBuilder SetEnvironment(LevelUpEnvironment environment)
-        {
-            Environment = environment;
-            _uriBuilder = new UriBuilder(environment.ToString());
-            return this;
-        }
-
         public LevelUpUriBuilder SetPath(string path)
         {
             Path = path;
-
-            //If we set the path, we should clear out the queries
             ClearQueries();
-
             return this;
         }
 
-        public LevelUpApiVersion ApiVersion { get; private set; }
+        private string ConcatUriQueries(string original, string toAppend)
+        {
+            if (string.IsNullOrEmpty(toAppend) || original.Contains(toAppend))
+            {
+                return original;
+            }
 
-        public LevelUpEnvironment Environment { get; private set; }
+            if (string.IsNullOrEmpty(original))
+            {
+                return toAppend;
+            }
 
-        public string Host { get { return _uriBuilder.Host; } }
-
-        public string Path { get; private set; }
-
-        public string Query { get { return _uriBuilder.Query; } }
-
-        public string Scheme { get { return _uriBuilder.Scheme; } }
+            return $"{original}&{toAppend}";
+        }
     }
 }

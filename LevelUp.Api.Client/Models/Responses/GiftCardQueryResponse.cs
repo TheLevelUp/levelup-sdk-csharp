@@ -17,14 +17,15 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Responses
 {
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("merchant_funded_gift_card_credit")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
-    public class GiftCardQueryResponse : IResponse
+    [ObjectEnvelope("merchant_funded_gift_card_credit")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
+    public class GiftCardQueryResponse : Response
     {
         /// <summary>
         /// Private constructor for deserialization

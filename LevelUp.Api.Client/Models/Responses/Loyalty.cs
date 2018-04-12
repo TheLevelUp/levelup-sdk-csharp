@@ -17,8 +17,7 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using System;
-using System.Globalization;
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Responses
@@ -27,9 +26,9 @@ namespace LevelUp.Api.Client.Models.Responses
     /// Class representing a LevelUp loyalty between a merchant and a user
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("loyalty")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
-    public class Loyalty : IResponse
+    [ObjectEnvelope("loyalty")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
+    public class Loyalty : Response
     {
         /// <summary>
         /// Private constructor for deserialization
@@ -119,33 +118,5 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         [JsonProperty(PropertyName = "user_id")]
         public int UserId { get; private set; }
-
-        
-        public override string ToString()
-        {
-            return string.Format(new CultureInfo("en-US"),
-                        "MerchantEarnAmount: {0}{1}" +
-                        "MerchantId: {2}{1}" +
-                        "MerchantLoyaltyEnabled: {3}{1}" +
-                        "MerchantSpendAmount: {4}{1}" +
-                        "PotentialCreditAmount: {5}{1}" +
-                        "ProgressPercentage: {6}{1}" +
-                        "SavingsAmount: {7}{1}" +
-                        "SpendRemainingAmount: {8}{1}" +
-                        "TotalVolumeAmount: {9}{1}" +
-                        "UserId: {10}{1}",
-                        MerchantEarnAmount,
-                        Environment.NewLine,
-                        MerchantId,
-                        MerchantLoyaltyEnabled ? "Y" : "N",
-                        MerchantSpendAmount,
-                        PotentialCreditAmount,
-                        ProgressPercentage,
-                        SavingsAmount,
-                        SpendRemainingAmount,
-                        TotalVolumeAmount,
-                        UserId);
-        }
-
     }
 }

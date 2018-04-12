@@ -17,6 +17,7 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -25,8 +26,8 @@ namespace LevelUp.Api.Client.Models.Requests
     /// Class representing a LevelUp credit card request object
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("credit_card")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
+    [ObjectEnvelope("credit_card")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
     public class CreateCreditCardRequestBody
     {
         private CreateCreditCardRequestBody()

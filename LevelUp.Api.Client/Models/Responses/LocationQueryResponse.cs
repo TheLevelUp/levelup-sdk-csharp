@@ -21,7 +21,7 @@ using System.Collections.Generic;
 
 namespace LevelUp.Api.Client.Models.Responses
 {
-    public class LocationQueryResponse : IResponse
+    public class LocationQueryResponse : Response
     {
         public readonly List<Location> Details;
 

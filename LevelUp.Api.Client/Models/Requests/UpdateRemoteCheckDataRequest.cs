@@ -18,7 +18,6 @@
 #endregion
 
 using System.Collections.Generic;
-using LevelUp.Api.Client.Models.RequestVisitors;
 using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -30,14 +29,12 @@ namespace LevelUp.Api.Client.Models.Requests
             get { return LevelUpApiVersion.v15; }
         }
 
-        public string CheckUuid { get { return _checkUuid; } }
-        private readonly string _checkUuid;
+        public string CheckUuid { get; }
 
         /// <summary>
         /// A Serializable http body for the FinalizeRemoteCheckRequest
         /// </summary>
-        public RemoteCheckDataRequestBody Body { get { return _body; } }
-        private readonly RemoteCheckDataRequestBody _body;
+        public RemoteCheckDataRequestBody Body { get; }
 
         /// <summary>
         /// A model of a request to update the check data in the remote datastore
@@ -71,18 +68,9 @@ namespace LevelUp.Api.Client.Models.Requests
                                             IList<Item> items = null)
             : base(accessToken)
         {
-            _checkUuid = checkUuid;
-            _body = new RemoteCheckDataRequestBody(locationId, spendAmountCents, taxAmountCents,
+            CheckUuid = checkUuid;
+            Body = new RemoteCheckDataRequestBody(locationId, spendAmountCents, taxAmountCents,
                 exemptionAmountCents, identifierFromMerchant, register, cashier, partialAuthorizationAllowed, items);
-        }
-
-
-        /// <summary>
-        /// Acceptance method for Request visitors.
-        /// </summary>
-        public override T Accept<T>(IRequestVisitor<T> visitor)
-        {
-            return visitor.Visit(this);
         }
     }
 }

@@ -18,6 +18,7 @@
 #endregion
 
 using System;
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Responses
@@ -26,9 +27,9 @@ namespace LevelUp.Api.Client.Models.Responses
     /// Class representing a LevelUp response to a detached refund request
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("detached_refund")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
-    public class DetachedRefundResponse : IResponse
+    [ObjectEnvelope("detached_refund")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
+    public class DetachedRefundResponse : Response
     {
         /// <summary>
         /// Private constructor for deserialization
@@ -75,28 +76,5 @@ namespace LevelUp.Api.Client.Models.Responses
 
         [JsonProperty(PropertyName = "loyalty_id")]
         public int UserId { get; private set; }
-
-        public override string ToString()
-        {
-            return string.Format("Cashier: {1}{0}" +
-                                 "Credit Amount: {2}{0}" +
-                                 "Customer Facing Reason: {3}{0}" +
-                                 "Identifier: {4}{0}" +
-                                 "Internal Reason: {5}{0}" +
-                                 "Location Id: {6}{0}" +
-                                 "Register: {7}{0}" +
-                                 "Refund At: {8}{0}" +
-                                 "User Id: {9}{0}",
-                                 Environment.NewLine,
-                                 Cashier,
-                                 CreditAmountCents,
-                                 CustomerFacingReason,
-                                 Identifier,
-                                 InternalReason,
-                                 LocationId,
-                                 Register,
-                                 RefundedAt,
-                                 UserId);
-        }
     }
 }

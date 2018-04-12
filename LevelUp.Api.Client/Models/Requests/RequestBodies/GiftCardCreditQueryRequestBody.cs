@@ -17,6 +17,7 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -25,8 +26,8 @@ namespace LevelUp.Api.Client.Models.Requests
     /// Class representing a LevelUp gift card credit query request
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    [LevelUpSerializableModel("get_merchant_funded_gift_card_credit")]
-    [JsonConverter(typeof(LevelUpModelSerializer))]
+    [ObjectEnvelope("get_merchant_funded_gift_card_credit")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
     public class GiftCardCreditQueryRequestBody
     {
         private GiftCardCreditQueryRequestBody()

@@ -41,8 +41,11 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="JsonEnvelopeSerializer, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\JsonEnvelopeSerializer.0.1.0\lib\net40\JsonEnvelopeSerializer.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.105.2.3\lib\net4\RestSharp.dll</HintPath>
@@ -51,10 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgentIdentifier.cs" />
-    <Compile Include="ErrorContainer.cs" />
     <Compile Include="ErrorResponse.cs" />
-    <Compile Include="HttpRest.cs" />
-    <Compile Include="HttpStatusCodeExtended.cs" />
+    <Compile Include="RestSharpUtils.cs" />
     <Compile Include="IRestfulService.cs" />
     <Compile Include="LevelUpApiException.cs" />
     <Compile Include="LevelUpApiVersion.cs" />

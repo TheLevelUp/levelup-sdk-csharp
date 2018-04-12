@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="IDestroyCreditCardsUnitTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="IDestroyCreditCardsFunctionalTests.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -22,13 +22,13 @@ using LevelUp.Api.Client.ClientInterfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RestSharp;
 
-namespace LevelUp.Api.Client.Test.Client
+namespace LevelUp.Api.Client.Test.Client.FunctionalTests
 {
     [TestClass]
-    public class IDestroyCreditCardsUnitTests
+    public class IDestroyCreditCardsFunctionalTests
     {
         [TestMethod]
-        [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
+        [TestCategory(LevelUp.Api.Http.Test.TestCategory.FunctionalTests)]
         public void DeleteCreditCardShouldSucceed()
         {
             const int id = 305999;
@@ -62,7 +62,7 @@ namespace LevelUp.Api.Client.Test.Client
                                         bin, description, expiration_month, expiration_year, id, last_4, promoted, state, @type)
             };
 
-            IDestroyCreditCards client = ClientModuleUnitTestingUtilities.GetMockedLevelUpModule<IDestroyCreditCards>(
+            IDestroyCreditCards client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IDestroyCreditCards>(
                 expectedResponse, expectedRequestUrl: expectedRequestUrl);
             client.DeleteCreditCard("not_checking_this", id);
         }

@@ -32,6 +32,7 @@ namespace LevelUp.Api.Http.Test
             private readonly string _osVersionString = string.Format("{0}", Environment.OSVersion.VersionString);
 
             [TestMethod]
+            [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
             public void AllPropertiesNull()
             {
                 var agentId = new AgentIdentifier(null, null, null, null);
@@ -40,6 +41,7 @@ namespace LevelUp.Api.Http.Test
             }
 
             [TestMethod]
+            [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
             public void OnlyCompanyName()
             {
                 const string companyName = "Test Co. LLC. Inc";
@@ -49,6 +51,7 @@ namespace LevelUp.Api.Http.Test
             }
 
             [TestMethod]
+            [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
             public void OnlyProductName()
             {
                 const string productName = "Whirligig";
@@ -58,6 +61,7 @@ namespace LevelUp.Api.Http.Test
             }
 
             [TestMethod]
+            [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
             public void ProductNameAndVersion()
             {
                 const string productName = "Whirligog";
@@ -69,6 +73,7 @@ namespace LevelUp.Api.Http.Test
             }
 
             [TestMethod]
+            [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
             public void OnlyOsName()
             {
                 const string osName = "TestOs";
@@ -78,6 +83,7 @@ namespace LevelUp.Api.Http.Test
             }
 
             [TestMethod]
+            [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
             public void NoVersion()
             {
                 const string companyName = "Test Co. Inc. LLC.";
@@ -93,6 +99,7 @@ namespace LevelUp.Api.Http.Test
             }
 
             [TestMethod]
+            [TestCategory(LevelUp.Api.Http.Test.TestCategory.UnitTests)]
             public void AllSpecified()
             {
                 const string companyName = "Test Co. Inc. LLC.";
