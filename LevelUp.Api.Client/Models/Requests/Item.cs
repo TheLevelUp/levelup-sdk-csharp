@@ -155,19 +155,6 @@ namespace LevelUp.Api.Client.Models.Requests
         [JsonProperty(PropertyName = "quantity")]
         public int Quantity { get; private set; }
 
-        #region Obsolete Properties
-
-        /// <summary>
-        /// Price in cents (¢) charged for each unit that comprises the item. 
-        /// This should usually be the same as ChargedPrice
-        /// e.g. 1 order of shrimp may have 10 shrimp each with a unit price of 100¢ ($1) each
-        /// making the charged price 1000¢ ($10)
-        /// </summary>
-        [Obsolete("Use StandardPrice property instead of UnitPrice")]
-        public int? UnitPrice { get { return (Quantity > 1) ? ChargedPrice / Quantity : ChargedPrice; } }
-
-        #endregion Obsolete Properties
-
         /// <summary>
         /// The modifiers of the current item.
         /// e.g. If the current item is a house salad, the modifiers of that salad might be "chicken" or "cheese".  The

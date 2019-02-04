@@ -1,0 +1,16 @@
+image: Visual Studio 2017
+
+init:
+  - git config --global core.autocrlf true
+
+build_script:
+  - cmd: PowerShell -Version 2.0 .\build.ps1 -Configuration Release
+  
+test: off
+
+artifacts:
+  - path: 'artifacts\*'
+
+deploy:
+  - provider: Environment
+    name: levelup-private

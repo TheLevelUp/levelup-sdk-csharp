@@ -44,6 +44,24 @@ namespace LevelUp.Api.Client
         }
 
         /// <summary>
+        /// Create a LevelUp client interface with a set timeout value
+        /// </summary>
+        /// <typeparam name="T">The type of LevelUp client interface to generate.</typeparam>
+        /// <param name="identifier">An object that retains data about the caller 
+        /// (company name, etc.) as an informational and diagnostic tool for the 
+        /// LevelUp backend.</param>
+        /// <param name="enviornment">The target enviornment (sandbox, production, etc.)</param>
+        /// <param name="timeoutInMs">Time out value in milliseconds</param>
+        /// <returns>The LevelUp client interface of the specified type T.</returns>
+        public static T Create<T>(AgentIdentifier identifier, LevelUpEnvironment enviornment, int timeoutInMs)
+            where T : ILevelUpClientModule
+        {
+            IRestfulService httpRestService = new LevelUpHttpRestfulService(timeoutInMs);
+            var client = new LevelUpClient(httpRestService, identifier, enviornment);
+            return (T)(object)client;
+        }
+
+        /// <summary>
         /// Create a composed interface, containing a collection of the more fine-grained
         /// LevelUp client interfaces.
         /// </summary>

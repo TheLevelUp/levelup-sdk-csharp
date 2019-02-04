@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "LevelUp.Api.Client.Tests": {
+      "commandName": "Project"
+    }
+  }
+}

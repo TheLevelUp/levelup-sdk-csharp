@@ -125,7 +125,7 @@ namespace LevelUp.Api.Client.Models.Responses
         public int TotalSavingsAmount { get; private set; }
 
         /// <summary>
-        /// The date & time the user accepted the LevelUp terms at
+        /// The date and time the user accepted the LevelUp terms at
         /// </summary>
         [JsonIgnore]
         public virtual DateTime? TermsAcceptedAt => ParseDate(TermsAcceptedAtInternal);

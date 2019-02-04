@@ -384,8 +384,13 @@ namespace LevelUp.Api.Client
 
         public GiftCardAddValueResponse GiftCardAddValue(string accessToken, int merchantId, GiftCardAddValueRequestBody addValueRequest)
         {
-            return GiftCardAddValue(accessToken, merchantId, addValueRequest.LocationId, addValueRequest.GiftCardQrData, addValueRequest.AmountInCents, 
-                addValueRequest.IdentifierFromMerchant, addValueRequest.TenderTypes, addValueRequest.AssociatedLevelUpOrderId);
+            GiftCardAddValueRequest request = new GiftCardAddValueRequest(accessToken, merchantId, addValueRequest);
+
+            return _restWrapper.Post<GiftCardAddValueRequestBody, GiftCardAddValueResponse>(
+                request.Body,
+                uri: BuildUri(request.ApiVersion, $"merchants/{request.MerchantId}/gift_card_value_additions"),
+                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
+                actions: null);
         }
 
         public GiftCardAddValueResponse GiftCardAddValue(string accessToken, int merchantId, int locationId, string giftCardQrData, int valueToAddInCents)
@@ -396,15 +401,12 @@ namespace LevelUp.Api.Client
         public GiftCardAddValueResponse GiftCardAddValue(string accessToken, int merchantId, int locationId, string giftCardQrData, 
             int valueToAddInCents, string identifierFromMerchant, IList<string> tenderTypes = null, string levelUpOrderId = null)
         {
-            GiftCardAddValueRequest request = new GiftCardAddValueRequest(accessToken, merchantId, giftCardQrData, valueToAddInCents, locationId, 
+            var requestBody = new GiftCardAddValueRequestBody(giftCardQrData, valueToAddInCents, locationId,
                 identifierFromMerchant, tenderTypes, levelUpOrderId);
 
-            return _restWrapper.Post<GiftCardAddValueRequestBody, GiftCardAddValueResponse>(
-                request.Body,
-                uri: BuildUri(request.ApiVersion, $"merchants/{request.MerchantId}/gift_card_value_additions"),
-                accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
-                actions: null);
+            return GiftCardAddValue(accessToken, merchantId, requestBody);
         }
+
 
         #endregion
 
@@ -412,18 +414,43 @@ namespace LevelUp.Api.Client
 
         public GiftCardRemoveValueResponse GiftCardDestroyValue(string accessToken, int merchantId, GiftCardRemoveValueRequestBody removeValueRequest)
         {
-            return GiftCardDestroyValue(accessToken, merchantId, removeValueRequest.GiftCardQrData, removeValueRequest.AmountInCents);
-        }
-
-        public GiftCardRemoveValueResponse GiftCardDestroyValue(string accessToken, int merchantId, string giftCardQrData, int valueToRemoveInCents)
-        {
-            GiftCardRemoveValueRequest request = new GiftCardRemoveValueRequest(accessToken, merchantId, giftCardQrData, valueToRemoveInCents);
+            GiftCardRemoveValueRequest request = new GiftCardRemoveValueRequest(accessToken, merchantId, removeValueRequest);
 
             return _restWrapper.Post<GiftCardRemoveValueRequestBody, GiftCardRemoveValueResponse>(
                 request.Body,
                 uri: BuildUri(request.ApiVersion, $"merchants/{request.MerchantId}/gift_card_value_removals"),
                 accessTokenHeader: FormatAccessTokenString(unspecifiedUserAccessToken: request.AccessToken),
                 actions: null);
+        }
+
+        /// <summary>
+        /// Reverses specific GiftCard addition  transaction. 
+        /// </summary>
+        /// <param name="accessToken">Access token for the location</param>
+        /// <param name="merchantId">The merchant Id</param>
+        /// <param name="giftCardQrData">The qr code of the target card or account</param>
+        /// <param name="giftCardTransactionUuid">GiftCard Add Value Transaction UUID to reverse.<seealso cref="GiftCardAddValueResponse"/></param>
+        public GiftCardRemoveValueResponse GiftCardDestroyValue(string accessToken, int merchantId, string giftCardQrData, Guid giftCardTransactionUuid)
+        {
+            return GiftCardDestroyValue(
+                accessToken, 
+                merchantId,
+                new GiftCardRemoveValueRequestBody(giftCardQrData, giftCardTransactionUuid));
+        }
+
+        /// <summary>
+        /// Destroys Gift Card value by certain amount.
+        /// </summary>
+        /// <param name="accessToken">Access token for the location</param>
+        /// <param name="merchantId">The merchant Id</param>
+        /// <param name="giftCardQrData">The qr code of the target card or account</param>
+        /// <param name="valueToRemoveInCents">The amount of value to destroy in US Cents</param>
+        public GiftCardRemoveValueResponse GiftCardDestroyValue(string accessToken, int merchantId, string giftCardQrData, int valueToRemoveInCents)
+        {
+            return GiftCardDestroyValue(
+                accessToken, 
+                merchantId,
+                new GiftCardRemoveValueRequestBody(giftCardQrData, valueToRemoveInCents));
         }
 
         #endregion
@@ -508,7 +535,7 @@ namespace LevelUp.Api.Client
                                                         int? taxAmountCents, int exemptionAmountCents, string register, 
                                                         string cashier, string identifierFromMerchant,
                                                         string receiptMessageHtml, bool partialAuthorizationAllowed, 
-                                                        IList<Item> items)
+                                                        bool discountOnly, IList<Item> items)
         {
             // Adjust spend/tax/exemption amounts in situations where there are multiple payments on a single check.
             var adjustmentsForPartialPayments = ProposedOrderCalculator.CalculateCreateProposedOrderValues(
@@ -519,7 +546,8 @@ namespace LevelUp.Api.Client
                                                                                 adjustmentsForPartialPayments.TaxAmount, 
                                                                                 adjustmentsForPartialPayments.ExemptionAmount, 
                                                                                 register, cashier, identifierFromMerchant, 
-                                                                                receiptMessageHtml, partialAuthorizationAllowed, items);
+                                                                                receiptMessageHtml, partialAuthorizationAllowed,
+                                                                                discountOnly, items);
 
             return _restWrapper.Post<CreateProposedOrderRequestBody, ProposedOrderResponse>(
                 request.Body,
@@ -534,7 +562,7 @@ namespace LevelUp.Api.Client
                                                             int? appliedDiscountAmountCents, string register, 
                                                             string cashier, string identifierFromMerchant,
                                                             string receiptMessageHtml, bool partialAuthorizationAllowed, 
-                                                            IList<Item> items)
+                                                            bool discountOnly, IList<Item> items)
         {
             // Adjust spend/tax/exemption amounts in situations where there are multiple payments on a single check.
             var adjustmentsForPartialPayments = ProposedOrderCalculator.CalculateCompleteOrderValues(totalOutstandingAmountCents, 
@@ -548,7 +576,7 @@ namespace LevelUp.Api.Client
                                                                                     appliedDiscountAmountCents, register,
                                                                                     cashier, identifierFromMerchant, 
                                                                                     receiptMessageHtml, partialAuthorizationAllowed,
-                                                                                    items);
+                                                                                    discountOnly, items);
 
             return _restWrapper.Post<CompleteProposedOrderRequestBody, CompletedOrderResponse>(
                 request.Body,

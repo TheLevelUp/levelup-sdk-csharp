@@ -54,6 +54,10 @@ namespace LevelUp.Api.Client.ClientInterfaces
         /// the remaining $5 balance on the check via an alternative method of payment (cash, etc.).  Setting the value 
         /// to false will reject the order, and the user would have to cover the full $10 with an alternate payment 
         /// method.</param>
+        /// <param name="discountOnly">Parameter indicating whether the order is only authorized for discounts. Setting
+        /// this value to true will instruct LevelUp to retrieve available discounts and count the order for applicable
+        /// campaigns, but otherwise not pay the balance due on the bill through LevelUp. Setting this value to false
+        /// will instruct LevelUp that discounts and payment through LevelUp are both applicable.</param>
         /// <param name="items">A list of items that comprise the order</param>
         /// <returns>A response object providing a unique ID associated with the pending order.</returns>
         /// <exception cref="LevelUpApiException"> The returned HTTP status code for the request was something other 
@@ -70,6 +74,7 @@ namespace LevelUp.Api.Client.ClientInterfaces
                                                     string identifierFromMerchant = null,
                                                     string receiptMessageHtml = null,
                                                     bool partialAuthorizationAllowed = true,
+                                                    bool discountOnly = false,
                                                     IList<Item> items = null);
 
         /// <summary>
@@ -103,6 +108,10 @@ namespace LevelUp.Api.Client.ClientInterfaces
         /// the remaining $5 balance on the check via an alternative method of payment (cash, etc.).  Setting the value 
         /// to false will reject the order, and the user would have to cover the full $10 with an alternate payment 
         /// method.</param>
+        /// <param name="discountOnly">Parameter indicating whether the order is only authorized for discounts. Setting
+        /// this value to true will instruct LevelUp to retrieve available discounts and count the order for applicable
+        /// campaigns, but otherwise not pay the balance due on the bill through LevelUp. Setting this value to false
+        /// will instruct LevelUp that discounts and payment through LevelUp are both applicable.</param>
         /// <param name="items">A list of items that comprise the order</param>
         /// <returns>A response object indicating whether the order was charged successfully and 
         /// the final amount paid including the customer specified tip amount.</returns>
@@ -122,6 +131,7 @@ namespace LevelUp.Api.Client.ClientInterfaces
                                                         string identifierFromMerchant = null,
                                                         string receiptMessageHtml = null,
                                                         bool partialAuthorizationAllowed = true,
+                                                        bool discountOnly = false,
                                                         IList<Item> items = null);
     }
 }

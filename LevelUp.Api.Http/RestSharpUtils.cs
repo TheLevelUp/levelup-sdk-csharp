@@ -25,6 +25,8 @@ namespace LevelUp.Api.Http
 {
     public static class RestSharpUtils
     {
+        public const int DEFAULT_TIMEOUT_IN_MS = 20 * 1000;
+
         public enum ContentType
         {
             Xml,
@@ -39,11 +41,38 @@ namespace LevelUp.Api.Http
                 {ContentType.Json, "application/json"},
             };
 
+        /// <summary>
+        /// Builds the RestSharp request with the passed in timeout value
+        /// </summary>
+        public static IRestRequest BuildRequest(
+            int timeout,
+            Method requestMethod = Method.GET,
+            Dictionary<string, string> headers = null,
+            Dictionary<string, string> parameters = null,
+            string body = "",
+            ContentType bodyContentType = ContentType.Json)
+        {
+            return BuildRequest(requestMethod, headers, parameters, body, bodyContentType, timeout);
+        }
+
+        /// <summary>
+        /// Builds the RestSharp request with the default timeout value of 20s
+        /// </summary>
         public static IRestRequest BuildRequest(Method requestMethod = Method.GET,
                                                 Dictionary<string, string> headers = null,
                                                 Dictionary<string, string> parameters = null,
                                                 string body = "",
                                                 ContentType bodyContentType = ContentType.Json)
+        {
+            return BuildRequest(requestMethod, headers, parameters, body, bodyContentType, DEFAULT_TIMEOUT_IN_MS);
+        }
+
+        private static IRestRequest BuildRequest(Method requestMethod,
+            Dictionary<string, string> headers,
+            Dictionary<string, string> parameters,
+            string body,
+            ContentType bodyContentType,
+            int timeoutInMs)
         {
             RestRequest request = new RestRequest(requestMethod);
 
@@ -67,6 +96,9 @@ namespace LevelUp.Api.Http
             {
                 request.AddParameter(ContentTypeStrings[bodyContentType], body, ParameterType.RequestBody);
             }
+
+            // Set timeouts
+            request.Timeout = timeoutInMs;
 
             return request;
         }

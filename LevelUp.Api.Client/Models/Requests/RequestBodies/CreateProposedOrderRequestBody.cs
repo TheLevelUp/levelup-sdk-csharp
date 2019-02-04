@@ -43,6 +43,7 @@ namespace LevelUp.Api.Client.Models.Requests
                                          string identifierFromMerchant,
                                          string receiptMessageHtml,
                                          bool partialAuthorizationAllowed,
+                                         bool discountOnly,
                                          IList<Item> items)
         {
             LocationId = locationId;
@@ -55,6 +56,7 @@ namespace LevelUp.Api.Client.Models.Requests
             Identifier = identifierFromMerchant;
             RecieptMessage = receiptMessageHtml;
             PartialAuthorizationAllowed = partialAuthorizationAllowed;
+            DiscountOnly = discountOnly;
             ItemsInternal = items;
         }
 
@@ -78,6 +80,9 @@ namespace LevelUp.Api.Client.Models.Requests
 
         [JsonProperty(PropertyName = "partial_authorization_allowed")]
         public bool PartialAuthorizationAllowed { get; private set; }
+
+        [JsonProperty(PropertyName = "discount_only")]
+        public bool DiscountOnly { get; private set; }
 
         [JsonProperty(PropertyName = "payment_token_data")]
         public string PaymentData { get; private set; }

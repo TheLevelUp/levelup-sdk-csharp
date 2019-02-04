@@ -65,5 +65,15 @@ namespace LevelUp.Api.Client.Models.Requests
             Body = new GiftCardAddValueRequestBody(giftCardQrData, amountInCents, locationId, identifierFromMerchant,
                 tenderTypes, levelUpOrderId);
         }
+
+        /// <summary>
+        /// Creates a add value request for a LevelUp gift card
+        /// </summary>
+        public GiftCardAddValueRequest(string accessToken, int merchantId, GiftCardAddValueRequestBody body)
+            : base(accessToken)
+        {
+            _merchantId = merchantId;
+            Body = body;
+        }
     }
 }

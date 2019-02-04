@@ -55,6 +55,10 @@ namespace LevelUp.Api.Client.Models.Requests
         /// <param name="partialAuthorizationAllowed">Parameter indicating whether orders should be partially authorized.
         /// That is. If a customer is only able to pay $5 and $10 is requested for payment, setting this value to true
         /// will instruct LevelUp to return authorization for $5. Setting the value to false will reject the order</param>
+        /// <param name="discountOnly">Parameter indicating whether the order is only authorized for discounts. Setting
+        /// this value to true will instruct LevelUp to retrieve available discounts and count the order for applicable
+        /// campaigns, but otherwise not pay the balance due on the bill through LevelUp. Setting this value to false
+        /// will instruct LevelUp that discounts and payment through LevelUp are both applicable.</param>
         /// <param name="items">A list of items that comprise the order</param>
         public CreateProposedOrderRequest(string accessToken,
                                     int locationId,
@@ -67,12 +71,13 @@ namespace LevelUp.Api.Client.Models.Requests
                                     string identifierFromMerchant,
                                     string receiptMessageHtml,
                                     bool partialAuthorizationAllowed,
+                                    bool discountOnly,
                                     IList<Item> items)
             : base(accessToken)
         {
             Body = new CreateProposedOrderRequestBody(locationId, qrPaymentData, spendAmountCents, taxAmountCents, 
                 exemptionAmountCents, register, cashier, identifierFromMerchant, receiptMessageHtml, 
-                partialAuthorizationAllowed, items);
+                partialAuthorizationAllowed, discountOnly, items);
         }
     }
 }

@@ -17,6 +17,7 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using System;
 using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.Models.Requests
@@ -36,18 +37,11 @@ namespace LevelUp.Api.Client.Models.Requests
         /// </summary>
         public GiftCardRemoveValueRequestBody Body { get; }
 
-        /// <summary>
-        /// Creates a add value request for a LevelUp gift card
-        /// </summary>
-        /// <param name="accessToken">App access token for the request</param>
-        /// <param name="merchantId">The merchant id</param>
-        /// <param name="giftCardQrData">The qr code of the target card or account</param>
-        /// <param name="amountInCents">The amount of value to add in US Cents</param>
-        public GiftCardRemoveValueRequest(string accessToken, int merchantId, string giftCardQrData, int amountInCents)
+        public GiftCardRemoveValueRequest(string accessToken, int merchantId, GiftCardRemoveValueRequestBody requestBody)
             : base(accessToken)
         {
             _merchantId = merchantId;
-            Body = new GiftCardRemoveValueRequestBody(giftCardQrData, amountInCents);
+            Body = requestBody;
         }
     }
 }

@@ -48,12 +48,14 @@ namespace LevelUp.Api.Client.Models.Requests
         /// the gift card is purchased</param>
         /// <param name="levelUpOrderId">If applicable, a LevelUp order Id associated with the purchase of
         /// the gift card for which value is added</param>
+        /// <param name="externalIdentifier"></param>
         public GiftCardAddValueRequestBody(string giftCardQrData,
                                        int amountInCents,
                                        int locationId,
                                        string identifierFromMerchant = null,
                                        IList<string> tenderTypes = null,
-                                       string levelUpOrderId = null)
+                                       string levelUpOrderId = null,
+                                       string externalIdentifier = null)
         {
             AmountInCents = amountInCents;
             AssociatedLevelUpOrderId = levelUpOrderId;
@@ -61,6 +63,7 @@ namespace LevelUp.Api.Client.Models.Requests
             IdentifierFromMerchant = identifierFromMerchant;
             LocationId = locationId;
             TenderTypesInternal = tenderTypes;
+            GiftCardExternalIdentifier = externalIdentifier;
         }
 
         /// <summary>
@@ -95,6 +98,12 @@ namespace LevelUp.Api.Client.Models.Requests
         /// </summary>
         [JsonProperty(PropertyName = "location_id")]
         public int LocationId { get; private set; }
+
+        /// <summary>
+        /// Giftcard's external id, used for idempotency of gift card add value request
+        /// </summary>
+        [JsonProperty(PropertyName = "external_identifier")]
+        public string GiftCardExternalIdentifier { get; private set; }
 
         /// <summary>
         /// A collection of tenders used to pay for the check which includes this value add operation

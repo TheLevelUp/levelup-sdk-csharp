@@ -1,3 +1,11 @@
+# levelup-sdk-csharp-internal
+
+| Master | Latest |
+|--------|--------|
+| [![Master build status](https://ci.appveyor.com/api/projects/status/4ugdtb5mn0sc71m0/branch/master?svg=true)](https://ci.appveyor.com/project/LevelUpPOS/levelup-sdk-csharp-internal/branch/master)| [![Latest build status](https://ci.appveyor.com/api/projects/status/4ugdtb5mn0sc71m0?svg=true)](https://ci.appveyor.com/project/LevelUpPOS/levelup-sdk-csharp-internal) |
+| [![Coverage Status](https://coveralls.io/repos/github/TheLevelUp/levelup-sdk-csharp-internal/badge.svg?branch=master&t=RH5MHc)](https://coveralls.io/github/TheLevelUp/levelup-sdk-csharp-internal?branch=master)|[![Coverage Status](https://coveralls.io/repos/github/TheLevelUp/levelup-sdk-csharp-internal/badge.svg?t=RH5MHc)](https://coveralls.io/github/TheLevelUp/levelup-sdk-csharp-internal)|
+
+
 LevelUp C# SDK
 ===
 

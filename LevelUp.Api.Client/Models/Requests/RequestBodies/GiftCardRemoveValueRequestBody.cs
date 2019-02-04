@@ -17,6 +17,7 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using System;
 using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
@@ -36,22 +37,42 @@ namespace LevelUp.Api.Client.Models.Requests
         }
 
         /// <summary>
-        /// Creates a destroy value request for a LevelUp gift card
+        /// Creates a destroy gift card value request to reverse a specific gift card add value transaction. 
+        /// </summary>
+        /// <param name="giftCardQrData">The qr code of the target card or account</param>
+        /// <param name="uuid">GiftCard addition uuid to reverse</param>
+        public GiftCardRemoveValueRequestBody(string giftCardQrData, Guid uuid)
+        {
+            GiftCardQrData = giftCardQrData;
+            Uuid = uuid;
+        }
+
+        /// <summary>
+        /// Creates a destroy gift card value request to destroy giftcard value by certain amount.
         /// </summary>
         /// <param name="giftCardQrData">The qr code of the target card or account</param>
         /// <param name="amountInCents">The amount of value to destroy in US Cents</param>
         public GiftCardRemoveValueRequestBody(string giftCardQrData, int amountInCents)
         {
-            GiftCardQrData = giftCardQrData;
             AmountInCents = amountInCents;
+            GiftCardQrData = giftCardQrData;
         }
 
         /// <summary>
         /// The amount of value to be removed from the gift card in US Cents. 
         /// This must be a positive amount and should not exceed the amount available on the gift card.
+        /// This amount value should be null if this request is being used with an UUID value.
         /// </summary>
         [JsonProperty(PropertyName = "value_amount")]
-        public int AmountInCents { get; private set; }
+        public int? AmountInCents { get; private set; }
+
+
+        /// <summary>
+        /// The Uuid of "GiftCardAddValue" response to be reversed.
+        /// This will reverse the GiftCardAddValue call, and it is idempotent
+        /// </summary>
+        [JsonProperty(PropertyName = "uuid")]
+        public Guid? Uuid { get; set; }
 
         /// <summary>
         /// QR Data identifying the gift card or user account

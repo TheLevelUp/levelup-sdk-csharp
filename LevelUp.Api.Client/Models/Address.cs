@@ -43,7 +43,6 @@ namespace LevelUp.Api.Client.Models
         /// <param name="postalCode">Zip code or postal code for addressee</param>
         /// <param name="country">Nation of addressee</param>
         /// <param name="coordinates">Latitude and longitudinal coordinates of addressee for mapping</param>
-        /// <param name="website">Web site for addressee</param>
         public Address(string name, 
                        string streetAddress = "", 
                        string extendedAddress = "", 

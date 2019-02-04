@@ -41,10 +41,12 @@ namespace LevelUp.Api.Client.Models.Requests
         /// <param name="accessToken">App access token for the request</param>
         /// <param name="locationId">The identification number for the origin of the order</param>
         /// <param name="qrPaymentData">The customer's QR code payment data as a string</param>
+        /// <param name="proposedOrderUuid"></param>
         /// <param name="spendAmountCents">The amount due on the check in cents</param>
         /// <param name="taxAmountCents">The tax amount that will be paid by the current pending order.</param>
         /// <param name="exemptionAmountCents">The portion the spendAmount that is exempted from being used to
         /// earn and redeem credit.</param>
+        /// <param name="appliedDiscountAmountCents"/>
         /// <param name="register">An identifier indicating which register placed the order. Default is null</param>
         /// <param name="cashier">The name of the cashier or server who handled the order if available. Default is null</param>
         /// <param name="identifierFromMerchant">An unique order identifier specific to the POS system which will be 
@@ -55,6 +57,10 @@ namespace LevelUp.Api.Client.Models.Requests
         /// <param name="partialAuthorizationAllowed">Parameter indicating whether orders should be partially authorized.
         /// That is. If a customer is only able to pay $5 and $10 is requested for payment, setting this value to true
         /// will instruct LevelUp to return authorization for $5. Setting the value to false will reject the order</param>
+        /// <param name="discountOnly">Parameter indicating whether the order is only authorized for discounts. Setting
+        /// this value to true will instruct LevelUp to retrieve available discounts and count the order for applicable
+        /// campaigns, but otherwise not pay the balance due on the bill through LevelUp. Setting this value to false
+        /// will instruct LevelUp that discounts and payment through LevelUp are both applicable.</param>
         /// <param name="items">A list of items that comprise the order</param>
         public CompleteProposedOrderRequest(string accessToken,
                                     int locationId,
@@ -69,12 +75,13 @@ namespace LevelUp.Api.Client.Models.Requests
                                     string identifierFromMerchant,
                                     string receiptMessageHtml,
                                     bool partialAuthorizationAllowed,
+                                    bool discountOnly,
                                     IList<Item> items)
             : base(accessToken)
         {
             Body = new CompleteProposedOrderRequestBody(locationId, qrPaymentData, proposedOrderUuid, spendAmountCents, 
                 taxAmountCents, exemptionAmountCents, appliedDiscountAmountCents, register, cashier, identifierFromMerchant, 
-                receiptMessageHtml, partialAuthorizationAllowed, items);
+                receiptMessageHtml, partialAuthorizationAllowed, discountOnly, items);
         }
     }
 }

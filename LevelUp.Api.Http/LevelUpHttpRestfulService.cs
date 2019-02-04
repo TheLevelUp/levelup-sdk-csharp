@@ -29,9 +29,16 @@ namespace LevelUp.Api.Http
         internal delegate IRestResponse ExecuteRequest(string url, IRestRequest request, string userAgent);
         private ExecuteRequest _executeFunc;
 
+        private readonly int _timeout = RestSharpUtils.DEFAULT_TIMEOUT_IN_MS;
+
         public LevelUpHttpRestfulService()
         {
             _executeFunc = RestSharpUtils.MakeRequest;
+        }
+
+        public LevelUpHttpRestfulService(int timeout) : this()
+        {
+            _timeout = timeout;
         }
 
         /// <summary>
@@ -51,36 +58,44 @@ namespace LevelUp.Api.Http
 
         public IRestResponse Delete(string url, string accessTokenHeader, string userAgent)
         {
-            IRestRequest request = BuildLevelUpRequest( requestMethod: Method.DELETE,
-                                                        body: string.Empty,
-                                                        accessTokenHeader: accessTokenHeader);
+            IRestRequest request = BuildLevelUpRequest(
+                requestMethod: Method.DELETE,
+                body: string.Empty,
+                accessTokenHeader: accessTokenHeader,
+                timeoutInMs: _timeout);
 
             return _executeFunc(url, request, userAgent);
         }
 
         public IRestResponse Get(string url, string accessTokenHeader, string userAgent)
         {
-            IRestRequest request = BuildLevelUpRequest( requestMethod: Method.GET,
-                                                        body: string.Empty,
-                                                        accessTokenHeader: accessTokenHeader);
+            IRestRequest request = BuildLevelUpRequest(
+                requestMethod: Method.GET,
+                body: string.Empty,
+                accessTokenHeader: accessTokenHeader,
+                timeoutInMs: _timeout);
 
             return _executeFunc(url, request, userAgent);
         }
 
         public IRestResponse Post(string url, string body, string accessTokenHeader, string userAgent)
         {
-            IRestRequest request = BuildLevelUpRequest( requestMethod: Method.POST,
-                                                        body: body,
-                                                        accessTokenHeader: accessTokenHeader);
+            IRestRequest request = BuildLevelUpRequest( 
+                requestMethod: Method.POST, 
+                body: body,
+                accessTokenHeader: accessTokenHeader,
+                timeoutInMs: _timeout);
 
             return _executeFunc(url, request, userAgent);
         }
 
         public IRestResponse Put(string url, string body, string accessTokenHeader, string userAgent)
         {
-            IRestRequest request = BuildLevelUpRequest( requestMethod: Method.PUT,
-                                                        body: body,
-                                                        accessTokenHeader: accessTokenHeader);
+            IRestRequest request = BuildLevelUpRequest( 
+                requestMethod: Method.PUT, 
+                body: body, 
+                accessTokenHeader: accessTokenHeader, 
+                timeoutInMs: _timeout);
 
             return _executeFunc(url, request, userAgent);
         }
@@ -92,6 +107,7 @@ namespace LevelUp.Api.Http
         private static IRestRequest BuildLevelUpRequest(Method requestMethod,
                                                         string body,
                                                         string accessTokenHeader,
+                                                        int timeoutInMs,
                                                         Dictionary<string, string> headers = null)
         {
             headers = headers ?? new Dictionary<string, string>();
@@ -100,7 +116,7 @@ namespace LevelUp.Api.Http
 
             AddAccessTokenHeader(headers, accessTokenHeader);
 
-            return RestSharpUtils.BuildRequest(requestMethod, headers, null, body);
+            return RestSharpUtils.BuildRequest(timeoutInMs, requestMethod, headers, null, body);
         }
 
         private static void AddAccessTokenHeader(Dictionary<string, string> headers, string accessTokenString)

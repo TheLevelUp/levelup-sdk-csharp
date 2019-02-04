@@ -1,191 +1,41 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <DefineConstants Condition=" !$(DefineConstants.Contains(';NET')) ">$(DefineConstants);$(TargetFrameworkVersion.Replace("v", "NET").Replace(".", ""))</DefineConstants>
-    <DefineConstants Condition=" $(DefineConstants.Contains(';NET')) ">$(DefineConstants.Remove($(DefineConstants.LastIndexOf(";NET"))));$(TargetFrameworkVersion.Replace("v", "NET").Replace(".", ""))</DefineConstants>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
+    <PackageId>LevelUp.Api.Client</PackageId>
+    <Authors>SCVNGR Inc. : LevelUp</Authors>
+    <Company>SCVNGR Inc. : LevelUp</Company>
+    <Product>SCVNGR Inc. : LevelUp</Product>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/TheLevelUp/levelup-sdk-csharp-internal</PackageProjectUrl>
+    <PackageOutputPath>$(SolutionDir)\artifacts</PackageOutputPath>
+    <Description>A .NET library for interacting with the LevelUp API</Description>
+    <Copyright>Copyright 2019</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{12992069-4E54-49B3-A6BE-44AC577A76FE}</ProjectGuid>
-    <OutputType>library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LevelUp.Api.Client</RootNamespace>
-    <AssemblyName>LevelUp.Api.Client</AssemblyName>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <DocumentationFile>bin\Debug\netstandard2.0\LevelUp.Api.Client.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="JsonEnvelopeSerializer, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\JsonEnvelopeSerializer.0.1.0\lib\net40\JsonEnvelopeSerializer.dll</HintPath>
-    </Reference>
-    <Reference Include="LevelUp.Pos.ProposedOrders.ProposedOrderCalculator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\LevelUp.Pos.ProposedOrderCalculator.1.2.0\lib\net40\LevelUp.Pos.ProposedOrders.ProposedOrderCalculator.dll\Release\LevelUp.Pos.ProposedOrders.ProposedOrderCalculator.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.105.2.3\lib\net4\RestSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="GitVersionTask" Version="4.0.1-beta1-59">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="JsonEnvelopeSerializer" Version="[1.0.1, 2)" />
+    <PackageReference Include="Newtonsoft.Json" Version="[11.0.2, 12)" />
+    <PackageReference Include="LevelUp.Pos.ProposedOrderCalculator" Version="1.3.1" />
+    <PackageReference Include="RestSharp" Version="106.5.4" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="ClientInterfaces\IAuthenticate.cs" />
-    <Compile Include="ClientInterfaces\ICreateCreditCards.cs" />
-    <Compile Include="ClientInterfaces\ICreateRefund.cs" />
-    <Compile Include="ClientInterfaces\IManageProposedOrders.cs" />
-    <Compile Include="ClientInterfaces\ILevelUpClientModule.cs" />
-    <Compile Include="ClientInterfaces\IRetrieveMerchantFundedGiftCardCredit.cs" />
-    <Compile Include="ComposedClientInterfaces\IComposedInterface.cs" />
-    <Compile Include="ClientInterfaces\IModifyUser.cs" />
-    <Compile Include="ClientInterfaces\IDestroyCreditCards.cs" />
-    <Compile Include="ClientInterfaces\ILookupUserLoyalty.cs" />
-    <Compile Include="ClientInterfaces\IManageRemoteCheckData.cs" />
-    <Compile Include="ClientInterfaces\IQueryCreditCards.cs" />
-    <Compile Include="ClientInterfaces\ICreateDetachedRefund.cs" />
-    <Compile Include="ClientInterfaces\ICreateGiftCardValue.cs" />
-    <Compile Include="ClientInterfaces\IDestroyGiftCardValue.cs" />
-    <Compile Include="ClientInterfaces\IQueryMerchantData.cs" />
-    <Compile Include="ClientInterfaces\IQueryOrders.cs" />
-    <Compile Include="ClientInterfaces\IQueryUser.cs" />
-    <Compile Include="ClientInterfaces\IRetrievePaymentToken.cs" />
-    <Compile Include="LevelUpClient.cs" />
-    <Compile Include="ComposedClientInterfaces\ILevelUpClientSuperset.cs" />
-    <Compile Include="ComposedClientInterfaces\ILevelUpClient.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="LevelUpClientFactory.cs" />
-    <Compile Include="Models\Address.cs" />
-    <Compile Include="Models\GeographicLocation.cs" />
-    <Compile Include="Models\Requests\AccessTokenRequest.cs" />
-    <Compile Include="Models\Requests\CompleteProposedOrderRequest.cs" />
-    <Compile Include="Models\Requests\ManagedLocationQueryRequest.cs" />
-    <Compile Include="Models\Requests\RequestBodies\CompleteProposedOrderRequestBody.cs" />
-    <Compile Include="Models\Requests\CreateProposedOrderRequest.cs" />
-    <Compile Include="Models\Requests\RequestBodies\CreateProposedOrderRequestBody.cs" />
-    <Compile Include="Models\Requests\CreateUserRequest.cs" />
-    <Compile Include="Models\Requests\CreateCreditCardRequest.cs" />
-    <Compile Include="Models\Requests\CreditCardQueryRequest.cs" />
-    <Compile Include="Models\Requests\DeleteCreditCardRequest.cs" />
-    <Compile Include="Models\Requests\DetachedRefundRequest.cs" />
-    <Compile Include="Models\Requests\FinalizeRemoteCheckRequest.cs" />
-    <Compile Include="Models\Requests\RequestBodies\CreateUserRequestBodyUserSection.cs" />
-    <Compile Include="Models\Requests\RequestBodies\FinalizeRemoteCheckRequestBody.cs" />
-    <Compile Include="Models\Requests\GiftCardAddValueRequest.cs" />
-    <Compile Include="Models\Requests\GiftCardCreditQueryRequest.cs" />
-    <Compile Include="Models\Requests\RequestBodies\GiftCardCreditQueryRequestBody.cs" />
-    <Compile Include="Models\Requests\GiftCardRemoveValueRequest.cs" />
-    <Compile Include="Models\Requests\RequestBodies\AccessTokenRequestBody.cs" />
-    <Compile Include="Models\Requests\RequestBodies\CreateCreditCardRequestBody.cs" />
-    <Compile Include="Models\Requests\RequestBodies\DetachedRefundRequestBody.cs" />
-    <Compile Include="Models\Requests\RequestBodies\GiftCardAddValueRequestBody.cs" />
-    <Compile Include="Models\Requests\RequestBodies\GiftCardRemoveValueRequestBody.cs" />
-    <Compile Include="Models\Requests\RequestBodies\PasswordResetRequestBody.cs" />
-    <Compile Include="Models\Requests\Request.cs" />
-    <Compile Include="Models\Requests\Item.cs" />
-    <Compile Include="Models\Requests\LocationDetailsQueryRequest.cs" />
-    <Compile Include="Models\Requests\LocationQueryRequest.cs" />
-    <Compile Include="Models\Requests\RequestBodies\MerchantCreditQueryRequestBody.cs" />
-    <Compile Include="Models\Requests\MerchantOrderDetailsRequest.cs" />
-    <Compile Include="Models\Requests\OrderQueryRequest.cs" />
-    <Compile Include="Models\Requests\PasswordResetRequest.cs" />
-    <Compile Include="Models\Requests\RequestBodies\Order.cs" />
-    <Compile Include="Models\Requests\PaymentTokenQueryRequest.cs" />
-    <Compile Include="Models\Requests\RefundRequest.cs" />
-    <Compile Include="Models\Requests\RequestBodies\RefundRequestBody.cs" />
-    <Compile Include="Models\Requests\RequestBodies\CreateUserRequestBody.cs" />
-    <Compile Include="Models\Requests\CreateRemoteCheckDataRequest.cs" />
-    <Compile Include="Models\Requests\GetRemoteCheckDataRequest.cs" />
-    <Compile Include="Models\Requests\UpdateRemoteCheckDataRequest.cs" />
-    <Compile Include="Models\Requests\RequestBodies\RemoteCheckDataRequestBody.cs" />
-    <Compile Include="Models\Requests\UpdateUserRequest.cs" />
-    <Compile Include="Models\Requests\RequestBodies\UpdateUserRequestBody.cs" />
-    <Compile Include="Models\Requests\UserAddressesQueryRequest.cs" />
-    <Compile Include="Models\Requests\UserDetailsQueryRequest.cs" />
-    <Compile Include="Models\Requests\RequestBodies\UserLoyaltyQueryRequest.cs" />
-    <Compile Include="Models\Responses\CompletedOrderResponse.cs" />
-    <Compile Include="Models\Responses\CreditCardQueryResponse.cs" />
-    <Compile Include="Models\Responses\GiftCardQueryResponse.cs" />
-    <Compile Include="Models\Responses\Response.cs" />
-    <Compile Include="Models\Responses\LocationQueryResponse.cs" />
-    <Compile Include="Models\Responses\ManagedLocation.cs" />
-    <Compile Include="Models\Responses\ManagedLocationQueryResponse.cs" />
-    <Compile Include="Models\Responses\OrderQueryResponse.cs" />
-    <Compile Include="Models\Responses\ProposedOrderResponse.cs" />
-    <Compile Include="Models\Responses\UserAddressQueryResponse.cs" />
-    <Compile Include="Models\Responses\EmptyResponse.cs" />
-    <Compile Include="Models\Responses\AccessToken.cs" />
-    <Compile Include="Models\Responses\ContributionTarget.cs" />
-    <Compile Include="Models\Responses\CreditCard.cs" />
-    <Compile Include="Models\Responses\DetachedRefundResponse.cs" />
-    <Compile Include="Models\Responses\FinalizeRemoteCheckResponse.cs" />
-    <Compile Include="Models\Responses\GetRemoteCheckDataResponse.cs" />
-    <Compile Include="Models\Responses\GiftCardAddValueResponse.cs" />
-    <Compile Include="Models\Responses\GiftCardRemoveValueResponse.cs" />
-    <Compile Include="Models\Responses\Location.cs" />
-    <Compile Include="Models\Responses\LocationDetails.cs" />
-    <Compile Include="Models\Responses\Loyalty.cs" />
-    <Compile Include="Models\Responses\OrderDetailsResponse.cs" />
-    <Compile Include="Models\Responses\PaymentToken.cs" />
-    <Compile Include="Models\Responses\RefundResponse.cs" />
-    <Compile Include="Models\Responses\UpdateRemoteCheckDataResponse.cs" />
-    <Compile Include="Models\Responses\User.cs" />
-    <Compile Include="Models\Responses\UserAddress.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <ProjectReference Include="..\LevelUp.Api.Http\LevelUp.Api.Http.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="LevelUp.Api.Client.licenseheader" />
-    <None Include="nuspec\LevelUp.Api.Client.nuspec" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LevelUp.Api.Http\LevelUp.Api.Http.csproj">
-      <Project>{e3ba93a9-c367-447d-9668-095b46ac607e}</Project>
-      <Name>LevelUp.Api.Http</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\GitVersionTask.3.6.5\build\portable-net+sl+win+wpa+wp\GitVersionTask.targets" Condition="Exists('..\packages\GitVersionTask.3.6.5\build\portable-net+sl+win+wpa+wp\GitVersionTask.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\GitVersionTask.3.6.5\build\portable-net+sl+win+wpa+wp\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\GitVersionTask.3.6.5\build\portable-net+sl+win+wpa+wp\GitVersionTask.targets'))" />
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

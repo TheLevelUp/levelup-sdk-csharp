@@ -17,6 +17,7 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
+using System;
 using JsonEnvelopeSerializer;
 using Newtonsoft.Json;
 
@@ -48,5 +49,8 @@ namespace LevelUp.Api.Client.Models.Responses
 
         [JsonProperty(PropertyName = "old_value_at_merchant_amount")]
         public int PreviousGiftCardAmountInCents { get; private set; }
+
+        [JsonProperty(PropertyName = "uuid")]
+        public Guid TransactionId { get; set; }
     }
 }
