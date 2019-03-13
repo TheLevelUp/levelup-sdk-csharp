@@ -16,7 +16,6 @@ Table of Contents
   * [How To Get These Libraries](#how-to-get-these-libraries)
   * [SDK Versioning](#sdk-versioning)
   * [Getting Started](#getting-started)
-  * [Configuring Your API Key](#configuring-your-api-key)
   * [Configuring the Environment](#configuring-the-environment)
     * [Sandbox Environment](#levelup-sandbox-environment)
     * [Production Environment](#levelup-production-environment)
@@ -50,13 +49,7 @@ Releases will be provided in a rolling manner as new features are available or n
 
 Getting Started
 ---
-Before you can make any progress with the LevelUp C# Integration SDK, you will need to [sign up for a LevelUp account](https://www.thelevelup.com/users/new). Once you have a LevelUp account, you can log in to your Developer Center [[Sandbox](https://www.thelevelup.com/developer/sandbox/apps) | [Production](https://www.thelevelup.com/developer/production/apps)].
-
-Configuring Your API Key
----
-In order to make calls to the LevelUp API using this SDK, you will need to obtain a LevelUp API key from your Developer Center account [[Sandbox](https://www.thelevelup.com/developer/sandbox/apps) | [Production](https://www.thelevelup.com/developer/production/apps)]. This key will be required to authenticate calls to the LevelUp platform.
-
-We **strongly** recommend that you do not store your API key on your production system or hard-code the key in software.
+Before you can make any progress with the LevelUp C# Integration SDK, you will need to obtain an API key and [sign up for a LevelUp account](https://www.thelevelup.com/users/new).
 
 Configuring the Environment
 ---
@@ -66,7 +59,7 @@ The user of this SDK will specify, prior to authenticating, which LevelUpEnviron
 The LevelUp Sandbox Environment is designed to be a data-persistent testing environment. In this environment, any orders created will **not use real money** and customer's accounts will not be charged. This is a great environment to do your testing in!
 
 ### LevelUp Production Environment
-Once you are ready to move to production, you will need to obtain another LevelUp API Key for the [Production Environment](https://www.thelevelup.com/developer/production/apps).  If you create an order in the LevelUp Production Environment, **real money will change hands** and any relevant accounts will be charged.
+Once you are ready to move to production, you will need to obtain another LevelUp API Key for the Production Environment. If you create an order in the LevelUp Production Environment, **real money will change hands** and any relevant accounts will be charged.
 
 Requirements For Building The SDK
 ---
