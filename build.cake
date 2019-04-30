@@ -1,10 +1,10 @@
-#tool "nuget:?package=GitVersion.CommandLine"
-#addin "Cake.FileHelpers"
-#addin "Cake.AWS.S3"
-#tool "nuget:?package=OpenCover"
-#tool "nuget:?package=ReportGenerator"
-#tool "nuget:?package=coveralls.io"
-#addin "nuget:?package=Cake.Coveralls"
+#tool "nuget:?package=GitVersion.CommandLine&version=4.0.0"
+#addin "Cake.FileHelpers&version=3.2.0"
+#addin "Cake.AWS.S3&version=0.6.8"
+#tool "nuget:?package=OpenCover&version=4.7.922"
+#tool "nuget:?package=ReportGenerator&version=4.1.4"
+#tool "nuget:?package=coveralls.io&version=1.4.2"
+#addin "nuget:?package=Cake.Coveralls&version=0.9.0"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
