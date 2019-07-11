@@ -34,7 +34,7 @@ namespace LevelUp.Api.Client.Tests.Client.FunctionalTests
         {
             const string accessToken = "abc";
             const int merchant_id = 3554;
-            const string payment_token_data = "LU020000029080KFZ02I9A8V030000LU";
+            const string payment_token_data = "LU020000000THISISFAKE000000000LU";
             const int value_amount = 1000;
             const int location_id = 1234;
             const string order_uuid = "a7e23820d56802321bb64ab3b58dfe6c";

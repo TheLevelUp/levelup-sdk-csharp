@@ -35,11 +35,15 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         private OrderDetailsResponse() { }
 
-        public OrderDetailsResponse(string orderIdentifier, int spendAmount, int tipAmount, int total, string createdAt,
-            int merchantFundedCredit, int earnAmount, int loyaltyId, string timeOfRefund, string userName,
-            string timeOfTransaction, int locationId)
+        public OrderDetailsResponse(int id, string orderIdentifier, string identifierFromMerchant, int spendAmount, int tipAmount,
+            int total, string createdAt, int merchantFundedCredit, int earnAmount, int loyaltyId, string timeOfRefund,
+            string userName, string timeOfTransaction, int locationId, int merchantId, string merchantName, int balanceAmount,
+            int contributionAmount, int creditAppliedAmount, int creditEarnedAmount, int displaybalanceAmount, int exemptionAmount,
+            int requestedSpendAmount, int requestedTipAmount, int requestedTotalAmount, int taxAmount)
         {
+            Id = id;
             OrderIdentifier = orderIdentifier;
+            IdentifierFromMerchant = identifierFromMerchant;
             SpendAmount = spendAmount;
             TipAmount = tipAmount;
             Total = total;
@@ -51,13 +55,37 @@ namespace LevelUp.Api.Client.Models.Responses
             UserName = userName;
             TimeOfTransaction = timeOfTransaction;
             LocationId = locationId;
+            MerchantId = merchantId;
+            MerchantName = merchantName;
+            BalanceAmount = balanceAmount;
+            ContributionAmount = contributionAmount;
+            CreditAppliedAmount = creditAppliedAmount;
+            CreditEarnedAmount = creditEarnedAmount;
+            DisplaybalanceAmount = displaybalanceAmount;
+            ExemptionAmount = exemptionAmount;
+            RequestedSpendAmount = requestedSpendAmount;
+            RequestedTipAmount = requestedTipAmount;
+            RequestedTotalAmount = requestedTotalAmount;
+            TaxAmount = taxAmount;
         }
+
+    /// <summary>
+    /// Order number in LevelUp
+    /// </summary>
+    [JsonProperty(PropertyName = "id")]
+        public int Id { get; private set; }
 
         /// <summary>
         /// ProposedOrderIdentifier which uniquely identifies the order
         /// </summary>
         [JsonProperty(PropertyName = "uuid")]
         public string OrderIdentifier { get; private set; }
+
+        /// <summary>
+        /// Indentifier from merchant's POS (usually the ticket number)
+        /// </summary>
+        [JsonProperty(PropertyName = "identifier_from_merchant")]
+        public string IdentifierFromMerchant { get; private set; }
 
         /// <summary>
         /// Amount in cents spent on the order not including tip
@@ -128,5 +156,77 @@ namespace LevelUp.Api.Client.Models.Responses
         /// </summary>
         [JsonProperty(PropertyName = "location_id")]
         public int LocationId { get; private set; }
+
+        /// <summary>
+        /// ID of the Merchant where the order was placed
+        /// </summary>
+        [JsonProperty(PropertyName = "merchant_id")]
+        public int MerchantId { get; private set; }
+
+        /// <summary>
+        /// Name of the Merchant where the order was placed
+        /// </summary>
+        [JsonProperty(PropertyName = "merchant_name")]
+        public string MerchantName { get; private set; }
+
+        /// <summary>
+        /// Balance amount
+        /// </summary>
+        [JsonProperty(PropertyName = "balance_amount")]
+        public int BalanceAmount { get; private set; }
+
+        /// <summary>
+        /// Contribution amount
+        /// </summary>
+        [JsonProperty(PropertyName = "contribution_amount")]
+        public int ContributionAmount { get; private set; }
+
+        /// <summary>
+        /// Credit applied amount
+        /// </summary>
+        [JsonProperty(PropertyName = "credit_applied_amount")]
+        public int CreditAppliedAmount { get; private set; }
+
+        /// <summary>
+        /// Credit earned amount
+        /// </summary>
+        [JsonProperty(PropertyName = "credit_earned_amount")]
+        public int CreditEarnedAmount { get; private set; }
+
+        /// <summary>
+        /// Display balance amount
+        /// </summary>
+        [JsonProperty(PropertyName = "display_balance_amount")]
+        public int DisplaybalanceAmount { get; private set; }
+
+        /// <summary>
+        /// Exemption amount
+        /// </summary>
+        [JsonProperty(PropertyName = "exemption_amount")]
+        public int ExemptionAmount { get; private set; }
+
+        /// <summary>
+        /// Requested spend amount
+        /// </summary>
+        [JsonProperty(PropertyName = "requested_spend_amount")]
+        public int RequestedSpendAmount { get; private set; }
+
+        /// <summary>
+        /// Requested tip amount
+        /// </summary>
+        [JsonProperty(PropertyName = "requested_tip_amount")]
+        public int RequestedTipAmount { get; private set; }
+
+        /// <summary>
+        /// Requested total amount
+        /// </summary>
+        [JsonProperty(PropertyName = "requested_total_amount")]
+        public int RequestedTotalAmount { get; private set; }
+
+        /// <summary>
+        /// Tax amount
+        /// </summary>
+        [JsonProperty(PropertyName = "tax_amount")]
+        public int TaxAmount { get; private set; }
     }
 }

@@ -186,7 +186,7 @@ namespace LevelUp.Api.Client.Tests.Client.FunctionalTests
         /// <param name="requestUrlBase">The url that is expected to retrieve the first page.</param>
         internal static T GetMockedLevelUpModuleWithPaging<T>(RestResponse[] expectedResponses,
                                                               string requestUrlBase)
-            where T : IQueryOrders
+            where T : IListOrders
         {
             return GetMockedLevelUpModuleWithPaging<T>(expectedResponses, requestUrlBase, LevelUpEnvironment.Sandbox);
         }
@@ -204,7 +204,7 @@ namespace LevelUp.Api.Client.Tests.Client.FunctionalTests
         internal static T GetMockedLevelUpModuleWithPaging<T>(RestResponse[] expectedResponses,
                                                               string requestUrlBase,
                                                               LevelUpEnvironment environmentToUse)
-            where T : IQueryOrders
+            where T : IListOrders
         {
             var len = expectedResponses.Length;
 

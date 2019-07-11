@@ -123,3 +123,4 @@ tools/**
 
 #Code Coverage
 coverage*
+/LevelUp.Api.Client.Tests/Config/test_config_settings.xml

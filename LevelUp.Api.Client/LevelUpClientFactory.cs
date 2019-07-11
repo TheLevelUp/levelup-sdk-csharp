@@ -39,6 +39,7 @@ namespace LevelUp.Api.Client
             where T : ILevelUpClientModule
         {
             IRestfulService httpRestService = new LevelUpHttpRestfulService();
+
             var client = new LevelUpClient(httpRestService, identifier, enviornment);
             return (T)(object)client;
         }

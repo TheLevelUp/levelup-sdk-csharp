@@ -26,16 +26,15 @@ using NUnit.Framework;
 namespace LevelUp.Api.Client.Tests.Client.IntegrationTests
 {
     [TestFixture, Explicit]
-    public class IQueryOrdersIntegrationTests
+    public class ListOrdersIntegrationTests
     {
         [Test]
         public void ListOrders()
         {
             CompletedOrderResponse created = ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer();
 
-            IQueryOrders queryInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IQueryOrders>();
-            var orders = queryInterface.ListOrders(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
-                    LevelUpTestConfiguration.Current.MerchantLocationId, 1, 3);
+            IListOrders queryInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IListOrders>();
+            var orders = queryInterface.ListOrders(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken, 1, 3);
 
             Assert.IsNotNull(orders.Where(x => x.OrderIdentifier == created.OrderIdentifier).DefaultIfEmpty(null).FirstOrDefault());
         }
@@ -43,12 +42,12 @@ namespace LevelUp.Api.Client.Tests.Client.IntegrationTests
         [Test]
         public void ListFilteredOrders_WithFilter()
         {
-            IQueryOrders queryInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IQueryOrders>();
+            IListOrders queryInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IListOrders>();
             CompletedOrderResponse first = ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer(200);
             ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer(300);  // ensure that there is at least one other order that the filter will ignore.
 
             var orders = queryInterface.ListFilteredOrders(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
-                    LevelUpTestConfiguration.Current.MerchantLocationId, 1, 1, (x => x.OrderIdentifier == first.OrderIdentifier));
+                1, 1, (x => x.OrderIdentifier == first.OrderIdentifier));
 
             Assert.AreEqual(orders.Count, 1);
             Assert.IsTrue(orders.First().OrderIdentifier == first.OrderIdentifier);
@@ -57,12 +56,12 @@ namespace LevelUp.Api.Client.Tests.Client.IntegrationTests
         [Test]
         public void ListFilteredOrders_WithOrdering()
         {
-            IQueryOrders queryInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IQueryOrders>();
+            IListOrders queryInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IListOrders>();
             ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer(200);
             ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer(300);
 
             var orders = queryInterface.ListFilteredOrders(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
-                    LevelUpTestConfiguration.Current.MerchantLocationId, 1, 1, null, ((x, y) => y.Total - x.Total));
+                1, 1, null, ((x, y) => y.Total - x.Total));
 
             var copy = new List<OrderDetailsResponse>(orders);
             Assert.IsTrue(copy.OrderByDescending((x => x.Total)).SequenceEqual(orders));
@@ -71,12 +70,11 @@ namespace LevelUp.Api.Client.Tests.Client.IntegrationTests
         [Test]
         public void ListFilteredOrders_WithFilterAndOrdering()
         {
-            IQueryOrders queryInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IQueryOrders>();
+            IListOrders queryInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IListOrders>();
             CompletedOrderResponse first = ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer(200);
             CompletedOrderResponse second = ClientModuleIntegrationTestingUtilities.PlaceOrderAtTestMerchantWithTestConsumer(300);
 
-            var orders = queryInterface.ListFilteredOrders(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
-                   LevelUpTestConfiguration.Current.MerchantLocationId, 1, 1, 
+            var orders = queryInterface.ListFilteredOrders(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken, 1, 1, 
                    (x => x.OrderIdentifier == first.OrderIdentifier || x.OrderIdentifier == second.OrderIdentifier), 
                    ((x, y) => y.Total - x.Total));
             Assert.AreEqual(orders.Count, 2);
@@ -100,7 +98,7 @@ namespace LevelUp.Api.Client.Tests.Client.IntegrationTests
 
         private List<OrderDetailsResponse> GetFirstThreePagesOfOrdersForTestMerchant()
         {
-            IQueryOrders queryInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IQueryOrders>();
+            IListOrders queryInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IListOrders>();
 
             var retval = new List<OrderDetailsResponse>();
 
@@ -109,8 +107,8 @@ namespace LevelUp.Api.Client.Tests.Client.IntegrationTests
 
             while (areThereMorePages && currentPage < 4)
             {
-                var orders = queryInterface.ListOrders(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken, 
-                    LevelUpTestConfiguration.Current.MerchantLocationId, currentPage, currentPage, out areThereMorePages);
+                var orders = queryInterface.ListOrders(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
+                    currentPage, currentPage, out areThereMorePages);
                 retval.AddRange(orders);
                 currentPage++;
             }

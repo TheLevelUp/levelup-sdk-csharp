@@ -24,33 +24,30 @@ using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.ClientInterfaces
 {
-    public interface IQueryOrders : ILevelUpClientModule
+    public interface IListOrders : ILevelUpClientModule
     {
         /// <summary>
-        /// Get information on a list of orders associated with a particular location ID.  The LevelUp REST API returns 
+        /// Get information on a list of orders associated with a particular user.  The LevelUp REST API returns 
         /// this list of order details using paging.
         /// </summary>
-        /// <param name="accessToken">The LevelUp access token associated with the merchant account obtained from 
+        /// <param name="userAccessToken">The LevelUp access token associated with the user account obtained from 
         /// the Authenticate() method</param>
-        /// <param name="locationId">LevelUp Location ID whose order history you wish to query</param>
         /// <param name="startPageNum">Page number from which to begin listing orders. Page numbering starts at 1.</param>
         /// <param name="endPageNum">Page number at which to end listing orders (inclusive). If a number less than the 
         /// starting page number is specified, only a single page of orders will be returned.</param>
         /// <returns>The collection of orders from pages "startPageNum" to "endPageNum" inclusive</returns>
         /// <exception cref="LevelUpApiException"> The returned HTTP status code for the request was something other 
         /// than 200 (OK)</exception>
-        IList<OrderDetailsResponse> ListOrders(string accessToken,
-            int locationId,
+        IList<OrderDetailsResponse> ListOrders(string userAccessToken,
             int startPageNum = 1,
             int endPageNum = 1);
 
         /// <summary>
-        /// Get information on a list of orders associated with a particular location ID.  The LevelUp REST API returns 
+        /// Get information on a list of orders associated with a particular user.  The LevelUp REST API returns 
         /// this list of order details using paging.
         /// </summary>
-        /// <param name="accessToken">The LevelUp access token associated with the merchant account obtained from 
+        /// <param name="userAccessToken">The LevelUp access token associated with the user account obtained from 
         /// the Authenticate() method</param>
-        /// <param name="locationId">LevelUp Location ID whose order history you wish to query</param>
         /// <param name="startPageNum">Page number from which to begin listing orders. Page numbering starts at 1.</param>
         /// <param name="endPageNum">Page number at which to end listing orders (inclusive). If a number less than the 
         /// starting page number is specified, only a single page of orders will be returned.</param>
@@ -58,19 +55,17 @@ namespace LevelUp.Api.Client.ClientInterfaces
         /// <returns>The collection of orders from pages "startPageNum" to "endPageNum" inclusive</returns>
         /// <exception cref="LevelUpApiException"> The returned HTTP status code for the request was something other 
         /// than 200 (OK)</exception>
-        IList<OrderDetailsResponse> ListOrders(string accessToken,
-            int locationId,
+        IList<OrderDetailsResponse> ListOrders(string userAccessToken,
             int startPageNum,
             int endPageNum,
             out bool areThereMorePages);
 
         /// <summary>
-        /// Get information on a list of orders associated with a particular location ID.  The LevelUp REST API returns 
+        /// Get information on a list of orders associated with a particular user.  The LevelUp REST API returns 
         /// this list of order details using paging.
         /// </summary>
-        /// <param name="accessToken">The LevelUp access token associated with the merchant account obtained from 
+        /// <param name="userAccessToken">The LevelUp access token associated with the user account obtained from 
         /// the Authenticate() method</param>
-        /// <param name="locationId">LevelUp Location ID whose order history you wish to query</param>
         /// <param name="startPageNum">Page number from which to begin listing orders. Page numbering starts at 1.</param>
         /// <param name="endPageNum">Page number at which to end listing orders (inclusive). If a number less than the 
         /// starting page number is specified, only a single page of orders will be returned.</param>
@@ -86,8 +81,7 @@ namespace LevelUp.Api.Client.ClientInterfaces
         /// <returns>The set of orders at the specified location that match the passed filter object's logic</returns>
         /// <exception cref="LevelUpApiException"> The returned HTTP status code for the request was something other 
         /// than 200 (OK)</exception>
-        IList<OrderDetailsResponse> ListFilteredOrders(string accessToken,
-            int locationId,
+        IList<OrderDetailsResponse> ListFilteredOrders(string userAccessToken,
             int startPageNum,
             int endPageNum,
             Func<OrderDetailsResponse, bool> filter = null,

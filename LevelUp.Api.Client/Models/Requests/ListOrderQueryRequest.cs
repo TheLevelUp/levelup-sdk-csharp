@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="ILevelUpClient.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="OrderQueryRequest.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -17,25 +17,25 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using LevelUp.Api.Client.ClientInterfaces;
+using LevelUp.Api.Http;
 
-namespace LevelUp.Api.Client
+namespace LevelUp.Api.Client.Models.Requests
 {
     /// <summary>
-    /// A collection of interfaces promoted for the most recent version of the SDK
+    /// Request to list orders associated with a particular user
     /// </summary>
-    public interface ILevelUpClient : IComposedInterface,
-                                      IAuthenticate,
-                                      ICreateDetachedRefund,
-                                      ICreateRefund,
-                                      IQueryMerchantData,
-                                      IListOrders,
-                                      IRetrievePaymentToken,
-                                      ICreateGiftCardValue,
-                                      IDestroyGiftCardValue,
-                                      IRetrieveMerchantFundedGiftCardCredit,
-                                      IManageProposedOrders,
-                                      ICreateMerchantFundedCredit
+    public class ListOrderQueryRequest : Request
     {
+        protected override LevelUpApiVersion _applicableAPIVersionsBitmask
+        {
+            get { return LevelUpApiVersion.v15; }
+        }
+
+        public int PageNumber { get; }
+
+        public ListOrderQueryRequest(string accessToken, int pageNumber) : base(accessToken)
+        {
+            PageNumber = pageNumber;
+        }
     }
 }

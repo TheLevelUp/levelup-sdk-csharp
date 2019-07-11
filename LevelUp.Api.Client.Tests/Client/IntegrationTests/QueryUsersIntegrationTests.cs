@@ -19,12 +19,13 @@
 
 using System.Linq;
 using LevelUp.Api.Client.ClientInterfaces;
+using LevelUp.Api.Client.Models.Responses;
 using NUnit.Framework;
 
 namespace LevelUp.Api.Client.Tests.Client.IntegrationTests
 {
     [TestFixture, Explicit]
-    public class IQueryUsersIntegrationTests
+    public class QueryUsersIntegrationTests
     {
         [Test]
         public void GetUser()
@@ -47,6 +48,31 @@ namespace LevelUp.Api.Client.Tests.Client.IntegrationTests
             var locationData = queryInterface.ListUserAddresses(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpUserAccessToken);
             Assert.IsTrue(locationData.Count > 0);
             Assert.IsNotNull(locationData.Where(x => x.StreetAddress == "101 Arch Street").DefaultIfEmpty(null).FirstOrDefault());
+        }
+
+        [Test]
+        public void GetLocationUserCredit()
+        {
+            int merchantFundedCreditAmount = 175;
+
+            ClientModuleIntegrationTestingUtilities.GrantMerchantFundedCredit(merchantFundedCreditAmount);
+
+            IQueryUser queryInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IQueryUser>();
+
+            var credit = queryInterface.GetLocationUserCredit(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpUserAccessToken,
+                LevelUpTestConfiguration.Current.MerchantLocationId);
+
+            // Verify that the credit is at least the amount of credit we issued.
+            Assert.GreaterOrEqual(credit.TotalAmount, merchantFundedCreditAmount);
+
+            // For this test, we don't really care what the order number is...
+            var identifierFromMerchant = System.Environment.TickCount.ToString();
+
+            // Remove the credit we gave to the user.
+            CompletedOrderResponse completedOrder = ClientModuleIntegrationTestingUtilities.CompleteOrderAtTestMerchantWithTestConsumer(
+                merchantFundedCreditAmount,
+                merchantFundedCreditAmount,
+                identifierFromMerchant);
         }
     }
 }

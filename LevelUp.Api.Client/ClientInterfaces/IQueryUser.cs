@@ -46,5 +46,16 @@ namespace LevelUp.Api.Client.ClientInterfaces
         /// <exception cref="LevelUpApiException"> The returned HTTP status code for the request was something other 
         /// than 200 (OK)</exception>
         User GetUser(string accessToken, int userId);
+
+        /// <summary>
+        /// Returns the total amount of credit that a user is eligible to redeem at a particular location.
+        /// </summary>
+        /// <param name="userAccessToken">The LevelUp access token associated with the user account obtained from 
+        /// the Authenticate() method</param>
+        /// <param name="locationId">The LevelUp ID for the location to query</param>
+        /// <returns>Total credit available to a user at selected location</returns>
+        /// <exception cref="LevelUpApiException"> The returned HTTP status code for the request was something other 
+        /// than 200 (OK)</exception>
+        Credit GetLocationUserCredit(string userAccessToken, int locationId);
     }
 }

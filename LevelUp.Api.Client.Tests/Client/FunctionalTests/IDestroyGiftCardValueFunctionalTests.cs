@@ -32,7 +32,7 @@ namespace LevelUp.Api.Client.Tests.Client.FunctionalTests
         [Test]
         public void GiftCardDestroyValueShouldSucceed()
         {
-            string paymentTokenData = "LU020000029080KFZ02I9A8V030000LU";
+            string paymentTokenData = "LU020000000THISISFAKE000000000LU";
             int merchantId = 3;
             int valueAmountCents = 100;
             int initialTotalValueAtMerchantCents = 202;

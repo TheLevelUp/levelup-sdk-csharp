@@ -277,19 +277,19 @@ namespace LevelUp.Api.Client
 
         #region IQueryOrders Implementation
 
-        public IList<OrderDetailsResponse> ListOrders(string accessToken, int locationId, int startPageNum = 1, int endPageNum = 1)
+        public IList<OrderDetailsResponse> ListOrders(string userAccessToken, int startPageNum = 1, int endPageNum = 1)
         {
-            return ListOrders(accessToken, locationId, startPageNum, endPageNum, out _);
+            return ListOrders(userAccessToken, startPageNum, endPageNum, out _);
         }
 
-        public IList<OrderDetailsResponse> ListOrders(string accessToken, int locationId, int startPageNum, int endPageNum, out bool areThereMorePages)
+        public IList<OrderDetailsResponse> ListOrders(string userAccessToken, int startPageNum, int endPageNum, out bool areThereMorePages)
         {
             if (endPageNum < startPageNum)
             {
                 endPageNum = startPageNum;
             }
 
-            OrderQueryRequest request = new OrderQueryRequest(accessToken, locationId, startPageNum);
+            ListOrderQueryRequest request = new ListOrderQueryRequest(userAccessToken, startPageNum);
 
             PagedList<OrderDetailsResponse> orders = _restWrapper.GetWithPaging<OrderDetailsResponse>(
                 uri: GetOrderQueryRequestEndpoint(request),
@@ -312,10 +312,10 @@ namespace LevelUp.Api.Client
             return retval;
         }
 
-        public IList<OrderDetailsResponse> ListFilteredOrders(string accessToken, int locationId, int startPageNum, int endPageNum,
+        public IList<OrderDetailsResponse> ListFilteredOrders(string userAccessToken, int startPageNum, int endPageNum,
             Func<OrderDetailsResponse, bool> filter = null, Func<OrderDetailsResponse, OrderDetailsResponse, int> @orderby = null)
         {
-            var allOrders = new List<OrderDetailsResponse> (ListOrders(accessToken, locationId, startPageNum, endPageNum));
+            var allOrders = new List<OrderDetailsResponse> (ListOrders(userAccessToken, startPageNum, endPageNum));
 
             List<OrderDetailsResponse> filtered = (filter == null) ? allOrders : allOrders.FindAll(x => filter(x));
 
@@ -327,9 +327,9 @@ namespace LevelUp.Api.Client
             return filtered;
         }
 
-        public string GetOrderQueryRequestEndpoint(OrderQueryRequest request)
+        private string GetOrderQueryRequestEndpoint(ListOrderQueryRequest request)
         {
-            string path = $"locations/{request.LocationId}/orders";
+            string path = $"apps/orders";
             LevelUpUriBuilder builder = new LevelUpUriBuilder(_targetEnviornment);
             builder.SetApiVersion(request.ApiVersion).SetPath(path);
 
@@ -365,10 +365,20 @@ namespace LevelUp.Api.Client
                 actions: null);
         }
 
+        public Credit GetLocationUserCredit(string userAccessToken, int locationId)
+        {
+            GetCreditRequest request = new GetCreditRequest(userAccessToken);
+
+            return _restWrapper.Get<Credit>(
+                uri: BuildUri(request.ApiVersion, $"locations/{locationId}/credit"),
+                accessTokenHeader: FormatAccessTokenString(consumerUserAccessToken: request.AccessToken),
+                actions: null);
+        }
+
         #endregion
 
         #region IRetrievePaymentToken Implementation
-        
+
         public Models.Responses.PaymentToken GetPaymentToken(string accessToken)
         {
             PaymentTokenQueryRequest request = new PaymentTokenQueryRequest(accessToken);
@@ -581,6 +591,28 @@ namespace LevelUp.Api.Client
             return _restWrapper.Post<CompleteProposedOrderRequestBody, CompletedOrderResponse>(
                 request.Body,
                 uri: BuildUri(request.ApiVersion, "completed_orders"),
+                accessTokenHeader: FormatAccessTokenString(merchantUserAccessToken: request.AccessToken),
+                actions: null);
+        }
+
+        #endregion
+
+        #region ICreateMerchantFundedCredit Implementation
+
+        public void GrantMerchantFundedCredit(
+            string accessToken,
+            string email,
+            int durationInSeconds,
+            int merchantId,
+            string message,
+            int valueAmount,
+            bool global)
+        {
+            GrantMerchantFundedCreditRequest request = new GrantMerchantFundedCreditRequest(accessToken, email, durationInSeconds, merchantId, message, valueAmount, global);
+
+            _restWrapper.Post(
+                request.Body,
+                uri: BuildUri(request.ApiVersion, "merchant_funded_credits"),
                 accessTokenHeader: FormatAccessTokenString(merchantUserAccessToken: request.AccessToken),
                 actions: null);
         }

@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="OrderQueryRequest.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="GetRemoteCheckDataRequest.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -21,24 +21,15 @@ using LevelUp.Api.Http;
 
 namespace LevelUp.Api.Client.Models.Requests
 {
-    /// <summary>
-    /// Request to list orders associated with a particular location
-    /// </summary>
-    public class OrderQueryRequest : Request
+    public class GetCreditRequest : Request
     {
         protected override LevelUpApiVersion _applicableAPIVersionsBitmask
         {
-            get { return LevelUpApiVersion.v14; }
+            get { return LevelUpApiVersion.v15; }
         }
 
-        public int LocationId { get; }
-
-        public int PageNumber { get; }
-
-        public OrderQueryRequest(string accessToken, int locationId, int pageNumber) : base(accessToken)
+        public GetCreditRequest(string userAccessToken) : base(userAccessToken)
         {
-            LocationId = locationId;
-            PageNumber = pageNumber;
         }
     }
 }

@@ -38,7 +38,7 @@ namespace LevelUp.Api.Client.Tests.Client.FunctionalTests
                 Content = 
                 "{" +
                     "\"payment_token\": {" +
-                        "\"data\": \"LU02000008ZS9OJFUBNEL6ZM\"," +
+                        "\"data\": \"LU020000000THISISFAKE000\"," +
                         "\"id\": 323" +
                     "}" +
                 "}"
@@ -48,7 +48,7 @@ namespace LevelUp.Api.Client.Tests.Client.FunctionalTests
                 expectedResponse, expectedRequestUrl: expectedRequestUrl);
             var paymentToken = client.GetPaymentToken("not_checking_this");
             Assert.AreEqual(paymentToken.Id, 323);
-            Assert.AreEqual(paymentToken.Data, "LU02000008ZS9OJFUBNEL6ZM");
+            Assert.AreEqual(paymentToken.Data, "LU020000000THISISFAKE000");
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net40</TargetFrameworks>
     <PackageId>LevelUp.Api.Client</PackageId>
     <Authors>SCVNGR Inc. : LevelUp</Authors>
     <Company>SCVNGR Inc. : LevelUp</Company>
@@ -28,10 +28,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="JsonEnvelopeSerializer" Version="[1.0.1, 2)" />
-    <PackageReference Include="Newtonsoft.Json" Version="[11.0.2, 12)" />
+    <PackageReference Include="JsonEnvelopeSerializer" Version="1.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="LevelUp.Pos.ProposedOrderCalculator" Version="1.3.1" />
-    <PackageReference Include="RestSharp" Version="106.5.4" />
   </ItemGroup>
 
   <ItemGroup>

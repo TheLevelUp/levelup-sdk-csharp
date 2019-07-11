@@ -41,7 +41,7 @@ namespace LevelUp.Api.Client.Tests.Client.FunctionalTests
             const string identifier_from_merchant = "001001";
             const string internal_reason = "Andrew didn't like his coffee";
             const string manager_confirmation = "12345";
-            const string payment_token_data = "LU020000029080KFZ02I9A8V030000LU";
+            const string payment_token_data = "LU020000000THISISFAKE000000000LU";
             const string register = "03";
             const string refunded_at = "2014-01-01T00:00:00-04:00";
             const int credit_amount = 743;

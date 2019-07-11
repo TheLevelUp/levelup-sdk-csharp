@@ -32,7 +32,7 @@ namespace LevelUp.Api.Client.Tests.Client.FunctionalTests
         public void RetrieveMerchantFundedGiftCardCreditShouldPass()
         {
             const int locationId = 19;
-            const string qr_code = "LU02000008ZS9OJFUBNEL6ZM030000LU";
+            const string qr_code = "LU020000000THISISFAKE000000000LU";
             const int gift_card_total = 2000;
             const string auth_Token = "example_auth_token";
 

@@ -36,7 +36,7 @@ namespace LevelUp.Api.Client.Tests.Client.FunctionalTests
 
             string expectedRequest = "{" +
                                       "\"proposed_order\": {" +
-                                        "\"payment_token_data\": \"LU02000008ZS9OJFUBNEL6ZM030000LU\"," +
+                                        "\"payment_token_data\": \"LU020000000THISISFAKE000000000LU\"," +
                                         "\"cashier\": \"Bob\"," +
                                         "\"exemption_amount\": 0," +
                                         "\"receipt_message_html\": null," +
@@ -60,7 +60,7 @@ namespace LevelUp.Api.Client.Tests.Client.FunctionalTests
             
             IManageProposedOrders client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CreateProposedOrderRequest>(
                 expectedResponse, expectedRequest, expectedRequestUrl: expectedRequestUrl);
-            var proposedOrder = client.CreateProposedOrder("not_checking_this", 19, "LU02000008ZS9OJFUBNEL6ZM030000LU",
+            var proposedOrder = client.CreateProposedOrder("not_checking_this", 19, "LU020000000THISISFAKE000000000LU",
                 110, 110, 10, 0, "3", "Bob", "001001", null, true, false, items);
 
             Assert.AreEqual(proposedOrder.ProposedOrderIdentifier, "1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1");
@@ -75,7 +75,7 @@ namespace LevelUp.Api.Client.Tests.Client.FunctionalTests
 
             string expectedRequest = "{" +
                                      "\"proposed_order\": {" +
-                                     "\"payment_token_data\": \"LU02000008ZS9OJFUBNEL6ZM030000LU\"," +
+                                     "\"payment_token_data\": \"LU020000000THISISFAKE000000000LU\"," +
                                      "\"cashier\": \"Bob\"," +
                                      "\"exemption_amount\": 40," +
                                      "\"receipt_message_html\": null," +
@@ -99,7 +99,7 @@ namespace LevelUp.Api.Client.Tests.Client.FunctionalTests
 
             IManageProposedOrders client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CreateProposedOrderRequest>(
                 expectedResponse, expectedRequest, expectedRequestUrl: expectedRequestUrl);
-            var proposedOrder = client.CreateProposedOrder("not_checking_this", 19, "LU02000008ZS9OJFUBNEL6ZM030000LU",
+            var proposedOrder = client.CreateProposedOrder("not_checking_this", 19, "LU020000000THISISFAKE000000000LU",
                 200, 100, 10, 130, "3", "Bob", "001001", null, true, false, items);
 
             Assert.AreEqual(proposedOrder.ProposedOrderIdentifier, "1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1");
@@ -119,7 +119,7 @@ namespace LevelUp.Api.Client.Tests.Client.FunctionalTests
                                         "\"identifier_from_merchant\": \"001001\"," +
                                         "\"location_id\": 19," +
                                         "\"partial_authorization_allowed\": false," +
-                                        "\"payment_token_data\": \"LU02000008ZS9OJFUBNEL6ZM030000LU\"," +
+                                        "\"payment_token_data\": \"LU020000000THISISFAKE000000000LU\"," +
                                         "\"proposed_order_uuid\": \"1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1\"," +
                                         "\"receipt_message_html\": \"Pick up your order at <strong>counter #4</strong>\"," +
                                         "\"register\": \"3\"," +
@@ -148,7 +148,7 @@ namespace LevelUp.Api.Client.Tests.Client.FunctionalTests
 
             IManageProposedOrders client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CompleteProposedOrderRequest>(
                 expectedResponse, expectedRequest, expectedRequestUrl: expectedRequestUrl);
-            var completedOrder = client.CompleteProposedOrder("not_checking_this", 19, "LU02000008ZS9OJFUBNEL6ZM030000LU",
+            var completedOrder = client.CompleteProposedOrder("not_checking_this", 19, "LU020000000THISISFAKE000000000LU",
                 "1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1", 110, 110, 10, 0, 100, "3", "Bob", "001001", 
                 "Pick up your order at <strong>counter #4</strong>", false, false, items);
 
@@ -173,7 +173,7 @@ namespace LevelUp.Api.Client.Tests.Client.FunctionalTests
                                      "\"identifier_from_merchant\": \"001001\"," +
                                      "\"location_id\": 19," +
                                      "\"partial_authorization_allowed\": false," +
-                                     "\"payment_token_data\": \"LU02000008ZS9OJFUBNEL6ZM030000LU\"," +
+                                     "\"payment_token_data\": \"LU020000000THISISFAKE000000000LU\"," +
                                      "\"proposed_order_uuid\": \"1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1\"," +
                                      "\"receipt_message_html\": \"Pick up your order at <strong>counter #4</strong>\"," +
                                      "\"register\": \"3\"," +
@@ -202,7 +202,7 @@ namespace LevelUp.Api.Client.Tests.Client.FunctionalTests
 
             IManageProposedOrders client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CompleteProposedOrderRequest>(
                 expectedResponse, expectedRequest, expectedRequestUrl: expectedRequestUrl);
-            var completedOrder = client.CompleteProposedOrder("not_checking_this", 19, "LU02000008ZS9OJFUBNEL6ZM030000LU",
+            var completedOrder = client.CompleteProposedOrder("not_checking_this", 19, "LU020000000THISISFAKE000000000LU",
                 "1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1", 300, 200, 10, 130, 100, "3", "Bob", "001001",
                 "Pick up your order at <strong>counter #4</strong>", false, false, items);
 
@@ -227,7 +227,7 @@ namespace LevelUp.Api.Client.Tests.Client.FunctionalTests
                                      "\"identifier_from_merchant\": \"001001\"," +
                                      "\"location_id\": 19," +
                                      "\"partial_authorization_allowed\": false," +
-                                     "\"payment_token_data\": \"LU02000008ZS9OJFUBNEL6ZM030000LU\"," +
+                                     "\"payment_token_data\": \"LU020000000THISISFAKE000000000LU\"," +
                                      "\"proposed_order_uuid\": \"1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1\"," +
                                      "\"receipt_message_html\": \"Pick up your order at <strong>counter #4</strong>\"," +
                                      "\"register\": \"3\"," +
@@ -256,7 +256,7 @@ namespace LevelUp.Api.Client.Tests.Client.FunctionalTests
 
             IManageProposedOrders client = ClientModuleFunctionalTestingUtilities.GetMockedLevelUpModule<IManageProposedOrders, CompleteProposedOrderRequest>(
                 expectedResponse, expectedRequest, expectedRequestUrl: expectedRequestUrl);
-            var completedOrder = client.CompleteProposedOrder("not_checking_this", 19, "LU02000008ZS9OJFUBNEL6ZM030000LU",
+            var completedOrder = client.CompleteProposedOrder("not_checking_this", 19, "LU020000000THISISFAKE000000000LU",
                 "1b3b3c4d5e6f7g8a9i9h8g7f6e5d4c3b2a1", 300, 200, 10, 130, null, "3", "Bob", "001001",
                 "Pick up your order at <strong>counter #4</strong>", false, false, items);
 

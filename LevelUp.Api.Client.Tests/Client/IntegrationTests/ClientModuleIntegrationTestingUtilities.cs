@@ -22,6 +22,7 @@ using LevelUp.Api.Client.Models.Requests;
 using LevelUp.Api.Client.Models.Responses;
 using LevelUp.Api.Http;
 using NUnit.Framework;
+using System;
 
 namespace LevelUp.Api.Client.Tests.Client.IntegrationTests
 {
@@ -169,17 +170,51 @@ namespace LevelUp.Api.Client.Tests.Client.IntegrationTests
         {
             ClientModuleIntegrationTestingUtilities.RemoveAnyGiftCardCreditOnConsumerUserAccount();
 
+            // For this test, we don't really care what the order number is...
+            var identifierFromMerchant = System.Environment.TickCount.ToString();
+
             IManageProposedOrders orderClient = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<IManageProposedOrders>();
             var proposedOrder = orderClient.CreateProposedOrder(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
                 LevelUpTestConfiguration.Current.MerchantLocationId,
                 LevelUpTestConfiguration.Current.ConsumerQrData,
-                total, total, 0, 0, null, null, null, null, true, false, null);
+                total, total, 0, 0, null, null, identifierFromMerchant, null, true, false, null);
 
             return orderClient.CompleteProposedOrder(ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
                 LevelUpTestConfiguration.Current.MerchantLocationId,
                 LevelUpTestConfiguration.Current.ConsumerQrData,
                 proposedOrder.ProposedOrderIdentifier,
-                total, total, 0, 0, proposedOrder.DiscountAmountCents, null, null, null, null, true, false, null);
+                total, total, 0, 0, proposedOrder.DiscountAmountCents, null, null, identifierFromMerchant, null, true, false, null);
+        }
+
+        internal static ProposedOrderResponse ProposedOrderAtTestMerchantWithTestConsumer(int total, string identifierFromMerchant)
+        {
+            IManageProposedOrders orderClient = GetSandboxedLevelUpModule<IManageProposedOrders>();
+            return orderClient.CreateProposedOrder(SandboxedLevelUpMerchantAccessToken,
+                LevelUpTestConfiguration.Current.MerchantLocationId,
+                LevelUpTestConfiguration.Current.ConsumerQrData,
+                total, total, 0, 0, null, null, identifierFromMerchant, null, true, false, null);
+        }
+
+        internal static CompletedOrderResponse CompleteOrderAtTestMerchantWithTestConsumer(int total, int discountAmountCents, string identifierFromMerchant)
+        {
+            IManageProposedOrders orderClient = GetSandboxedLevelUpModule<IManageProposedOrders>();
+
+            return orderClient.CompleteProposedOrder(SandboxedLevelUpMerchantAccessToken,
+                LevelUpTestConfiguration.Current.MerchantLocationId,
+                LevelUpTestConfiguration.Current.ConsumerQrData,
+                null,
+                total,
+                total,
+                0,
+                0,
+                discountAmountCents,
+                null,
+                null,
+                identifierFromMerchant,
+                null,
+                true,
+                false,
+                null);
         }
 
         internal static int GetAvailableDiscountCredit(string qrData)
@@ -191,6 +226,21 @@ namespace LevelUp.Api.Client.Tests.Client.IntegrationTests
                 qrData, int.MaxValue, int.MaxValue, 0, 0, null, null, null, null, true, false, null);
 
             return proposedOrder.DiscountAmountCents;
+        }
+
+        internal static void GrantMerchantFundedCredit(int valueAmount)
+        {
+            int durationInSeconds = 60 * 60;
+
+            ICreateMerchantFundedCredit merchantFundedCreditInterface = ClientModuleIntegrationTestingUtilities.GetSandboxedLevelUpModule<ICreateMerchantFundedCredit>();
+            merchantFundedCreditInterface.GrantMerchantFundedCredit(
+                ClientModuleIntegrationTestingUtilities.SandboxedLevelUpMerchantAccessToken,
+                LevelUpTestConfiguration.Current.ConsumerEmailAddress,
+                durationInSeconds,
+                LevelUpTestConfiguration.Current.MerchantId,
+                $"Simphony2 test from {LevelUpTestConfiguration.Current.CompanyName} {DateTime.Now}",
+                valueAmount,
+                false);
         }
     }
 }

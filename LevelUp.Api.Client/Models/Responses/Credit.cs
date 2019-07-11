@@ -1,6 +1,6 @@
 ﻿#region Copyright (Apache 2.0)
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// <copyright file="ILevelUpClient.cs" company="SCVNGR, Inc. d/b/a LevelUp">
+// <copyright file="Location.cs" company="SCVNGR, Inc. d/b/a LevelUp">
 //   Copyright(c) 2016 SCVNGR, Inc. d/b/a LevelUp. All rights reserved.
 // </copyright>
 // <license publisher="Apache Software Foundation" date="January 2004" version="2.0">
@@ -17,25 +17,30 @@
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #endregion
 
-using LevelUp.Api.Client.ClientInterfaces;
+using JsonEnvelopeSerializer;
+using Newtonsoft.Json;
 
-namespace LevelUp.Api.Client
+namespace LevelUp.Api.Client.Models.Responses
 {
     /// <summary>
-    /// A collection of interfaces promoted for the most recent version of the SDK
+    /// Class representing credit available
     /// </summary>
-    public interface ILevelUpClient : IComposedInterface,
-                                      IAuthenticate,
-                                      ICreateDetachedRefund,
-                                      ICreateRefund,
-                                      IQueryMerchantData,
-                                      IListOrders,
-                                      IRetrievePaymentToken,
-                                      ICreateGiftCardValue,
-                                      IDestroyGiftCardValue,
-                                      IRetrieveMerchantFundedGiftCardCredit,
-                                      IManageProposedOrders,
-                                      ICreateMerchantFundedCredit
+    [JsonObject(MemberSerialization.OptIn)]
+    [ObjectEnvelope("credit")]
+    [JsonConverter(typeof(EnvelopeSerializer))]
+    public class Credit : Response
     {
+        private Credit() { }
+
+        public Credit(int totalAmount)
+        {
+            TotalAmount = totalAmount;
+        }
+
+        /// <summary>
+        /// Total amount of available credit for a user at the location
+        /// </summary>
+        [JsonProperty(PropertyName = "total_amount")]
+        public int TotalAmount { get; private set; }
     }
 }

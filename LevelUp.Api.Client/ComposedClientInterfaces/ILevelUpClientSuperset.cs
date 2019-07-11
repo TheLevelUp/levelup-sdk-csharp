@@ -34,7 +34,7 @@ namespace LevelUp.Api.Client
                                                 IModifyUser,
                                                 IQueryCreditCards,
                                                 IQueryMerchantData,
-                                                IQueryOrders,
+                                                IListOrders,
                                                 IQueryUser,
                                                 IRetrievePaymentToken,
                                                 ICreateGiftCardValue,
