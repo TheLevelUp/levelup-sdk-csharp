@@ -1,5 +1,7 @@
 # levelup-sdk-csharp
 
+**[This Library is No Longer Being Maintained]**
+
 | Master | Latest |
 |--------|--------|
 | [![Master build status](https://ci.appveyor.com/api/projects/status/49phceefx1un1y3h/branch/master?svg=true)](https://ci.appveyor.com/project/LevelUpPOS/levelup-sdk-csharp/branch/master)| [![Latest build status](https://ci.appveyor.com/api/projects/status/49phceefx1un1y3h?svg=true)](https://ci.appveyor.com/project/LevelUpPOS/levelup-sdk-csharp) |
